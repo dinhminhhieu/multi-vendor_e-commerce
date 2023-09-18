@@ -8,7 +8,9 @@ import {
 import { BiCategory, BiLoaderCircle, BiChat } from "react-icons/bi";
 import { FiUser, FiUsers, FiLogOut } from "react-icons/fi";
 import { MdOutlinePayment, MdNotificationsActive } from "react-icons/md";
-import { FaListAlt } from "react-icons/fa";
+import { FaListAlt, FaMoneyCheck } from "react-icons/fa";
+import { GrProductHunt } from "react-icons/gr";
+import { HiUserGroup } from "react-icons/hi";
 
 const icons = {
   AiOutlineEye,
@@ -25,6 +27,9 @@ const icons = {
   MdOutlinePayment,
   MdNotificationsActive,
   FaListAlt,
+  FaMoneyCheck,
+  GrProductHunt,
+  HiUserGroup,
 };
 
 export default icons;
