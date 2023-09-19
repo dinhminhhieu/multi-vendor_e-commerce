@@ -10,16 +10,16 @@ const AdminDashboard = () => {
   const state = {
     series: [
       {
-        name: "Đơn hàng",
-        data: [34, 65, 343, 65, 34, 34, 34, 56, 23, 67, 23, 45],
+        name: "Orders",
+        data: [34, 65, 34, 65, 34, 34, 34, 56, 23, 67, 23, 45],
       },
       {
-        name: "Doanh thu",
-        data: [34, 32, 45, 32, 34, 34, 43, 56, 23, 67, 23, 45],
+        name: "Revenue",
+        data: [34, 32, 45, 32, 34, 34, 43, 56, 65, 67, 45, 78],
       },
       {
-        name: "Người bán",
-        data: [94, 65, 343, 65, 34, 34, 34, 56, 23, 67, 23, 45],
+        name: "Sellers",
+        data: [78, 32, 34, 54, 65, 34, 54, 21, 54, 43, 45, 43],
       },
     ],
     options: {
@@ -277,13 +277,13 @@ const AdminDashboard = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="col"
                   >
-                    <span>Chưa xử lý</span>
+                    <span>Đang xử lý</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="col"
                   >
-                    <span>Chưa xử lý</span>
+                    <span>Đang xử lý</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
