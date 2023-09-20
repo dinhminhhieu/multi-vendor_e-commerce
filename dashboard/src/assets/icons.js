@@ -11,7 +11,11 @@ import { MdOutlinePayment, MdNotificationsActive } from "react-icons/md";
 import { FaListAlt, FaMoneyCheck } from "react-icons/fa";
 import { GrProductHunt } from "react-icons/gr";
 import { HiUserGroup } from "react-icons/hi";
-import { BsArrowBarDown } from "react-icons/bs";
+import {
+  BsArrowBarDown,
+  BsChevronDoubleLeft,
+  BsChevronDoubleRight,
+} from "react-icons/bs";
 
 const icons = {
   AiOutlineEye,
@@ -32,6 +36,8 @@ const icons = {
   GrProductHunt,
   HiUserGroup,
   BsArrowBarDown,
+  BsChevronDoubleLeft,
+  BsChevronDoubleRight,
 };
 
 export default icons;

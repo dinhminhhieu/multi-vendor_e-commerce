@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
+import Pagiantion from "../Pagiantion";
 
 const Orders = () => {
   const { BsArrowBarDown } = icons;
@@ -254,6 +255,15 @@ const Orders = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+          <Pagiantion
+          pageNumber={currentPage}
+          setPageNumber={setCurrentPage}
+          totalItem={50}
+          parPage={parPage}
+          showItem={3}
+        />
         </div>
       </div>
     </div>
