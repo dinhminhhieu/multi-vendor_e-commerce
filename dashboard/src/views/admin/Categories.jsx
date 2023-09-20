@@ -4,7 +4,7 @@ import icons from "../../assets/icons";
 import Pagiantion from "../Pagiantion";
 
 const Categories = () => {
-  const { FaEdit, FaTrash, AiOutlineEye, BsImage } = icons;
+  const { FaEdit, FaTrash, FaEye, BsImage, GrClose } = icons;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
@@ -12,6 +12,15 @@ const Categories = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
+      <div className="flex justify-between items-center lg:hidden mb-5 p-4 bg-[#283046] rounded-md">
+        <h1 className="text-white font-semibold text-lg">Danh mục</h1>
+        <button
+          onClick={() => setShow(true)}
+          className="bg-indigo-500 shadow-lg hover:shadow-indigo-500/50 px-4 py-2 cursor-pointer text-white rounded-sm text-sm"
+        >
+          Thêm
+        </button>
+      </div>
       <div className="flex flex-wrap w-full">
         <div className="w-full lg:w-7/12">
           <div className="w-full p-4 bg-[#283046] rounded-md">
@@ -51,7 +60,7 @@ const Categories = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-sm font-normal">
                   {[1, 2, 3, , 4, 5].map((d, i) => (
                     <tr key={i}>
                       <td
@@ -82,13 +91,13 @@ const Categories = () => {
                       >
                         <div className="flex justify-start items-center gap-4">
                           <Link className="p-[5px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
-                            <FaEdit size={15} />
+                            <FaEdit size={18} />
                           </Link>
                           <Link className="p-[5px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
-                            <FaTrash size={15} />
+                            <FaTrash size={18} />
                           </Link>
                           <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
-                            <AiOutlineEye size={15} />
+                            <FaEye size={18} />
                           </Link>
                         </div>
                       </td>
@@ -111,13 +120,21 @@ const Categories = () => {
         <div
           className={`w-[320px] lg:w-5/12 translate-x-100 lg:relative lg:right-0 fixed ${
             show ? "right-0" : "-right-[340px]"
-          } z-20 top-0 transition-all duration-500`}
+          } z-[9999] z-20 top-0 transition-all duration-500`}
         >
           <div className="w-full p-5">
             <div className="bg-[#283046] h-screen lg:h-auto px-3 py-2 lg:rounded-md text-white">
-              <h1 className="text-xl text-white font-semibold mb-4 w-full text-center">
-                Thêm danh mục sản phẩm
-              </h1>
+              <div className="flex justify-between items-center mb-3">
+                <h1 className="text-xl text-white font-semibold mb-4 w-full text-center">
+                  Thêm danh mục
+                </h1>
+                <div
+                  onClick={() => setShow(false)}
+                  className="block lg:hidden cursor-pointer"
+                >
+                  <GrClose className="text-white" size={20} />
+                </div>
+              </div>
               <form>
                 <div className="flex flex-col w-full gap-1 mb-3">
                   <label htmlFor="">Nhập tên danh mục</label>

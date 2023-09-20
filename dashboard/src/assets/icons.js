@@ -8,7 +8,13 @@ import {
 import { BiCategory, BiLoaderCircle, BiChat } from "react-icons/bi";
 import { FiUser, FiUsers, FiLogOut } from "react-icons/fi";
 import { MdOutlinePayment, MdNotificationsActive } from "react-icons/md";
-import { FaListAlt, FaMoneyCheck, FaEdit, FaTrash } from "react-icons/fa";
+import {
+  FaListAlt,
+  FaMoneyCheck,
+  FaEdit,
+  FaTrash,
+  FaEye,
+} from "react-icons/fa";
 import { GrProductHunt } from "react-icons/gr";
 import { HiUserGroup } from "react-icons/hi";
 import {
@@ -17,6 +23,7 @@ import {
   BsChevronDoubleRight,
   BsImage,
 } from "react-icons/bs";
+import { GrClose } from "react-icons/gr";
 
 const icons = {
   AiOutlineEye,
@@ -36,12 +43,14 @@ const icons = {
   FaMoneyCheck,
   FaEdit,
   FaTrash,
+  FaEye,
   GrProductHunt,
   HiUserGroup,
   BsArrowBarDown,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
   BsImage,
+  GrClose,
 };
 
 export default icons;
