@@ -10,15 +10,15 @@ const AdminDashboard = () => {
   const state = {
     series: [
       {
-        name: "Orders",
+        name: "Đơn hàng",
         data: [34, 65, 34, 65, 34, 34, 34, 56, 23, 67, 23, 45],
       },
       {
-        name: "Revenue",
+        name: "Doanh thu",
         data: [34, 32, 45, 32, 34, 34, 43, 56, 65, 67, 45, 78],
       },
       {
-        name: "Sellers",
+        name: "Người bán",
         data: [78, 32, 34, 54, 65, 34, 54, 21, 54, 43, 45, 43],
       },
     ],
@@ -263,31 +263,31 @@ const AdminDashboard = () => {
                 <tr key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="col"
+                    scope="row"
                   >
-                    #1
+                    1
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="col"
+                    scope="row"
                   >
                     10.000
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="col"
+                    scope="row"
                   >
                     <span>Đang xử lý</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="col"
+                    scope="row"
                   >
                     <span>Đang xử lý</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="col"
+                    scope="row"
                   >
                     <Link>Xem</Link>
                   </td>

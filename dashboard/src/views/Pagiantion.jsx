@@ -30,8 +30,8 @@ const Pagiantion = ({
         <li
           className={`${
             pageNumber === i
-              ? "bg-indigo-500 shadow-lg shadow-indigo-500/50 text-white"
-              : "bg-slate-700 hover:bg-indigo-500 shadow-lg hover:shadow-indigo-500/50 hover:text-white text-white"
+              ? "bg-red-500 shadow-lg shadow-red-500/50 text-white"
+              : "bg-slate-700 hover:bg-red-500 shadow-lg hover:shadow-red-500/50 hover:text-white text-white"
           } w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer`}
           onClick={() => setPageNumber(i)}
         >
