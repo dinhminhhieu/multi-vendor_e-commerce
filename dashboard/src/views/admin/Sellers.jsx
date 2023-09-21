@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Pagiantion from "../Pagiantion";
 import icons from "../../assets/icons";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 const Sellers = () => {
   const { FaEye } = icons;
@@ -47,16 +47,16 @@ const Sellers = () => {
                 <th className="py-3 px-4" scope="col">
                   Email
                 </th>
-                 <th className="py-3 px-4" scope="col">
+                <th className="py-3 px-4" scope="col">
                   Tên shop
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Trạng thái
                 </th>
-                 <th className="py-3 px-4" scope="col">
+                <th className="py-3 px-4" scope="col">
                   Phân loại
                 </th>
-                 <th className="py-3 px-4" scope="col">
+                <th className="py-3 px-4" scope="col">
                   Địa chỉ
                 </th>
                 <th className="py-3 px-4" scope="col">
