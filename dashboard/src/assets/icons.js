@@ -24,6 +24,7 @@ import {
   BsImage,
 } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
+import { IoMdClose } from "react-icons/io";
 
 const icons = {
   AiOutlineEye,
@@ -51,6 +52,7 @@ const icons = {
   BsChevronDoubleRight,
   BsImage,
   GrClose,
+  IoMdClose,
 };
 
 export default icons;

@@ -42,7 +42,7 @@ const Sellers = () => {
                   Hình ảnh
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Họ và tên
+                  Họ tên
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Email
@@ -105,7 +105,7 @@ const Sellers = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>active</span>
+                    <span>Hoạt động</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
