@@ -7,7 +7,11 @@ import {
 } from "react-icons/ai";
 import { BiCategory, BiLoaderCircle, BiChat } from "react-icons/bi";
 import { FiUser, FiUsers, FiLogOut } from "react-icons/fi";
-import { MdOutlinePayment, MdNotificationsActive } from "react-icons/md";
+import {
+  MdOutlinePayment,
+  MdNotificationsActive,
+  MdSend,
+} from "react-icons/md";
 import {
   FaListAlt,
   FaMoneyCheck,
@@ -40,6 +44,7 @@ const icons = {
   FiLogOut,
   MdOutlinePayment,
   MdNotificationsActive,
+  MdSend,
   FaListAlt,
   FaMoneyCheck,
   FaEdit,
