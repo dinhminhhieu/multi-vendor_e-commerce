@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Pagiantion from "../Pagiantion";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
+import Pagiantion from "../Pagiantion";
 
-const Sellers = () => {
+const DeactiveSellers = () => {
   const { FaEye } = icons;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -48,16 +48,10 @@ const Sellers = () => {
                   Email
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Tên shop
+                  Thanh toán
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Trạng thái
-                </th>
-                <th className="py-3 px-4" scope="col">
-                  Phân loại
-                </th>
-                <th className="py-3 px-4" scope="col">
-                  Địa chỉ
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Hành động
@@ -99,32 +93,20 @@ const Sellers = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Thời trang</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
                     <span>active</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Gò Vấp</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span>Gò Vấp</span>
+                    <span>deactive</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link to="/admin/dashboard/sellers/details/1" className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
                         <FaEye size={20} />
                       </Link>
                     </div>
@@ -148,4 +130,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default DeactiveSellers;

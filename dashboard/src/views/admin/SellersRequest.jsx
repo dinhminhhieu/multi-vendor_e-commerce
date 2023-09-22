@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Pagiantion from "../Pagiantion";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
+import Pagiantion from "../Pagiantion";
 
-const Sellers = () => {
+const SellersRequest = () => {
   const { FaEye } = icons;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -39,25 +39,16 @@ const Sellers = () => {
                   STT
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Hình ảnh
-                </th>
-                <th className="py-3 px-4" scope="col">
                   Họ và tên
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Email
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Tên shop
+                  Thanh toán
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Trạng thái
-                </th>
-                <th className="py-3 px-4" scope="col">
-                  Phân loại
-                </th>
-                <th className="py-3 px-4" scope="col">
-                  Địa chỉ
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Hành động
@@ -66,22 +57,12 @@ const Sellers = () => {
             </thead>
             <tbody>
               {[1, 2, 3, , 4, 5].map((d, i) => (
-                <tr key={i}>
+                <tr className="border-b border-slate-600" key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     {d}
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <img
-                      className="w-[45px] h-[45px]"
-                      src={`http://localhost:3000/images/sellers/${d}.png`}
-                      alt=""
-                    />
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
@@ -99,32 +80,20 @@ const Sellers = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Thời trang</span>
+                    <span>Không hoạt động</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>active</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span>Gò Vấp</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span>Gò Vấp</span>
+                    <span>Vô hiệu hóa</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link to="/admin/dashboard/sellers/details/1" className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
                         <FaEye size={20} />
                       </Link>
                     </div>
@@ -148,4 +117,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default SellersRequest;

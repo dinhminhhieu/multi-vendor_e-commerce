@@ -35,7 +35,7 @@ export const allNav = [
   },
   {
     id: 4,
-    title: "Người Bán",
+    title: "Seller",
     icon: <FiUser size={20} />,
     role: "admin",
     path: "/admin/dashboard/sellers",
@@ -49,21 +49,21 @@ export const allNav = [
   },
   {
     id: 6,
-    title: "Tạm Ngừng Người Bán",
+    title: "Vô hiệu hóa seller",
     icon: <FiUsers size={20} />,
     role: "admin",
     path: "/admin/dashboard/deactive-sellers",
   },
   {
     id: 7,
-    title: "Hỗ Trợ Người Bán",
+    title: "Kích hoạt Seller",
     icon: <BiLoaderCircle size={20} />,
     role: "admin",
     path: "/admin/dashboard/sellers-request",
   },
   {
     id: 8,
-    title: "Chat với Người Bán",
+    title: "Chat Seller",
     icon: <BiChat size={20} />,
     role: "admin",
     path: "/admin/dashboard/chat-sellers",

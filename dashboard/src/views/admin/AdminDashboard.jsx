@@ -18,7 +18,7 @@ const AdminDashboard = () => {
         data: [34, 32, 45, 32, 34, 34, 43, 56, 65, 67, 45, 78],
       },
       {
-        name: "Người bán",
+        name: "Sellers",
         data: [78, 32, 34, 54, 65, 34, 54, 21, 54, 43, 45, 43],
       },
     ],
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
         <div className="flex justify-between items-center p-5 bg-[#283046] rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
             <h2 className="text-2xl font-bold">4</h2>
-            <span className="text-sm font-medium">Người Bán</span>
+            <span className="text-sm font-medium">Sellers</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#999900] flex justify-center items-center text-xl">
             <HiUserGroup size={22} className="text-white shadow-lg" />

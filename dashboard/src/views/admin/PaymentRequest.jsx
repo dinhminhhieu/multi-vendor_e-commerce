@@ -10,8 +10,6 @@ const outerElementType = forwardRef((props, ref) => (
 ))
 
 const PaymentRequest = () => {
-  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   const Row = ({ index, style }) => {
     return (
       <div style={style} className="flex text-sm">
