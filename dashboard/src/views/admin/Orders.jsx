@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Pagiantion from "../Pagiantion";
 
 const Orders = () => {
-  const { BsArrowBarDown } = icons;
+  const { BsArrowBarDown, FaEye } = icons;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
@@ -54,7 +54,12 @@ const Orders = () => {
                 <div className="py-4 w-[18%]">Đang xử lý</div>
                 <div className="py-4 w-[18%]">Đang xử lý</div>
                 <div className="py-4 w-[18%]">
-                  <Link>Xem</Link>
+                  <Link to="/admin/dashboard/orders/details/1">
+                    <FaEye
+                      size={25}
+                      className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+                    />
+                  </Link>
                 </div>
                 <div className="py-4 w-[8%]" onClick={(e) => setShow(!show)}>
                   <BsArrowBarDown size={20} />
@@ -66,204 +71,18 @@ const Orders = () => {
                     ? "block border-b border-slate-700 bg-slate-800"
                     : "hidden"
                 }
-              >
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-white">
-              <div className="flex justify-between items-start border-b border-slate-700">
-                <div className="py-4 w-[25%] font-medium whitespace-nowrap">
-                  #1
-                </div>
-                <div className="py-4 w-[13%]">10.000</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">
-                  <Link>Xem</Link>
-                </div>
-                <div className="py-4 w-[8%]" onClick={(e) => setShow(!show)}>
-                  <BsArrowBarDown size={20} />
-                </div>
-              </div>
-              <div
-                className={
-                  show
-                    ? "block border-b border-slate-700 bg-slate-800"
-                    : "hidden"
-                }
-              >
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-white">
-              <div className="flex justify-between items-start border-b border-slate-700">
-                <div className="py-4 w-[25%] font-medium whitespace-nowrap">
-                  #1
-                </div>
-                <div className="py-4 w-[13%]">10.000</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">
-                  <Link>Xem</Link>
-                </div>
-                <div className="py-4 w-[8%]" onClick={(e) => setShow(!show)}>
-                  <BsArrowBarDown size={20} />
-                </div>
-              </div>
-              <div
-                className={
-                  show
-                    ? "block border-b border-slate-700 bg-slate-800"
-                    : "hidden"
-                }
-              >
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-white">
-              <div className="flex justify-between items-start border-b border-slate-700">
-                <div className="py-4 w-[25%] font-medium whitespace-nowrap">
-                  #1
-                </div>
-                <div className="py-4 w-[13%]">10.000</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">
-                  <Link>Xem</Link>
-                </div>
-                <div className="py-4 w-[8%]" onClick={(e) => setShow(!show)}>
-                  <BsArrowBarDown size={20} />
-                </div>
-              </div>
-              <div
-                className={
-                  show
-                    ? "block border-b border-slate-700 bg-slate-800"
-                    : "hidden"
-                }
-              >
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-white">
-              <div className="flex justify-between items-start border-b border-slate-700">
-                <div className="py-4 w-[25%] font-medium whitespace-nowrap">
-                  #1
-                </div>
-                <div className="py-4 w-[13%]">10.000</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">Đang xử lý</div>
-                <div className="py-4 w-[18%]">
-                  <Link>Xem</Link>
-                </div>
-                <div className="py-4 w-[8%]" onClick={(e) => setShow(!show)}>
-                  <BsArrowBarDown size={20} />
-                </div>
-              </div>
-              <div
-                className={
-                  show
-                    ? "block border-b border-slate-700 bg-slate-800"
-                    : "hidden"
-                }
-              >
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-
-                <div className="flex justify-start items-start border-b border-slate-700">
-                  <div className="py-4 w-[25%] font-medium whitespace-nowrap pl-3">
-                    #1
-                  </div>
-                  <div className="py-4 w-[13%]">10.000</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                  <div className="py-4 w-[18%]">Đang xử lý</div>
-                </div>
-              </div>
+              ></div>
             </div>
           </div>
         </div>
         <div className="w-full flex justify-end mt-4 bottom-4 right-4">
           <Pagiantion
-          pageNumber={currentPage}
-          setPageNumber={setCurrentPage}
-          totalItem={50}
-          parPage={parPage}
-          showItem={3}
-        />
+            pageNumber={currentPage}
+            setPageNumber={setCurrentPage}
+            totalItem={50}
+            parPage={parPage}
+            showItem={3}
+          />
         </div>
       </div>
     </div>
