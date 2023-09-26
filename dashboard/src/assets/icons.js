@@ -4,6 +4,7 @@ import {
   AiFillDashboard,
   AiOutlineShoppingCart,
   AiOutlineSearch,
+  AiOutlinePlus,
 } from "react-icons/ai";
 import { BiCategory, BiLoaderCircle, BiChat } from "react-icons/bi";
 import { FiUser, FiUsers, FiLogOut } from "react-icons/fi";
@@ -20,7 +21,7 @@ import {
   FaEye,
 } from "react-icons/fa";
 import { GrProductHunt } from "react-icons/gr";
-import { HiUserGroup } from "react-icons/hi";
+import { HiUserGroup, HiOutlineChatAlt } from "react-icons/hi";
 import {
   BsArrowBarDown,
   BsChevronDoubleLeft,
@@ -29,6 +30,8 @@ import {
 } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
+import { TbDiscount2 } from "react-icons/tb";
+import {RiShoppingBasketLine} from "react-icons/ri"
 
 const icons = {
   AiOutlineEye,
@@ -36,6 +39,7 @@ const icons = {
   AiFillDashboard,
   AiOutlineShoppingCart,
   AiOutlineSearch,
+  AiOutlinePlus,
   BiCategory,
   BiLoaderCircle,
   BiChat,
@@ -52,12 +56,15 @@ const icons = {
   FaEye,
   GrProductHunt,
   HiUserGroup,
+  HiOutlineChatAlt,
   BsArrowBarDown,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
   BsImage,
   GrClose,
   IoMdClose,
+  TbDiscount2,
+  RiShoppingBasketLine,
 };
 
 export default icons;
