@@ -30,8 +30,10 @@ import {
 } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
+import {IoCloseSharp} from "react-icons/io5"
 import { TbDiscount2 } from "react-icons/tb";
 import {RiShoppingBasketLine} from "react-icons/ri"
+
 
 const icons = {
   AiOutlineEye,
@@ -65,6 +67,7 @@ const icons = {
   IoMdClose,
   TbDiscount2,
   RiShoppingBasketLine,
+  IoCloseSharp,
 };
 
 export default icons;

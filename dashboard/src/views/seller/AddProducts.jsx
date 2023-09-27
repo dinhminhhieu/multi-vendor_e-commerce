@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import icons from "../../assets/icons";
 
 const AddProducts = () => {
+  const { BsImage, IoCloseSharp } = icons;
+
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -11,7 +14,7 @@ const AddProducts = () => {
     quantity: "",
   });
 
-  const handleInput = (e) => {
+  const inputHandle = (e) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
@@ -59,9 +62,42 @@ const AddProducts = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setAllCategory(categories)
-  // }, [])
+  const [images, setImages] = useState([]);
+  const [imageShow, setImageShow] = useState([]);
+
+  const imageHandle = (e) => {
+    const files = e.target.files;
+    const length = files.length;
+
+    if (length > 0) {
+      setImages([...images, ...files]);
+      let imageUrl = [];
+
+      for (let i = 0; i < length; i++) {
+        imageUrl.push({ url: URL.createObjectURL(files[i]) });
+      }
+      setImageShow([...imageShow, ...imageUrl]);
+    }
+  };
+
+  const changeImage = (img, index) => {
+    if (img) {
+      let tempUrl = imageShow;
+      let tempImages = images;
+
+      tempImages[index] = img;
+      tempUrl[index] = { url: URL.createObjectURL(img) };
+      setImageShow([...tempUrl]);
+      setImages([...tempImages]);
+    }
+  };
+
+  const removeImage = (i) => {
+    const filterImage = images.filter((img, index) => index !== i);
+    const filterImageUrl = imageShow.filter((img, index) => index !== i);
+    setImages(filterImage);
+    setImageShow(filterImageUrl);
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -81,7 +117,7 @@ const AddProducts = () => {
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="name">Tên sản phẩm</label>
                 <input
-                  onChange={handleInput}
+                  onChange={inputHandle}
                   value={state.name}
                   type="text"
                   name="name"
@@ -93,7 +129,7 @@ const AddProducts = () => {
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="brand">Thương hiệu</label>
                 <input
-                  onChange={handleInput}
+                  onChange={inputHandle}
                   value={state.name}
                   type="text"
                   name="brand"
@@ -109,7 +145,7 @@ const AddProducts = () => {
                 <input
                   readOnly
                   onClick={() => setCateShow(!cateShow)}
-                  onChange={handleInput}
+                  onChange={inputHandle}
                   value={category}
                   type="text"
                   id="category"
@@ -133,7 +169,8 @@ const AddProducts = () => {
                   <div className="pt-14"></div>
                   <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
                     {allCategory.map((c, i) => (
-                      <span className="px-4 py-2 hover:bg-red-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500"
+                      <span
+                        className="px-4 py-2 hover:bg-red-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500"
                         onClick={() => {
                           setCateShow(false);
                           setCategory(c.name);
@@ -150,7 +187,7 @@ const AddProducts = () => {
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="brand">Số lượng</label>
                 <input
-                  onChange={handleInput}
+                  onChange={inputHandle}
                   value={state.quantity}
                   type="number"
                   min="0"
@@ -165,7 +202,7 @@ const AddProducts = () => {
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="name">Giá sản phẩm</label>
                 <input
-                  onChange={handleInput}
+                  onChange={inputHandle}
                   value={state.price}
                   type="number"
                   name="price"
@@ -177,7 +214,7 @@ const AddProducts = () => {
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="brand">Giảm giá</label>
                 <input
-                  onChange={handleInput}
+                  onChange={inputHandle}
                   value={state.name}
                   type="number"
                   name="discount"
@@ -187,20 +224,64 @@ const AddProducts = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col mb-3 md:flex-row gap-4 text-white">
-              <div className="flex flex-col w-full gap-1">
-                <label htmlFor="brand">Mô tả sản phẩm</label>
-                <textarea
+            <div className="flex flex-col w-full gap-1 text-white mb-5">
+              <label htmlFor="brand">Mô tả sản phẩm</label>
+              <textarea
                 rows={4}
-                  onChange={handleInput}
-                  value={state.description}
-                  type="text"
-                  name="description"
-                  id="description"
-                  placeholder="Mô tả sản phẩm..."
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
-                ></textarea>
-              </div>
+                onChange={inputHandle}
+                value={state.description}
+                type="text"
+                name="description"
+                id="description"
+                placeholder="Mô tả sản phẩm..."
+                className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+              ></textarea>
+            </div>
+            <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full text-white mb-4">
+              {imageShow.map((img, i) => (
+                <div className="h-[180px] relative">
+                  <label htmlFor={i}>
+                    <img
+                      src={img.url}
+                      alt=""
+                      className="w-full h-full rounded-sm"
+                    />
+                  </label>
+                  <input
+                    type="file"
+                    id={i}
+                    className="hidden"
+                    onChange={(e) => changeImage(e.target.files[0], i)}
+                  />
+                  <span
+                    onClick={() => removeImage(i)}
+                    className="p-2 z-10 cursor-pointer bg-slate-700 hover:shadow-lg hover:shadow-slate-400/50 text-white absolute top-1 right-1 rounded-full"
+                  >
+                    <IoCloseSharp />
+                  </span>
+                </div>
+              ))}
+              <label
+                htmlFor="image"
+                className="flex justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed hover:border-indigo-500 w-full text-white"
+              >
+                <span>
+                  <BsImage />
+                </span>
+                <span>Chọn ảnh</span>
+              </label>
+              <input
+                type="file"
+                id="image"
+                className="hidden"
+                multiple
+                onChange={imageHandle}
+              />
+            </div>
+            <div className="flex justify-end">
+              <button className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 my-2">
+                Thêm sản phẩm
+              </button>
             </div>
           </form>
         </div>
