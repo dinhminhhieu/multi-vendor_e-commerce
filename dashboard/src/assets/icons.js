@@ -12,6 +12,7 @@ import {
   MdOutlinePayment,
   MdNotificationsActive,
   MdSend,
+  MdOutlineAttachMoney,
 } from "react-icons/md";
 import {
   FaListAlt,
@@ -51,6 +52,7 @@ const icons = {
   MdOutlinePayment,
   MdNotificationsActive,
   MdSend,
+  MdOutlineAttachMoney,
   FaListAlt,
   FaMoneyCheck,
   FaEdit,
