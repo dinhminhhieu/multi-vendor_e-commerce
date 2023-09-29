@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import icons from "../../assets/icons";
 
 const SellerToAdmin = () => {
-  const { IoMdClose, FaListAlt, MdSend } = icons;
+  const { MdSend } = icons;
   return (
     <div className="px-2 lg:px-7 py-5">
       <div className="w-full bg-[#283046] px-4 py-4 rounded-md h-[calc(100vh-140px)]">

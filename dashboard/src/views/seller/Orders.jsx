@@ -75,7 +75,7 @@ const Orders = () => {
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link to={`/seller/dashboard/order/order-details/1`} className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
                         <FaEye size={18} />
                       </Link>
                     </div>

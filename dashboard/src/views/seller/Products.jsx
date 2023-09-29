@@ -111,7 +111,7 @@ const Products = () => {
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link className="p-[5px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
+                      <Link to={`/seller/dashboard/edit-product/1`} className="p-[5px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
                         <FaEdit size={18} />
                       </Link>
                       <button className="p-[5px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
