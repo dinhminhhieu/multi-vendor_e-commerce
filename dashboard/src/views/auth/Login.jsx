@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { PropagateLoader } from "react-spinners"; // Tạo các hiệu ứng loader hoặc tiến trình tải
+import { useDispatch, useSelector } from "react-redux";
+import { messageClear, seller_login } from "../../store/Reducers/authReducer";
 import { Link } from "react-router-dom";
 import icons from "../../assets/icons";
+import toast from "react-hot-toast";
+import {overrideStyle} from '../../utils/utils'
 
 const Login = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const { loader, errorMessage, successMessage } = useSelector(
+    (state) => state.auth
+  );
+  
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -19,8 +29,19 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(state);
+    dispatch(seller_login(state));
   };
+
+    useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+  }, [errorMessage, successMessage]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col py-12 sm:px-6 lg:px-8">
@@ -119,9 +140,14 @@ const Login = () => {
             <div>
               <button
                 type="submit"
+                disabled={loader ? true : false}
                 className="group relative w-full h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
               >
-                ĐĂNG NHẬP
+                {loader ? (
+                  <PropagateLoader color="#fff" cssOverride={overrideStyle} />
+                ) : (
+                  "ĐĂNG KÝ"
+                )}
               </button>
             </div>
             <div className="flex items-center w-full">

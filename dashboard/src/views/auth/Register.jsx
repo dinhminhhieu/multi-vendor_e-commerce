@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PropagateLoader } from "react-spinners"; // Tạo các hiệu ứng loader hoặc tiến trình tải
-import {overrideStyle} from '../../utils/utils'
-import {seller_register} from '../../store/Reducers/authReducer'
+import { overrideStyle } from "../../utils/utils";
+import {
+  messageClear,
+  seller_register,
+} from "../../store/Reducers/authReducer";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
   const [visible, setVisible] = useState(false);
+  const { loader, errorMessage, successMessage } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     name: "",
     email: "",
@@ -22,14 +30,21 @@ const Register = () => {
     });
   };
 
-  const { loader } = useSelector((state) => state.auth);
-
-  const dispatch = useDispatch()
-
-    const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(seller_register(state))
+    dispatch(seller_register(state));
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+  }, [errorMessage, successMessage]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col py-12 sm:px-6 lg:px-8">
