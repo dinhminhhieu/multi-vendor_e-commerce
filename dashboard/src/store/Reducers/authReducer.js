@@ -8,9 +8,27 @@ export const admin_login = createAsyncThunk(
       const { data } = await api.post("/admin-login", info, {
         withCredentials: true,
       });
-      localStorage.setItem("accessToken", data.token)
+      localStorage.setItem("accessToken", data.token) // Lưu token vào local storage
       return fulfillWithValue(data);
     } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const seller_register = createAsyncThunk(
+  "auth/seller_register",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      console.log(info)
+      const { data } = await api.post("/seller-register", info, {
+        withCredentials: true,
+      });
+      //localStorage.setItem("accessToken", data.token);
+      console.log(data)
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.response.data)
       return rejectWithValue(error.response.data);
     }
   }

@@ -1,4 +1,6 @@
 const adminModel = require("../models/adminModel");
+const sellerModel = require("../models/sellerModel");
+const sellerToCustomerModel = require("../models/chat/sellerToCustomerModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { responseReturn } = require("../utils/response");
@@ -43,6 +45,31 @@ class authControllers {
       console.log(error.message);
     }
   };
+
+  seller_register = async(req, res) => {
+    const {email, name, password} = req.body
+    try {
+      const getUser = await sellerModel.findOne({email})
+      if(getUser) {
+        responseReturn(res, 404, {error: "Email đăng ký đã tồn tại!"})
+      }else {
+        const seller = await sellerModel.create({
+          name, 
+          email,
+          password: await bcrypt.hash(password, 10),
+          method: "menualy",
+          shopInfo: {}
+        })
+        await sellerToCustomerModel.create({
+          myId: seller.id
+        })
+
+        responseReturn(res, 201, {message: "Đăng ký thành công!"})
+      }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 }
 
 module.exports = new authControllers();

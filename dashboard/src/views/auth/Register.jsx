@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { PropagateLoader } from "react-spinners"; // Tạo các hiệu ứng loader hoặc tiến trình tải
+import {overrideStyle} from '../../utils/utils'
+import {seller_register} from '../../store/Reducers/authReducer'
 
 const Register = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
@@ -18,9 +22,13 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const { loader } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch()
+
+    const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(state);
+    dispatch(seller_register(state))
   };
 
   return (
@@ -136,9 +144,14 @@ const Register = () => {
             <div>
               <button
                 type="submit"
+                disabled={loader ? true : false}
                 className="group relative w-full h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
               >
-                ĐĂNG KÝ
+                {loader ? (
+                  <PropagateLoader color="#fff" cssOverride={overrideStyle} />
+                ) : (
+                  "ĐĂNG KÝ"
+                )}
               </button>
             </div>
             <div className="flex items-center w-full">
