@@ -185,7 +185,7 @@ const AddProducts = () => {
                 </div>
               </div>
               <div className="flex flex-col w-full gap-1">
-                <label htmlFor="brand">Số lượng</label>
+                <label htmlFor="quantity">Số lượng</label>
                 <input
                   onChange={inputHandle}
                   value={state.quantity}
@@ -193,7 +193,7 @@ const AddProducts = () => {
                   min="0"
                   name="quantity"
                   id="quantity"
-                  placeholder="Nhập tên thương hiệu..."
+                  placeholder="Nhập số lượng sản phẩm..."
                   className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
                 />
               </div>
