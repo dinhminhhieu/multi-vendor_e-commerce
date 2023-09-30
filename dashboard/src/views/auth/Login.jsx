@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PropagateLoader } from "react-spinners"; // Tạo các hiệu ứng loader hoặc tiến trình tải
 import { useDispatch, useSelector } from "react-redux";
 import { messageClear, seller_login } from "../../store/Reducers/authReducer";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import icons from "../../assets/icons";
 import toast from "react-hot-toast";
 import {overrideStyle} from '../../utils/utils'
@@ -10,6 +10,7 @@ import {overrideStyle} from '../../utils/utils'
 const Login = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [visible, setVisible] = useState(false);
   const { loader, errorMessage, successMessage } = useSelector(
     (state) => state.auth
@@ -40,6 +41,7 @@ const Login = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
+      navigate("/")
     }
   }, [errorMessage, successMessage]);
 

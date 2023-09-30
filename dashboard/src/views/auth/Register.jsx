@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import icons from "../../assets/icons";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PropagateLoader } from "react-spinners"; // Tạo các hiệu ứng loader hoặc tiến trình tải
 import { overrideStyle } from "../../utils/utils";
@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 const Register = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate()
   const { loader, errorMessage, successMessage } = useSelector(
     (state) => state.auth
   );
@@ -43,6 +44,7 @@ const Register = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
+      navigate("/")
     }
   }, [errorMessage, successMessage]);
 

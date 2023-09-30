@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/api";
+import jwt from "jwt-decode";
 
 export const admin_login = createAsyncThunk(
   "auth/admin_login",
@@ -8,7 +9,7 @@ export const admin_login = createAsyncThunk(
       const { data } = await api.post("/admin-login", info, {
         withCredentials: true,
       });
-      localStorage.setItem("accessToken", data.token) // Lưu token vào local storage
+      localStorage.setItem("accessToken", data.token); // Lưu token vào local storage
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -39,14 +40,44 @@ export const seller_login = createAsyncThunk(
       const { data } = await api.post("/seller-login", info, {
         withCredentials: true,
       });
-      console.log(data)
-      //localStorage.setItem("accessToken", data.token); // Lưu token vào local storage
+      console.log(data);
+      localStorage.setItem("accessToken", data.token); // Lưu token vào local storage
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
+
+export const get_user = createAsyncThunk(
+  "auth/get_user",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/get-user", {
+        withCredentials: true,
+      });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+const returnRole = (token) => {
+  if (token) {
+    const decodeToken = jwt(token);
+    const expireTime = new Date(decodeToken.exp * 1000); // Tính thời gian hết hạn của token
+    if (new Date() > expireTime) {
+      // So sánh time hiện tại với time hết hạn của token
+      localStorage.removeItem("accessToken"); // Nếu token đã hết hạn, loại bỏ token khỏi localStorage và trả về một chuỗi rỗng
+      return "";
+    } else {
+      return decodeToken.role;
+    }
+  } else {
+    return "";
+  }
+};
 
 export const authReducer = createSlice({
   name: "auth",
@@ -55,6 +86,8 @@ export const authReducer = createSlice({
     errorMessage: "",
     loader: false,
     userInfo: "",
+    role: returnRole(localStorage.getItem("accessToken")),
+    token: localStorage.getItem("accessToken"),
   },
   reducers: {
     // Thông báo sẽ liên tục khi click button liên tục
@@ -76,6 +109,8 @@ export const authReducer = createSlice({
     [admin_login.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.success;
+      state.token = payload.token;
+      state.role = returnRole(payload.token);
     },
 
     [seller_login.pending]: (state, _) => {
@@ -90,18 +125,29 @@ export const authReducer = createSlice({
     [seller_login.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.success;
+      state.token = payload.token;
+      state.role = returnRole(payload.token);
     },
 
     [seller_register.pending]: (state, _) => {
       state.loader = true;
     },
+
     [seller_register.rejected]: (state, { payload }) => {
       state.loader = false;
       state.errorMessage = payload.error;
     },
+
     [seller_register.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.message;
+      state.token = payload.token;
+      state.role = returnRole(payload.token);
+    },
+
+    [get_user.fulfilled]: (state, { payload }) => {
+      state.loader = false;
+      state.userInfo = payload.userInfo;
     },
   },
 });
