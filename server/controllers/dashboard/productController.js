@@ -1,6 +1,7 @@
 const formidable = require("formidable");
 const productModel = require("../../models/productModel");
 const cloudinary = require("cloudinary").v2;
+const { responseReturn } = require("../../utils/response");
 
 class productController {
   add_product = async (req, res) => {
@@ -51,11 +52,50 @@ class productController {
           images: allImageUrl,
           shopName,
         });
-        console.log(product)
+        responseReturn(res, 201, { message: "Thêm sản phẩm thành công!" });
       } catch (error) {
-        console.log(error)
+        responseReturn(res, 500, { error: "Internal server error" });
       }
     });
+  };
+
+  get_product = async (req, res) => {
+    const { page, searchValue, parPage } = req.query;
+    const { id } = req;
+
+    const skipPage = parseInt(parPage) * (parseInt(page) - 1);
+
+    try {
+      if (searchValue) {
+        const products = await productModel
+          .find({
+            $text: { $search: searchValue },
+            sellerId: id,
+          })
+          .skip(skipPage)
+          .limit(parPage)
+          .sort({ createdAt: -1 });
+        const totalProduct = await productModel
+          .find({
+            $text: { $search: searchValue },
+            sellerId: id,
+          })
+          .countDocuments();
+        responseReturn(res, 200, { totalProduct, products });
+      } else {
+        const products = await productModel
+          .find({ sellerId: id })
+          .skip(skipPage)
+          .limit(parPage)
+          .sort({ createdAt: -1 });
+        const totalProduct = await productModel
+          .find({ sellerId: id })
+          .countDocuments();
+        responseReturn(res, 200, { totalProduct, products });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 }
 

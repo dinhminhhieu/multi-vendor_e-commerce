@@ -2,10 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
 export const add_product = createAsyncThunk(
-  "category/add_product",
+  "product/add_product",
   async (product, { rejectWithValue, fulfillWithValue }) => {
     try {
-
       const { data } = await api.post("/product-add", product, {
         withCredentials: true,
       });
@@ -17,17 +16,16 @@ export const add_product = createAsyncThunk(
 );
 
 export const get_product = createAsyncThunk(
-  "category/get_product",
+  "product/get_product",
   async (
     { parPage, page, searchValue },
     { rejectWithValue, fulfillWithValue }
   ) => {
     try {
       const { data } = await api.get(
-        `/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        `/product-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
         { withCredentials: true }
       );
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -36,7 +34,7 @@ export const get_product = createAsyncThunk(
 );
 
 export const productReducer = createSlice({
-  name: "category",
+  name: "product",
   initialState: {
     successMessage: "",
     errorMessage: "",
@@ -61,7 +59,6 @@ export const productReducer = createSlice({
     [add_product.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.message;
-      state.products = [...state.products, payload.category];
     },
     [get_product.fulfilled]: (state, { payload }) => {
       state.totalProduct = payload.totalProduct;

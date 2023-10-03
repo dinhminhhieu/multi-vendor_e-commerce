@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import icons from "../../assets/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { get_category } from "../../store/Reducers/categoryReducer";
-import { add_product, get_product } from "../../store/Reducers/productReducer";
+import { add_product, messageClear } from "../../store/Reducers/productReducer";
+import { overrideStyle } from "../../utils/utils";
+import { PropagateLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const AddProducts = () => {
   const { BsImage, IoCloseSharp } = icons;
   const dispatch = useDispatch();
   const { categorys } = useSelector((state) => state.category);
+  const { successMessage, errorMessage, loader } = useSelector(
+    (state) => state.product
+  );
 
   const [state, setState] = useState({
     name: "",
@@ -97,20 +103,42 @@ const AddProducts = () => {
 
   const add_p = (e) => {
     e.preventDefault();
-    const formData = new FormData()
-    formData.append("name", state.name)
-    formData.append("description", state.description)
-    formData.append("discount", state.discount)
-    formData.append("price", state.price)
-    formData.append("category", category)
-    formData.append("brand", state.brand)
-    formData.append("quantity", state.quantity)
-    formData.append("shopName", "cellphoneS")
-    for(let i = 0; i < images.length; i++) {
-      formData.append("images", images[i])
+    const formData = new FormData();
+    formData.append("name", state.name);
+    formData.append("description", state.description);
+    formData.append("discount", state.discount);
+    formData.append("price", state.price);
+    formData.append("category", category);
+    formData.append("brand", state.brand);
+    formData.append("quantity", state.quantity);
+    formData.append("shopName", "cellphoneS");
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
     }
-    dispatch(add_product(formData))
+    dispatch(add_product(formData));
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      setState({
+        name: "",
+        description: "",
+        discount: "",
+        price: "",
+        brand: "",
+        quantity: "",
+      });
+      setImageShow([])
+      setImages([])
+      setCategory("")
+    }
+  }, [successMessage, errorMessage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -229,6 +257,7 @@ const AddProducts = () => {
                 <input
                   onChange={inputHandle}
                   value={state.discount}
+                  min="0"
                   type="number"
                   name="discount"
                   id="discount"
@@ -292,8 +321,16 @@ const AddProducts = () => {
               />
             </div>
             <div className="flex justify-end">
-              <button className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 my-2">
-                Thêm sản phẩm
+              <button
+                type="submit"
+                disabled={loader ? true : false}
+                className="group relative w-[200px] h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
+              >
+                {loader ? (
+                  <PropagateLoader color="#fff" cssOverride={overrideStyle} />
+                ) : (
+                  "Thêm sản phẩm"
+                )}
               </button>
             </div>
           </form>
