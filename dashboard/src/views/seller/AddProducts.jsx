@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import icons from "../../assets/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { get_category } from "../../store/Reducers/categoryReducer";
+import { add_product, get_product } from "../../store/Reducers/productReducer";
 
 const AddProducts = () => {
   const { BsImage, IoCloseSharp } = icons;
+  const dispatch = useDispatch();
+  const { categorys } = useSelector((state) => state.category);
 
   const [state, setState] = useState({
     name: "",
@@ -21,32 +26,19 @@ const AddProducts = () => {
     });
   };
 
-  const categories = [
-    {
-      id: 1,
-      name: "Thể thao",
-    },
-    {
-      id: 2,
-      name: "Áo sơ mi",
-    },
-    {
-      id: 3,
-      name: "Điện thoại",
-    },
-    {
-      id: 4,
-      name: "Laptop",
-    },
-    {
-      id: 5,
-      name: "Đồng hồ",
-    },
-  ];
+  useEffect(() => {
+    dispatch(
+      get_category({
+        searchValue: "",
+        parPage: "",
+        page: "",
+      })
+    );
+  }, []);
 
   const [cateShow, setCateShow] = useState(false);
   const [category, setCategory] = useState("");
-  const [allCategory, setAllCategory] = useState(categories);
+  const [allCategory, setAllCategory] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   const categorySearch = (e) => {
@@ -58,7 +50,7 @@ const AddProducts = () => {
       );
       setAllCategory(srcValue);
     } else {
-      setAllCategory(categories);
+      setAllCategory(categorys);
     }
   };
 
@@ -99,6 +91,27 @@ const AddProducts = () => {
     setImageShow(filterImageUrl);
   };
 
+  useEffect(() => {
+    setAllCategory(categorys);
+  }, [categorys]);
+
+  const add_p = (e) => {
+    e.preventDefault();
+    const formData = new FormData()
+    formData.append("name", state.name)
+    formData.append("description", state.description)
+    formData.append("discount", state.discount)
+    formData.append("price", state.price)
+    formData.append("category", category)
+    formData.append("brand", state.brand)
+    formData.append("quantity", state.quantity)
+    formData.append("shopName", "cellphoneS")
+    for(let i = 0; i < images.length; i++) {
+      formData.append("images", images[i])
+    }
+    dispatch(add_product(formData))
+  };
+
   return (
     <div className="px-2 lg:px-7 pt-5">
       <div className="w-full p-4 bg-[#283046] rounded-md">
@@ -112,7 +125,7 @@ const AddProducts = () => {
           </Link>
         </div>
         <div>
-          <form>
+          <form onSubmit={add_p}>
             <div className="flex flex-col mb-3 md:flex-row gap-4 text-white">
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="name">Tên sản phẩm</label>
@@ -130,7 +143,7 @@ const AddProducts = () => {
                 <label htmlFor="brand">Thương hiệu</label>
                 <input
                   onChange={inputHandle}
-                  value={state.name}
+                  value={state.brand}
                   type="text"
                   name="brand"
                   id="brand"
@@ -175,7 +188,7 @@ const AddProducts = () => {
                           setCateShow(false);
                           setCategory(c.name);
                           setSearchValue("");
-                          setAllCategory(categories);
+                          setAllCategory(categorys);
                         }}
                       >
                         {c.name}
@@ -215,7 +228,7 @@ const AddProducts = () => {
                 <label htmlFor="brand">Giảm giá</label>
                 <input
                   onChange={inputHandle}
-                  value={state.name}
+                  value={state.discount}
                   type="number"
                   name="discount"
                   id="discount"

@@ -20,7 +20,7 @@ const Categories = () => {
   const [parPage, setParPage] = useState(5);
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const { loader, errorMessage, successMessage } = useSelector(
+  const { loader, errorMessage, successMessage, categorys } = useSelector(
     (state) => state.category
   );
   const [imageShow, setImageShow] = useState("");
@@ -66,10 +66,10 @@ const Categories = () => {
     const obj = {
       parPage: parseInt(parPage),
       page: parseInt(currentPage),
-      searchValue
-    }
-    dispatch(get_category(obj))
-  }, [setParPage, searchValue, setSearchValue])
+      searchValue,
+    };
+    dispatch(get_category(obj));
+  }, [searchValue, currentPage, parPage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -109,13 +109,13 @@ const Categories = () => {
                   </tr>
                 </thead>
                 <tbody className="text-sm font-normal">
-                  {[1, 2, 3, , 4, 5].map((d, i) => (
+                  {categorys.map((d, i) => (
                     <tr key={i}>
                       <td
                         className="py-3 px-4 font-medium whitespace-nowrap"
                         scope="row"
                       >
-                        {d}
+                        {i+1}
                       </td>
                       <td
                         className="py-3 px-4 font-medium whitespace-nowrap"
@@ -123,7 +123,7 @@ const Categories = () => {
                       >
                         <img
                           className="w-[45px] h-[45px]"
-                          src={`http://localhost:3000/images/categories/${d}.png`}
+                          src={d.image}
                           alt=""
                         />
                       </td>
@@ -131,7 +131,7 @@ const Categories = () => {
                         className="py-3 px-4 font-medium whitespace-nowrap"
                         scope="row"
                       >
-                        <span>Áo Polo</span>
+                        <span>{d.name}</span>
                       </td>
                       <td
                         className="py-3 px-4 font-medium whitespace-nowrap"
