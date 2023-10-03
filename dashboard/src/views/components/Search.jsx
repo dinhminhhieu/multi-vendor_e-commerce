@@ -10,8 +10,8 @@ const Search = ({ setParPage, searchValue, setSearchValue }) => {
         onChange={(e) => setParPage(parseInt(e.target.value))}
       >
         <option value="5">5</option>
-        <option value="5">15</option>
-        <option value="5">25</option>
+        <option value="15">15</option>
+        <option value="25">25</option>
       </select>
       <input
         type="text"

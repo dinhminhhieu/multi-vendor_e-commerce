@@ -98,7 +98,7 @@ class authControllers {
         responseReturn(res, 200, { userInfo: seller });
       }
     } catch (error) {
-      console.log(error.message);
+      responseReturn(res, 500, { error: "Lỗi sự cố máy chủ!" });
     }
   };
 }

@@ -14,12 +14,11 @@ app.use(
     credentials: true, // Kiểm tra xem các yêu cầu có chứa thông tin xác thực như cookie hay không
   })
 );
-
 app.use(bodyParser.json());
-
+app.use(cookieParser())
 app.use("/api", require("./routes/authRoutes"));
-
-dbConnect();
+app.use("/api", require("./routes/dashboard/categoryRoutes"));
 
 const port = process.env.PORT; // Lấy giá trị cổng từ biến môi trường
+dbConnect();
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

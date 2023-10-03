@@ -1,7 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import icons from "../../assets/icons";
 import Pagiantion from "../Pagiantion";
+import { PropagateLoader } from "react-spinners";
+import { overrideStyle } from "../../utils/utils";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  categoryAdd,
+  messageClear,
+  get_category
+} from "../../store/Reducers/categoryReducer";
+import toast from "react-hot-toast";
+import Search from "../components/Search";
 
 const Categories = () => {
   const { FaEdit, FaTrash, FaEye, BsImage, GrClose } = icons;
@@ -9,6 +19,57 @@ const Categories = () => {
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const { loader, errorMessage, successMessage } = useSelector(
+    (state) => state.category
+  );
+  const [imageShow, setImageShow] = useState("");
+
+  const [state, setState] = useState({
+    name: "",
+    image: "",
+  });
+
+  const imageHandle = (e) => {
+    let files = e.target.files;
+    if (files.length > 0) {
+      setImageShow(URL.createObjectURL(files[0]));
+      setState({
+        ...state,
+        image: files[0],
+      });
+    }
+  };
+
+  const add_category = (e) => {
+    e.preventDefault();
+    dispatch(categoryAdd(state));
+  };
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      setState({
+        name: "",
+        image: "",
+      });
+      setImageShow("");
+    }
+  }, [successMessage, errorMessage]);
+
+  useEffect(() => {
+    const obj = {
+      parPage: parseInt(parPage),
+      page: parseInt(currentPage),
+      searchValue
+    }
+    dispatch(get_category(obj))
+  }, [setParPage, searchValue, setSearchValue])
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -24,24 +85,11 @@ const Categories = () => {
       <div className="flex flex-wrap w-full">
         <div className="w-full lg:w-7/12">
           <div className="w-full p-4 bg-[#283046] rounded-md">
-            <div className="flex justify-between items-center">
-              <select
-                name=""
-                id=""
-                className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#283046] border border-slate-400 rounded-md text-white"
-                onChange={(e) => setParPage(parseInt(e.target.value))}
-              >
-                <option value="5">5</option>
-                <option value="5">15</option>
-                <option value="5">25</option>
-              </select>
-              <input
-                type="text"
-                id="name"
-                placeholder="Tìm kiếm danh mục..."
-                className="w-[250px] px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
-              />
-            </div>
+            <Search
+              setParPage={setParPage}
+              setSearchValue={setSearchValue}
+              searchValue={searchValue}
+            />
             <div className="relative overflow-x-auto">
               <table className="w-full text-sm text-left text-white">
                 <thead className="text-sm text-white uppercase border-b border-slate-700">
@@ -135,32 +183,61 @@ const Categories = () => {
                   <GrClose className="text-white" size={20} />
                 </div>
               </div>
-              <form>
+              <form onSubmit={add_category}>
                 <div className="flex flex-col w-full gap-1 mb-3">
-                  <label htmlFor="">Nhập tên danh mục</label>
+                  <label htmlFor="name">Nhập tên danh mục</label>
                   <input
+                    onChange={(e) =>
+                      setState({ ...state, name: e.target.value })
+                    }
+                    value={state.name}
                     type="text"
                     id="name"
                     name="category_name"
+                    required
                     placeholder="Ví dụ: Tai nghe, quần áo..."
                     className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor=""
+                    htmlFor="image"
                     className="flex justify-center items-center flex-col h-[283px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-white"
                   >
-                    <span>
-                      <BsImage />
-                    </span>
-                    <span>Chọn ảnh</span>
+                    {imageShow ? (
+                      <img className="w-full h-full" src={imageShow} alt="" />
+                    ) : (
+                      <>
+                        <span>
+                          <BsImage />
+                        </span>
+                        <span>Chọn ảnh</span>
+                      </>
+                    )}
                   </label>
                 </div>
-                <input type="file" name="image" id="image" className="hidden" />
-                <div>
-                  <button className="bg-red-500 w-full hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 my-2">
-                    Thêm danh mục
+                <input
+                  onChange={imageHandle}
+                  type="file"
+                  name="image"
+                  id="image"
+                  required
+                  className="hidden"
+                />
+                <div className="mt-4">
+                  <button
+                    type="submit"
+                    disabled={loader ? true : false}
+                    className="group relative w-full h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
+                  >
+                    {loader ? (
+                      <PropagateLoader
+                        color="#fff"
+                        cssOverride={overrideStyle}
+                      />
+                    ) : (
+                      "Thêm danh mục"
+                    )}
                   </button>
                 </div>
               </form>

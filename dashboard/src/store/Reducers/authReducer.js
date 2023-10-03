@@ -21,7 +21,6 @@ export const seller_register = createAsyncThunk(
   "auth/seller_register",
   async (info, { rejectWithValue, fulfillWithValue }) => {
     try {
-      console.log(info);
       const { data } = await api.post("/seller-register", info, {
         withCredentials: true,
       });
@@ -40,7 +39,6 @@ export const seller_login = createAsyncThunk(
       const { data } = await api.post("/seller-login", info, {
         withCredentials: true,
       });
-      console.log(data);
       localStorage.setItem("accessToken", data.token); // Lưu token vào local storage
       return fulfillWithValue(data);
     } catch (error) {
@@ -49,13 +47,11 @@ export const seller_login = createAsyncThunk(
   }
 );
 
-export const get_user = createAsyncThunk(
-  "auth/get_user",
+export const get_user_info = createAsyncThunk(
+  "auth/get_user_info",
   async (_, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const { data } = await api.get("/get-user", {
-        withCredentials: true,
-      });
+      const { data } = await api.get("/get-user", { withCredentials: true });
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -66,10 +62,9 @@ export const get_user = createAsyncThunk(
 const returnRole = (token) => {
   if (token) {
     const decodeToken = jwt(token);
-    const expireTime = new Date(decodeToken.exp * 1000); // Tính thời gian hết hạn của token
+    const expireTime = new Date(decodeToken.exp * 1000);
     if (new Date() > expireTime) {
-      // So sánh time hiện tại với time hết hạn của token
-      localStorage.removeItem("accessToken"); // Nếu token đã hết hạn, loại bỏ token khỏi localStorage và trả về một chuỗi rỗng
+      localStorage.removeItem("accessToken");
       return "";
     } else {
       return decodeToken.role;
@@ -78,6 +73,7 @@ const returnRole = (token) => {
     return "";
   }
 };
+
 
 export const authReducer = createSlice({
   name: "auth",
@@ -90,7 +86,6 @@ export const authReducer = createSlice({
     token: localStorage.getItem("accessToken"),
   },
   reducers: {
-    // Thông báo sẽ liên tục khi click button liên tục
     messageClear: (state, _) => {
       state.errorMessage = "";
       state.successMessage = "";
@@ -100,54 +95,46 @@ export const authReducer = createSlice({
     [admin_login.pending]: (state, _) => {
       state.loader = true;
     },
-
     [admin_login.rejected]: (state, { payload }) => {
       state.loader = false;
       state.errorMessage = payload.error;
     },
-
     [admin_login.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.success;
       state.token = payload.token;
       state.role = returnRole(payload.token);
     },
-
     [seller_login.pending]: (state, _) => {
       state.loader = true;
     },
-
     [seller_login.rejected]: (state, { payload }) => {
       state.loader = false;
       state.errorMessage = payload.error;
     },
-
     [seller_login.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.success;
       state.token = payload.token;
       state.role = returnRole(payload.token);
     },
-
     [seller_register.pending]: (state, _) => {
       state.loader = true;
     },
-
     [seller_register.rejected]: (state, { payload }) => {
       state.loader = false;
       state.errorMessage = payload.error;
     },
-
     [seller_register.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.message;
       state.token = payload.token;
       state.role = returnRole(payload.token);
     },
-
-    [get_user.fulfilled]: (state, { payload }) => {
+    [get_user_info.fulfilled]: (state, { payload }) => {
       state.loader = false;
       state.userInfo = payload.userInfo;
+      state.role = payload.userInfo.role;
     },
   },
 });

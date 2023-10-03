@@ -148,7 +148,7 @@ const Login = () => {
                 {loader ? (
                   <PropagateLoader color="#fff" cssOverride={overrideStyle} />
                 ) : (
-                  "ĐĂNG KÝ"
+                  "ĐĂNG NHẬP"
                 )}
               </button>
             </div>

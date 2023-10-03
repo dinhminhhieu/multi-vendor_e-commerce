@@ -1,5 +1,7 @@
 import { lazy } from "react";
-const SellerDashboard = lazy(() => import("../../views/seller/SellerDashboard"));
+const SellerDashboard = lazy(() =>
+  import("../../views/seller/SellerDashboard")
+);
 const AddProducts = lazy(() => import("../../views/seller/AddProducts"));
 const Products = lazy(() => import("../../views/seller/Products"));
 const Discount = lazy(() => import("../../views/seller/Discount"));
@@ -12,8 +14,20 @@ const SellerToAdmin = lazy(() => import("../../views/seller/SellerToAdmin"));
 const Profile = lazy(() => import("../../views/seller/Profile"));
 const EditProduct = lazy(() => import("../../views/seller/EditProduct"));
 const OrderDetails = lazy(() => import("../../views/seller/OrderDetails"));
+const Pending = lazy(() => import("../../views/Pending"));
+const Deactive = lazy(() => import("../../views/Deactive"));
 
 export const sellerRoutes = [
+  {
+    path: "/seller/account-pending",
+    element: <Pending />,
+    ability: "seller",
+  },
+  {
+    path: "/seller/account-deactive",
+    element: <Deactive />,
+    ability: "seller",
+  },
   {
     path: "/seller/dashboard",
     element: <SellerDashboard />,
@@ -48,13 +62,13 @@ export const sellerRoutes = [
     path: "/seller/dashboard/orders",
     element: <Orders />,
     role: "seller",
-    ability: ["active", "deactive"],
+    visibility: ["active", "deactive"],
   },
   {
     path: "/seller/dashboard/order/order-details/:orderId",
     element: <OrderDetails />,
     role: "seller",
-    ability: ["active", "deactive"],
+    visibility: ["active", "deactive"],
   },
   {
     path: "/seller/dashboard/payments",
@@ -77,12 +91,13 @@ export const sellerRoutes = [
   {
     path: "/seller/dashboard/chat-admin",
     element: <SellerToAdmin />,
-    ability: ["active", "deactive, pending"],
+    role: "seller",
+    visibility: ["active", "deactive, pending"],
   },
   {
     path: "/seller/dashboard/profile",
     element: <Profile />,
     role: "seller",
-    status: "active",
+    visibility: ['active', 'deactive', 'pending']
   },
 ];
