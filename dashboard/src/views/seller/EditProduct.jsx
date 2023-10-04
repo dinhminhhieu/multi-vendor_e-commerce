@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { get_category } from "../../store/Reducers/categoryReducer";
 import icons from "../../assets/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { get_product, messageClear, update_product } from "../../store/Reducers/productReducer";
+import { overrideStyle } from "../../utils/utils";
+import { PropagateLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const EditProduct = () => {
   const { BsImage, IoCloseSharp } = icons;
-
+  const dispatch = useDispatch();
+  const { categorys } = useSelector((state) => state.category);
+  const { product, successMessage, errorMessage, loader } = useSelector(
+    (state) => state.product
+  );
+  const { productId } = useParams();
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -21,32 +32,23 @@ const EditProduct = () => {
     });
   };
 
-  const categories = [
-    {
-      id: 1,
-      name: "Thể thao",
-    },
-    {
-      id: 2,
-      name: "Áo sơ mi",
-    },
-    {
-      id: 3,
-      name: "Điện thoại",
-    },
-    {
-      id: 4,
-      name: "Laptop",
-    },
-    {
-      id: 5,
-      name: "Đồng hồ",
-    },
-  ];
+  useEffect(() => {
+    dispatch(
+      get_category({
+        searchValue: "",
+        parPage: "",
+        page: "",
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    dispatch(get_product(productId));
+  }, [productId]);
 
   const [cateShow, setCateShow] = useState(false);
   const [category, setCategory] = useState("");
-  const [allCategory, setAllCategory] = useState(categories);
+  const [allCategory, setAllCategory] = useState(categorys);
   const [searchValue, setSearchValue] = useState("");
 
   const categorySearch = (e) => {
@@ -58,7 +60,7 @@ const EditProduct = () => {
       );
       setAllCategory(srcValue);
     } else {
-      setAllCategory(categories);
+      setAllCategory(categorys);
     }
   };
 
@@ -66,27 +68,56 @@ const EditProduct = () => {
   const [imageShow, setImageShow] = useState([]);
 
   const changeImage = (img, files) => {
-    if(files.length > 0) {
-        console.log(img)
-        console.log(files[0])
+    if (files.length > 0) {
+      console.log(img);
+      console.log(files[0]);
     }
   };
 
   useEffect(() => {
     setState({
-      name: "Áo nam polo",
-      description: "Áo nam polo",
-      discount: "10",
-      price: "10.000",
-      brand: "Mino",
-      quantity: "15",
+      name: product.name,
+      description: product.description,
+      discount: product.discount,
+      price: product.price,
+      brand: product.brand,
+      quantity: product.quantity,
     });
-    setCategory("Thể thao")
-    setImageShow([
-        "http://localhost:3000/images/admin.png",
-        "http://localhost:3000/images/admin.png"
-    ])
-  }, []);
+    setCategory(product.category);
+    setImageShow(product.images);
+  }, [product]);
+
+  useEffect(() => {
+    if (categorys.length > 0) {
+      setAllCategory(categorys);
+    }
+  }, [categorys]);
+
+    const update_p = (e) => {
+    e.preventDefault();
+    state.productId = productId
+    dispatch(update_product(state))
+  };
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      setState({
+        name: "",
+        description: "",
+        discount: "",
+        price: "",
+        brand: "",
+        quantity: "",
+      });
+      setCategory("");
+    }
+  }, [successMessage, errorMessage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -101,7 +132,7 @@ const EditProduct = () => {
           </Link>
         </div>
         <div>
-          <form>
+          <form onSubmit={update_p}>
             <div className="flex flex-col mb-3 md:flex-row gap-4 text-white">
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="name">Tên sản phẩm</label>
@@ -157,14 +188,14 @@ const EditProduct = () => {
                   </div>
                   <div className="pt-14"></div>
                   <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
-                    {allCategory.map((c, i) => (
+                    {allCategory.length > 0 && allCategory.map((c, i) => (
                       <span
                         className="px-4 py-2 hover:bg-red-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500"
                         onClick={() => {
                           setCateShow(false);
                           setCategory(c.name);
                           setSearchValue("");
-                          setAllCategory(categories);
+                          setAllCategory(categorys);
                         }}
                       >
                         {c.name}
@@ -227,18 +258,31 @@ const EditProduct = () => {
               ></textarea>
             </div>
             <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full text-white mb-4">
-              {
-                imageShow.map((img, i) => <div>
-                    <label htmlFor={i}>
-                        <img src={img} alt="" />
-                    </label>
-                    <input type="file" id={i} className="hidden" onChange={(e) => changeImage(img, e.target.files)} />
-                </div>)
-              }
+              {(imageShow && imageShow.length > 0) && imageShow.map((img, i) => (
+                <div>
+                  <label htmlFor={i} className="h-[180px]">
+                    <img src={img} alt="" className="h-full" />
+                  </label>
+                  <input
+                    type="file"
+                    id={i}
+                    className="hidden"
+                    onChange={(e) => changeImage(img, e.target.files)}
+                  />
+                </div>
+              ))}
             </div>
             <div className="flex justify-end">
-              <button className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 my-2">
-                Cập nhật sản phẩm
+              <button
+                type="submit"
+                disabled={loader ? true : false}
+                className="group relative w-[200px] h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
+              >
+                {loader ? (
+                  <PropagateLoader color="#fff" cssOverride={overrideStyle} />
+                ) : (
+                  "Cập nhật sản phẩm"
+                )}
               </button>
             </div>
           </form>

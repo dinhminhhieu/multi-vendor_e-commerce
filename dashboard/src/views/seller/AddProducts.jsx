@@ -269,7 +269,7 @@ const AddProducts = () => {
             <div className="flex flex-col w-full gap-1 text-white mb-5">
               <label htmlFor="brand">Mô tả sản phẩm</label>
               <textarea
-                rows={4}
+                rows={7}
                 onChange={inputHandle}
                 value={state.description}
                 type="text"

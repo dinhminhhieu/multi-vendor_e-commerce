@@ -4,7 +4,7 @@ import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
 import Pagiantion from "../Pagiantion";
 import { useDispatch, useSelector } from "react-redux";
-import { get_product } from "../../store/Reducers/productReducer";
+import { get_products } from "../../store/Reducers/productReducer";
 
 const Products = () => {
   const { FaEdit, FaEye, FaTrash } = icons;
@@ -20,7 +20,7 @@ const Products = () => {
       page: parseInt(currentPage),
       searchValue,
     };
-    dispatch(get_product(obj));
+    dispatch(get_products(obj));
   }, [searchValue, currentPage, parPage]);
 
   return (
@@ -129,7 +129,7 @@ const Products = () => {
                   >
                     <div className="flex justify-start items-center gap-4">
                       <Link
-                        to={`/seller/dashboard/edit-product/1`}
+                        to={`/seller/dashboard/edit-product/${d._id}`}
                         className="p-[5px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50"
                       >
                         <FaEdit size={18} />

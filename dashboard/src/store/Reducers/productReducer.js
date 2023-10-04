@@ -15,17 +15,49 @@ export const add_product = createAsyncThunk(
   }
 );
 
-export const get_product = createAsyncThunk(
-  "product/get_product",
+export const get_products = createAsyncThunk(
+  "product/get_products",
   async (
     { parPage, page, searchValue },
     { rejectWithValue, fulfillWithValue }
   ) => {
     try {
       const { data } = await api.get(
-        `/product-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        `/products-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
         { withCredentials: true }
       );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const get_product = createAsyncThunk(
+  "product/get_product",
+  async (
+    productId,
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const { data } = await api.get(
+        `/product-get/${productId}`,
+        { withCredentials: true }
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const update_product = createAsyncThunk(
+  "product/update_product",
+  async (product, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/product-update", product, {
+        withCredentials: true,
+      });
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -40,6 +72,7 @@ export const productReducer = createSlice({
     errorMessage: "",
     loader: false,
     products: [],
+    product: "",
     totalProduct: 0,
   },
   reducers: {
@@ -60,9 +93,12 @@ export const productReducer = createSlice({
       state.loader = false;
       state.successMessage = payload.message;
     },
-    [get_product.fulfilled]: (state, { payload }) => {
+    [get_products.fulfilled]: (state, { payload }) => {
       state.totalProduct = payload.totalProduct;
       state.products = payload.products;
+    },
+    [get_product.fulfilled]: (state, { payload }) => {
+      state.product = payload.product;
     },
   },
 });
