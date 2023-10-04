@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { get_category } from "../../store/Reducers/categoryReducer";
-import icons from "../../assets/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { get_product, messageClear, update_product } from "../../store/Reducers/productReducer";
+import {
+  get_product,
+  messageClear,
+  update_product,
+  product_image_update,
+} from "../../store/Reducers/productReducer";
 import { overrideStyle } from "../../utils/utils";
 import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 const EditProduct = () => {
-  const { BsImage, IoCloseSharp } = icons;
   const dispatch = useDispatch();
+  const { productId } = useParams();
   const { categorys } = useSelector((state) => state.category);
   const { product, successMessage, errorMessage, loader } = useSelector(
     (state) => state.product
   );
-  const { productId } = useParams();
+
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -64,13 +68,17 @@ const EditProduct = () => {
     }
   };
 
-  const [images, setImages] = useState([]);
   const [imageShow, setImageShow] = useState([]);
 
   const changeImage = (img, files) => {
     if (files.length > 0) {
-      console.log(img);
-      console.log(files[0]);
+      dispatch(
+        product_image_update({
+          oldImage: img,
+          newImage: files[0],
+          productId,
+        })
+      );
     }
   };
 
@@ -93,12 +101,6 @@ const EditProduct = () => {
     }
   }, [categorys]);
 
-    const update_p = (e) => {
-    e.preventDefault();
-    state.productId = productId
-    dispatch(update_product(state))
-  };
-
   useEffect(() => {
     if (errorMessage) {
       toast.error(errorMessage);
@@ -107,17 +109,22 @@ const EditProduct = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      setState({
-        name: "",
-        description: "",
-        discount: "",
-        price: "",
-        brand: "",
-        quantity: "",
-      });
-      setCategory("");
     }
   }, [successMessage, errorMessage]);
+
+  const update_p = (e) => {
+    e.preventDefault();
+    const obj = {
+      name: state.name,
+      description: state.description,
+      discount: state.discount,
+      price: state.price,
+      brand: state.brand,
+      quantity: state.quantity,
+      productId: productId,
+    };
+    dispatch(update_product(obj));
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -188,19 +195,20 @@ const EditProduct = () => {
                   </div>
                   <div className="pt-14"></div>
                   <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
-                    {allCategory.length > 0 && allCategory.map((c, i) => (
-                      <span
-                        className="px-4 py-2 hover:bg-red-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500"
-                        onClick={() => {
-                          setCateShow(false);
-                          setCategory(c.name);
-                          setSearchValue("");
-                          setAllCategory(categorys);
-                        }}
-                      >
-                        {c.name}
-                      </span>
-                    ))}
+                    {allCategory.length > 0 &&
+                      allCategory.map((c, i) => (
+                        <span
+                          className="px-4 py-2 hover:bg-red-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500"
+                          onClick={() => {
+                            setCateShow(false);
+                            setCategory(c.name);
+                            setSearchValue("");
+                            setAllCategory(categorys);
+                          }}
+                        >
+                          {c.name}
+                        </span>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -258,19 +266,21 @@ const EditProduct = () => {
               ></textarea>
             </div>
             <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full text-white mb-4">
-              {(imageShow && imageShow.length > 0) && imageShow.map((img, i) => (
-                <div>
-                  <label htmlFor={i} className="h-[180px]">
-                    <img src={img} alt="" className="h-full" />
-                  </label>
-                  <input
-                    type="file"
-                    id={i}
-                    className="hidden"
-                    onChange={(e) => changeImage(img, e.target.files)}
-                  />
-                </div>
-              ))}
+              {imageShow &&
+                imageShow.length > 0 &&
+                imageShow.map((img, i) => (
+                  <div>
+                    <label htmlFor={i} className="h-[180px]">
+                      <img src={img} alt="" className="h-full" />
+                    </label>
+                    <input
+                      type="file"
+                      id={i}
+                      className="hidden"
+                      onChange={(e) => changeImage(img, e.target.files)}
+                    />
+                  </div>
+                ))}
             </div>
             <div className="flex justify-end">
               <button
