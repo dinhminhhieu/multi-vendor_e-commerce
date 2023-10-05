@@ -25,7 +25,7 @@ const SellersDetails = () => {
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage)
-      dispatch(messageClear)
+      dispatch(messageClear())
     }
   }, [successMessage])
 

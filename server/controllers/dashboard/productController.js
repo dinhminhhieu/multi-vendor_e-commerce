@@ -72,9 +72,9 @@ class productController {
             $text: { $search: searchValue },
             sellerId: id,
           })
-          .skip(skipPage)
-          .limit(parPage)
-          .sort({ createdAt: -1 });
+          .skip(skipPage) // Bỏ qua số lượng documents dựa trên trang hiện tại
+          .limit(parPage) // Giới hạn số lượng documents được trả về trong mỗi trang
+          .sort({ createdAt: -1 }); // Sắp xếp các seller theo thời gian tạo, từ mới nhất đến cũ nhất
         const totalProduct = await productModel
           .find({
             $text: { $search: searchValue },
