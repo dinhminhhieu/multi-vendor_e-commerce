@@ -81,7 +81,7 @@ const Profile = () => {
                   <span>
                     <BsImages />
                   </span>
-                  <span>Select Image</span>
+                  <span>Chọn ảnh</span>
                   {loader && (
                     <div className="bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20">
                       <span>
