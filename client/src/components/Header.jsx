@@ -130,7 +130,7 @@ const Header = () => {
                   <li>
                     <Link
                       className={`p-2 block ${
-                        pathname === "/" ? "text-[#33cc33]" : "text-slate-600"
+                        pathname === "/" ? "text-red-500" : "text-slate-600"
                       }`}
                     >
                       Trang chủ
@@ -140,7 +140,7 @@ const Header = () => {
                     <Link
                       className={`p-2 block ${
                         pathname === "/shop"
-                          ? "text-[#33cc33]"
+                          ? "text-red-500"
                           : "text-slate-600"
                       }`}
                     >
@@ -151,7 +151,7 @@ const Header = () => {
                     <Link
                       className={`p-2 block ${
                         pathname === "/blog"
-                          ? "text-[#33cc33]"
+                          ? "text-red-500"
                           : "text-slate-600"
                       }`}
                     >
@@ -162,7 +162,7 @@ const Header = () => {
                     <Link
                       className={`p-2 block ${
                         pathname === "/contact"
-                          ? "text-[#33cc33]"
+                          ? "text-red-500"
                           : "text-slate-600"
                       }`}
                     >
@@ -256,7 +256,7 @@ const Header = () => {
               <li>
                 <Link
                   className={`py-2 block ${
-                    pathname === "/" ? "text-[#33cc33]" : "text-slate-600"
+                    pathname === "/" ? "text-red-500" : "text-slate-600"
                   }`}
                 >
                   Trang chủ
@@ -265,7 +265,7 @@ const Header = () => {
               <li>
                 <Link
                   className={`py-2 block ${
-                    pathname === "/shop" ? "text-[#33cc33]" : "text-slate-600"
+                    pathname === "/shop" ? "text-red-500" : "text-slate-600"
                   }`}
                 >
                   Cửa hàng
@@ -274,7 +274,7 @@ const Header = () => {
               <li>
                 <Link
                   className={`py-2 block ${
-                    pathname === "/blog" ? "text-[#33cc33]" : "text-slate-600"
+                    pathname === "/blog" ? "text-red-500" : "text-slate-600"
                   }`}
                 >
                   Blog
@@ -284,7 +284,7 @@ const Header = () => {
                 <Link
                   className={`py-2 block ${
                     pathname === "/contact"
-                      ? "text-[#33cc33]"
+                      ? "text-red-500"
                       : "text-slate-600"
                   }`}
                 >
