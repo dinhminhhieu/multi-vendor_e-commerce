@@ -1,36 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
 import Pagiantion from "../Pagiantion";
+import { useDispatch, useSelector } from "react-redux";
+import { get_seller_request } from "../../store/Reducers/sellerReducer";
+import Search from "../components/Search";
 
 const SellersRequest = () => {
   const { FaEye } = icons;
+  const dispatch = useDispatch();
+  const { loader, errorMessage, successMessage, sellers, totalSeller } =
+    useSelector((state) => state.seller);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
   const [show, setShow] = useState(false);
 
+  useEffect(() => {
+    dispatch(
+      get_seller_request({
+        parPage,
+        searchValue,
+        page: currentPage,
+      })
+    );
+  }, [parPage, searchValue, currentPage]);
+
   return (
     <div className="px-2 lg:px-7 pt-5">
       <div className="w-full p-4 bg-[#283046] rounded-md">
-        <div className="flex justify-between items-center">
-          <select
-            name=""
-            id=""
-            className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#283046] border border-slate-400 rounded-md text-white"
-            onChange={(e) => setParPage(parseInt(e.target.value))}
-          >
-            <option value="5">5</option>
-            <option value="5">15</option>
-            <option value="5">25</option>
-          </select>
-          <input
-            type="text"
-            id="name"
-            placeholder="Tìm kiếm..."
-            className="w-[250px] px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
-          />
-        </div>
+        <Search
+          setParPage={setParPage}
+          setSearchValue={setSearchValue}
+          searchValue={searchValue}
+        />
         <div className="relative overflow-x-auto">
           <table className="w-full text-sm text-left text-white">
             <thead className="text-sm text-white uppercase border-b border-slate-700">
@@ -45,10 +48,10 @@ const SellersRequest = () => {
                   Email
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Thanh toán
+                  Trạng thái
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Trạng thái
+                  Thanh toán
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Hành động
@@ -56,44 +59,47 @@ const SellersRequest = () => {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, , 4, 5].map((d, i) => (
+              {sellers.map((d, i) => (
                 <tr className="border-b border-slate-600" key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    {d}
+                    {i + 1}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Đinh Minh Hiếu</span>
+                    <span>{d.name}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>dinhminhhieuvn@gmail.com</span>
+                    <span>{d.email}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Không hoạt động</span>
+                    <span>{d.status}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Vô hiệu hóa</span>
+                    <span>{d.payment}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link
+                        to={`/admin/dashboard/sellers/details/${d._id}`}
+                        className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+                      >
                         <FaEye size={20} />
                       </Link>
                     </div>
@@ -103,15 +109,17 @@ const SellersRequest = () => {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-end mt-4 bottom-4 right-4">
-          <Pagiantion
-            pageNumber={currentPage}
-            setPageNumber={setCurrentPage}
-            totalItem={50}
-            parPage={parPage}
-            showItem={3}
-          />
-        </div>
+        {totalSeller <= parPage ? "" : (
+          <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+            <Pagiantion
+              pageNumber={currentPage}
+              setPageNumber={setCurrentPage}
+              totalItem={50}
+              parPage={parPage}
+              showItem={3}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

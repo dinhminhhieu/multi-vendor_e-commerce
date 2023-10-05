@@ -91,16 +91,17 @@ class authControllers {
 
   getUser = async (req, res) => {
     const { id, role } = req;
+
     try {
-      if (role == "admin") {
-        const admin = await adminModel.findById(id);
-        responseReturn(res, 200, { userInfo: admin });
+      if (role === "admin") {
+        const user = await adminModel.findById(id);
+        responseReturn(res, 200, { userInfo: user });
       } else {
         const seller = await sellerModel.findById(id);
         responseReturn(res, 200, { userInfo: seller });
       }
     } catch (error) {
-      responseReturn(res, 500, { error: "Lỗi sự cố máy chủ!" });
+      responseReturn(res, 500, { error: "Internal server error" });
     }
   };
 
@@ -135,6 +136,29 @@ class authControllers {
         responseReturn(res, 500, { error: error.message });
       }
     });
+  };
+
+  profile_info_add = async (req, res) => {
+    const { shopName, province, district, ward } = req.body;
+    const { id } = req;
+
+    try {
+      await sellerModel.findByIdAndUpdate(id, {
+        shopInfo: {
+          shopName,
+          province,
+          district,
+          ward,
+        },
+      });
+      const userInfo = await sellerModel.findById(id);
+      responseReturn(res, 201, {
+        message: "Thêm thông tin hồ sơ thành công!",
+        userInfo,
+      });
+    } catch (error) {
+      responseReturn(res, 500, { error: error.message });
+    }
   };
 }
 

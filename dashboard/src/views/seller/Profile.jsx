@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../../assets/icons";
 import { FadeLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import {
   profile_image_upload,
   messageClear,
+  profile_info_add
 } from "../../store/Reducers/authReducer";
+import { overrideStyle } from "../../utils/utils";
+import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 const Profile = () => {
@@ -15,6 +18,13 @@ const Profile = () => {
     (state) => state.auth
   );
   const status = "active";
+
+  const [state, setState] = useState({
+    shopName: "",
+    province: "",
+    district: "",
+    ward: "",
+  });
 
   const add_image = (e) => {
     if (e.target.files.length > 0) {
@@ -30,6 +40,18 @@ const Profile = () => {
       messageClear();
     }
   }, [successMessage]);
+
+  const inputHandle = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const add_pro = (e) => {
+    e.preventDefault();
+    dispatch(profile_info_add(state))
+  };
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -60,7 +82,7 @@ const Profile = () => {
                     <BsImages />
                   </span>
                   <span>Select Image</span>
-                  {!loader && (
+                  {loader && (
                     <div className="bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20">
                       <span>
                         <FadeLoader />
@@ -114,11 +136,13 @@ const Profile = () => {
               </div>
             </div>
             <div className="px-0 md:px-5 py-2">
-              {userInfo ? (
-                <form>
+              {!userInfo?.shopInfo ? (
+                <form onSubmit={add_pro}>
                   <div className="flex flex-col w-full gap-1 mb-3">
                     <label htmlFor="Shop">Tên shop</label>
                     <input
+                      onChange={inputHandle}
+                      value={state.shopName}
                       type="text"
                       name="shopName"
                       id="Shop"
@@ -129,6 +153,8 @@ const Profile = () => {
                   <div className="flex flex-col w-full gap-1 mb-3">
                     <label htmlFor="province">Tỉnh/Thành phố</label>
                     <input
+                      onChange={inputHandle}
+                      value={state.province}
                       type="text"
                       name="province"
                       id="province"
@@ -139,6 +165,8 @@ const Profile = () => {
                   <div className="flex flex-col w-full gap-1 mb-3">
                     <label htmlFor="district">Quận/Huyện</label>
                     <input
+                      onChange={inputHandle}
+                      value={state.district}
                       type="text"
                       name="district"
                       id="district"
@@ -149,6 +177,8 @@ const Profile = () => {
                   <div className="flex flex-col w-full gap-1 mb-3">
                     <label htmlFor="ward">Xã/Phường</label>
                     <input
+                      onChange={inputHandle}
+                      value={state.ward}
                       type="text"
                       name="ward"
                       id="ward"
@@ -157,8 +187,19 @@ const Profile = () => {
                     />
                   </div>
                   <div className="flex justify-end">
-                    <button className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 my-2">
-                      Thêm
+                    <button
+                      type="submit"
+                      disabled={loader ? true : false}
+                      className="group relative w-[200px] h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
+                    >
+                      {loader ? (
+                        <PropagateLoader
+                          color="#fff"
+                          cssOverride={overrideStyle}
+                        />
+                      ) : (
+                        "Thêm thông tin"
+                      )}
                     </button>
                   </div>
                 </form>
@@ -169,19 +210,19 @@ const Profile = () => {
                   </span>
                   <div className="flex gap-2">
                     <span>Tên shop: </span>
-                    <span>High Fashion</span>
+                  <span>{userInfo.shopInfo.shopName}</span>
                   </div>
                   <div className="flex gap-2">
                     <span>Tỉnh/Thành phố: </span>
-                    <span>Hồ Chí Minh</span>
+                    <span>{userInfo.shopInfo.province}</span>
                   </div>
                   <div className="flex gap-2">
                     <span>Quận/Huyện: </span>
-                    <span>Gò Vấp</span>
+                    <span>{userInfo.shopInfo.district}</span>
                   </div>
                   <div className="flex gap-2">
                     <span>Xã/Phường: </span>
-                    <span>Thạnh Xuân</span>
+                    <span>{userInfo.shopInfo.ward}</span>
                   </div>
                 </div>
               )}

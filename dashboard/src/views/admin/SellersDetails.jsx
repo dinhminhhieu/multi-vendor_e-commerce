@@ -81,7 +81,7 @@ const SellersDetails = () => {
                 <option value="active">Hoạt động</option>
                 <option value="deactive">Vô hiệu hóa</option>
               </select>
-              <button className="bg-red-500 w-full hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 w-[170px]">
+              <button className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 w-[170px]">
                 Xác nhận
               </button>
             </div>

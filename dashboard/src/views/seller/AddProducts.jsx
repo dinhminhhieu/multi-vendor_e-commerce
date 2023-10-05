@@ -9,7 +9,7 @@ import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 const AddProducts = () => {
-  const { BsImage, IoCloseSharp } = icons;
+  const { BsImages, IoCloseSharp } = icons;
   const dispatch = useDispatch();
   const { categorys } = useSelector((state) => state.category);
   const { successMessage, errorMessage, loader } = useSelector(
@@ -308,7 +308,7 @@ const AddProducts = () => {
                 className="flex justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed hover:border-indigo-500 w-full text-white"
               >
                 <span>
-                  <BsImage />
+                  <BsImages />
                 </span>
                 <span>Chọn ảnh</span>
               </label>

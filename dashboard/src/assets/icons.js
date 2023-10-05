@@ -27,7 +27,7 @@ import {
   BsArrowBarDown,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
-  BsImage,
+  BsImages,
 } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
@@ -64,7 +64,7 @@ const icons = {
   BsArrowBarDown,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
-  BsImage,
+  BsImages,
   GrClose,
   IoMdClose,
   TbDiscount2,

@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import Search from "../components/Search";
 
 const Categories = () => {
-  const { FaEdit, FaTrash, FaEye, BsImage, GrClose } = icons;
+  const { FaEdit, FaTrash, FaEye, BsImages, GrClose } = icons;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
@@ -209,7 +209,7 @@ const Categories = () => {
                     ) : (
                       <>
                         <span>
-                          <BsImage />
+                          <BsImages />
                         </span>
                         <span>Chọn ảnh</span>
                       </>
