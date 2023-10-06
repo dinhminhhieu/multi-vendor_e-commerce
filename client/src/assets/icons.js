@@ -4,6 +4,7 @@ import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
   AiOutlineEye,
+  AiFillStar,
 } from "react-icons/ai";
 import {
   FaFacebookF,
@@ -13,9 +14,10 @@ import {
   FaEye,
   FaStar,
   FaStarHalfAlt,
+  FaThList,
 } from "react-icons/fa";
 import { GrInstagram } from "react-icons/gr";
-import { BsTwitter, BsGithub } from "react-icons/bs";
+import { BsTwitter, BsGithub, BsFillGridFill } from "react-icons/bs";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
@@ -31,6 +33,7 @@ const icons = {
   AiOutlineHeart,
   AiOutlineShoppingCart,
   AiOutlineEye,
+  AiFillStar,
   FaFacebookF,
   FaUser,
   FaLock,
@@ -39,9 +42,11 @@ const icons = {
   FaStar,
   FaStarHalfAlt,
   FaCartShopping,
+  FaThList,
   GrInstagram,
   BsTwitter,
   BsGithub,
+  BsFillGridFill,
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
   IoIosCall,

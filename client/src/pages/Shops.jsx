@@ -4,11 +4,21 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import icons from "../assets/icons";
 import { useState } from "react";
+import Products from "../components/products/Products";
 
 const Shops = () => {
-  const { MdOutlineKeyboardArrowRight } = icons;
+  const {
+    MdOutlineKeyboardArrowRight,
+    AiFillStar,
+    CiStar,
+    BsFillGridFill,
+    FaThList,
+  } = icons;
   const [filter, setFilter] = useState(true);
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState("");
+  const [rating, setRatingQ] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
+  const [styles, setStyles] = useState("grid");
   const categorys = [
     "Điện thoại",
     "Quần - Áo",
@@ -52,16 +62,192 @@ const Shops = () => {
                   : "md:h-auto md:overflow-auto md:mb-0"
               }`}
             >
-              <h2 className="text-2xl font-bold mb-3 text-slate-600">
-                Danh mục
-              </h2>
+              <h2 className="text-xl font-bold mb-3 text-red-600">Danh mục</h2>
               <div className="py-2">
-                {
-                    categorys.map((c, i) => <div className='flex justify-start items-center gap-2 py-1' key={i}>
-                                        <input checked={category === c ? true : false} type="checkbox" id={c} />
-                                        <label className='text-slate-600 block cursor-pointer' htmlFor={c}>{c}</label>
-                                    </div>)
-                }
+                {categorys.map((c, i) => (
+                  <div
+                    className="flex justify-start items-center gap-2 py-1"
+                    key={i}
+                  >
+                    <input
+                      checked={category === c ? true : false}
+                      type="checkbox"
+                      id={c}
+                    />
+                    <label
+                      className="text-slate-600 block cursor-pointer"
+                      htmlFor={c}
+                    >
+                      {c}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="py-3 flex flex-col gap-4">
+                <h2 className="text-xl font-bold mb-3 text-red-600">
+                  Đánh giá
+                </h2>
+                <div className="flex flex-col gap-3">
+                  <div
+                    onClick={() => setRatingQ(5)}
+                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+                  >
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => setRatingQ(4)}
+                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+                  >
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => setRatingQ(3)}
+                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+                  >
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => setRatingQ(2)}
+                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+                  >
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => setRatingQ(1)}
+                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+                  >
+                    <span>
+                      <AiFillStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                  </div>
+                  <div className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer">
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                    <span>
+                      <CiStar />
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="py-5 flex flex-col gap-4 md:hidden">
+                <Products title="Sản phẩm mới nhất" />
+              </div>
+            </div>
+            <div className="w-9/12 md-lg:w-8/12 md:w-full">
+              <div className="pl-8 md:pl-0">
+                <div className="py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border">
+                  <h2 className="text-lg font-medium text-slate-600">
+                    12 sản phẩm
+                  </h2>
+                  <div className="flex justify-center items-center gap-3">
+                    <select
+                      onChange={(e) => setSortPrice(e.target.value)}
+                      className="p-1 border outline-0 text-slate-600 font-semibold"
+                      name=""
+                      id=""
+                    >
+                      <option value="">Sắp xếp</option>
+                      <option value="low-to-high">Giá thấp - cao</option>
+                      <option value="high-to-low">Giá cao - thấp</option>
+                    </select>
+                    <div className="flex justify-center items-start gap-4 md-lg:hidden">
+                      <div
+                        onClick={() => setStyles("grid")}
+                        className={`p-2 ${
+                          styles === "grid" && "bg-slate-300"
+                        } text-red-600 hover:bg-slate-300 cursor-pointer rounded-sm`}
+                      >
+                        <BsFillGridFill />
+                      </div>
+                      <div
+                        onClick={() => setStyles("list")}
+                        className={`p-2 ${
+                          styles === "list" && "bg-slate-300"
+                        } text-red-600 hover:bg-slate-300 cursor-pointer rounded-sm`}
+                      >
+                        <FaThList />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
