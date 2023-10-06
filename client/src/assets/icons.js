@@ -1,4 +1,10 @@
-import { AiOutlineMail, AiFillHeart } from "react-icons/ai";
+import {
+  AiOutlineMail,
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+  AiOutlineEye,
+} from "react-icons/ai";
 import {
   FaFacebookF,
   FaUser,
@@ -14,10 +20,14 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosCall } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const icons = {
   AiOutlineMail,
   AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+  AiOutlineEye,
   FaFacebookF,
   FaUser,
   FaLock,
@@ -32,6 +42,8 @@ const icons = {
   MdOutlineKeyboardArrowDown,
   IoIosCall,
   CiStar,
+  FiChevronLeft,
+  FiChevronRight,
 };
 
 export default icons

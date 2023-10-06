@@ -43,7 +43,7 @@ const SellersDetails = () => {
             <div>
               {
                 seller?.image ? <img
-                src="http://localhost:3000/images/admin.png"
+                src={seller?.image}
                 className="w-full h-[230px]"
                 alt=""
               /> : <label
@@ -90,19 +90,19 @@ const SellersDetails = () => {
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-700 rounded-md">
                 <div className="flex gap-2">
                   <span>Tên shop:</span>
-                  <span>Thời trang nam</span>
+                  <span>{seller?.shopInfo?.shopName}</span>
                 </div>
                 <div className="flex gap-2">
                   <span>Tỉnh / Thành phố:</span>
-                  <span>Hồ Chí Minh</span>
+                  <span>{seller?.shopInfo?.province}</span>
                 </div>
                 <div className="flex gap-2">
                   <span>Quận / Huyện:</span>
-                  <span>Gò Vấp</span>
+                  <span>{seller?.shopInfo?.district}</span>
                 </div>
                 <div className="flex gap-2">
                   <span>Xã / Phường:</span>
-                  <span>Phường 3</span>
+                  <span>{seller?.shopInfo?.ward}</span>
                 </div>
               </div>
             </div>
