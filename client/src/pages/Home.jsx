@@ -20,7 +20,7 @@ const Home = () => {
               <Products title="Sản phẩm mới nhất" />
             </div>
             <div className="overflow-hidden">
-              <Products title="Sản phẩm được đánh giá cao nhất" />
+              <Products title="Sản phẩm đánh giá cao" />
             </div>
             <div className="overflow-hidden">
               <Products title="Sản phẩm giảm giá" />
