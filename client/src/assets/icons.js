@@ -17,7 +17,13 @@ import {
   FaThList,
 } from "react-icons/fa";
 import { GrInstagram } from "react-icons/gr";
-import { BsTwitter, BsGithub, BsFillGridFill } from "react-icons/bs";
+import {
+  BsTwitter,
+  BsGithub,
+  BsFillGridFill,
+  BsChevronDoubleRight,
+  BsChevronDoubleLeft,
+} from "react-icons/bs";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
@@ -47,6 +53,8 @@ const icons = {
   BsTwitter,
   BsGithub,
   BsFillGridFill,
+  BsChevronDoubleRight,
+  BsChevronDoubleLeft,
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
   IoIosCall,

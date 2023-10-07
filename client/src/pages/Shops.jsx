@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import icons from "../assets/icons";
 import { useState } from "react";
 import Products from "../components/products/Products";
+import ShopProducts from '../components/products/ShopProducts'
+import Pagination from '../components/Pagination'
 
 const Shops = () => {
   const {
@@ -19,6 +21,8 @@ const Shops = () => {
   const [rating, setRatingQ] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [styles, setStyles] = useState("grid");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [parPage, setParPage] = useState(3)
   const categorys = [
     "Điện thoại",
     "Quần - Áo",
@@ -247,6 +251,12 @@ const Shops = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="pb-8">
+                      <ShopProducts styles={styles} />
+                </div>
+                <div>
+                  <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber} totalItem={20} parPage={parPage} showItem={Math.floor(20/3)} />
                 </div>
               </div>
             </div>
