@@ -22,7 +22,7 @@ const Cart = () => {
                 <span className="pt-2">
                   <MdOutlineKeyboardArrowRight />
                 </span>
-                <span>Cart</span>
+                <span>Giỏ hàng</span>
               </div>
             </div>
           </div>

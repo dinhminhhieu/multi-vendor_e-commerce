@@ -352,7 +352,7 @@ const Header = () => {
               <div
                 className={`${
                   categoryShow ? "h-0" : "h-[400px]"
-                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-white w-full border-2 border-red-500`}
+                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-white w-full`}
               >
                 <ul className="py-2 text-slate-600 font-medium h-full overflow-auto">
                   {categorys.map((c, i) => {
