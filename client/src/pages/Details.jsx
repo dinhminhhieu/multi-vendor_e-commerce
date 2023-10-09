@@ -246,7 +246,7 @@ const Details = () => {
           </div>
         </div>
       </section>
-      <section>
+      {/* <section>
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
           <div className="flex flex-wrap">
             <div className="w-full md-lg:w-full">
@@ -284,6 +284,80 @@ const Details = () => {
             </div>
           </div>
         </div>
+      </section> */}
+      <section>
+        <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
+          <div className="flex flex-wrap">
+            <div className="w-[72%] md-lg:w-full">
+              <div className="pr-4 md-lg:pr-0">
+                <div className="grid grid-cols-2">
+                  <button
+                    onClick={() => setState("reviews")}
+                    className={`py-1 hover:text-white px-5 hover:bg-green-500 ${
+                      state === "reviews"
+                        ? "bg-red-500 text-white"
+                        : "bg-slate-200 text-slate-700"
+                    } rounded-sm`}
+                  >
+                    Đánh giá của khách hàng
+                  </button>
+                  <button
+                    onClick={() => setState("description")}
+                    className={`py-1 px-5 hover:text-white hover:bg-green-500 ${
+                      state === "description"
+                        ? "bg-red-500 text-white"
+                        : "bg-slate-200 text-slate-700"
+                    } rounded-sm`}
+                  >
+                    Mô tả sản phẩm
+                  </button>
+                </div>
+                <div>
+                  {state === "reviews" ? (
+                    <Reviews />
+                  ) : (
+                    <p className="py-5 text-slate-600">Mô tả sản phẩm</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="w-[28%] md-lg:w-full">
+              <div className="pl-4 md-lg:pl-0">
+                <div className="px-3 py-2 text-white text-center bg-red-500">
+                  <h2>cellphoneS</h2>
+                </div>
+                <div className="flex flex-col gap-5 mt-3 border p-3">
+                  {[1, 2, 3].map((p, i) => {
+                    return (
+                      <Link className="block">
+                        <div className="relative h-[270px]">
+                          <img
+                            className="w-full h-full"
+                            src={`http://localhost:3000/images/categories/${p}.png`}
+                          />
+                          {p.discount !== 0 && (
+                            <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
+                              {p.discount}%
+                            </div>
+                          )}
+                        </div>
+                        <h2 className="text-slate-600 py-1">{p.name}</h2>
+                        <div className="flex gap-2">
+                          <h2 className="text-red-500 text-lg font-bold">
+                            {p.price}đ
+                          </h2>
+                          <div className="flex items-center gap-2">
+                            <Ratings ratings={p.rating} />
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section>
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
@@ -308,16 +382,13 @@ const Details = () => {
               modules={[Pagination]}
               className="mySwiper"
             >
-              
               {[1, 2, 3, 4, 5, 6, 7].map((p, i) => {
                 return (
                   <SwiperSlide key={i}>
                     <Link className="block">
                       <div className="relative h-[270px]">
                         <div className="w-full h-full">
-                          <div className="">
-                              
-                          </div>
+                          <div className=""></div>
                           <div className="absolute h-full w-full top-0 left-0 bg-[#000] opacity-25 hover:opacity-50 transition-all duration-500"></div>
                         </div>
                         {p.discount !== 0 && (

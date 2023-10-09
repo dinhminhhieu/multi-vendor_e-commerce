@@ -32,6 +32,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { IoIosCall } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {BiSolidCheckShield} from "react-icons/bi"
 
 const icons = {
   AiOutlineMail,
@@ -61,6 +62,7 @@ const icons = {
   CiStar,
   FiChevronLeft,
   FiChevronRight,
+  BiSolidCheckShield,
 };
 
 export default icons
