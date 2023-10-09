@@ -6,6 +6,12 @@ import icons from "../assets/icons";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Ratings from "../components/Ratings";
+import Reviews from "../components/Reviews";
+import ShopProducts from "../components/products/ShopProducts";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper/modules";
 
 const Details = () => {
   const {
@@ -28,7 +34,7 @@ const Details = () => {
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 5,
+      items: 3,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -81,11 +87,11 @@ const Details = () => {
       </div>
       <section>
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
-          <div className="grid grid-cols-2 md-lg:grid-cols-1 gap-8">
+          <div className="grid grid-cols-2 md-lg:grid-cols-1">
             <div>
-              <div className="p-5 border">
+              <div className="p-9 border h-[450px] w-[450px]">
                 <img
-                  className="h-[450px] w-full"
+                  className="h-[400px] w-[400px]"
                   src={
                     image
                       ? `http://localhost:3000/images/categories/${image}.png`
@@ -94,7 +100,7 @@ const Details = () => {
                   alt=""
                 />
               </div>
-              <div className="py-3">
+              <div className="py-3 w-[500px]">
                 {images && (
                   <Carousel
                     autoPlay={true}
@@ -243,7 +249,7 @@ const Details = () => {
       <section>
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
           <div className="flex flex-wrap">
-            <div className="w-[72%] md-lg:w-full">
+            <div className="w-full md-lg:w-full">
               <div className="pr-4 md-lg:pr-0">
                 <div className="grid grid-cols-2">
                   <button
@@ -269,17 +275,78 @@ const Details = () => {
                 </div>
                 <div>
                   {state === "reviews" ? (
-                    "reviews"
+                    <Reviews />
                   ) : (
                     <p className="py-5 text-slate-600">Mô tả sản phẩm</p>
                   )}
                 </div>
               </div>
             </div>
-            <div className="w-[28%] md-lg:w-full">
-              <div className="pl-4 md-lg:pl-0">
-              </div>
-            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
+          <h2 className="text-2xl py-8 text-slate-600">Sản phẩm tương tự</h2>
+          <div>
+            <Swiper
+              slidesPerView="auto"
+              breakpoints={{
+                1280: {
+                  slidesPerView: 5,
+                },
+                565: {
+                  slidesPerView: 2,
+                },
+              }}
+              spaceBetween={25}
+              loop={true}
+              pagination={{
+                clickable: true,
+                el: ".custom_bullet",
+              }}
+              modules={[Pagination]}
+              className="mySwiper"
+            >
+              
+              {[1, 2, 3, 4, 5, 6, 7].map((p, i) => {
+                return (
+                  <SwiperSlide key={i}>
+                    <Link className="block">
+                      <div className="relative h-[270px]">
+                        <div className="w-full h-full">
+                          <div className="">
+                              
+                          </div>
+                          <div className="absolute h-full w-full top-0 left-0 bg-[#000] opacity-25 hover:opacity-50 transition-all duration-500"></div>
+                        </div>
+                        {p.discount !== 0 && (
+                          <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
+                            {p.discount}%
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4 flex flex-col gap-1">
+                        <h2 className="text-slate-600 text-lg font-semibold">
+                          {p.name}
+                        </h2>
+                        <div className="flex justify-start items-center gap-3">
+                          <h2 className="text-red-500 text-lg font-bold">
+                            {p.price}đ
+                          </h2>
+                          <div className="flex">
+                            <Ratings ratings={p.rating} />
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+          <div className="w-full flex justify-center items-center py-10">
+            <div className="custom_bullet justify-center gap-3 !w-auto"></div>
           </div>
         </div>
       </section>
