@@ -4,6 +4,7 @@ import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
   AiOutlineEye,
+  AiOutlineEyeInvisible,
   AiFillStar,
 } from "react-icons/ai";
 import {
@@ -40,6 +41,7 @@ const icons = {
   AiOutlineHeart,
   AiOutlineShoppingCart,
   AiOutlineEye,
+  AiOutlineEyeInvisible,
   AiFillStar,
   FaFacebookF,
   FaUser,

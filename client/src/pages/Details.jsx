@@ -303,7 +303,7 @@ const Details = () => {
                   </button>
                   <button
                     onClick={() => setState("description")}
-                    className={`py-1 px-5 hover:text-white hover:bg-green-500 ${
+                    className={`py-2 px-5 hover:text-white hover:bg-green-500 ${
                       state === "description"
                         ? "bg-red-500 text-white"
                         : "bg-slate-200 text-slate-700"
