@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import icons from "../assets/icons";
 import { Link, useLocation } from "react-router-dom";
 
-const Header = () => {
+const Header = ({categorys}) => {
   const {
     AiOutlineMail,
     AiFillHeart,
@@ -25,12 +25,12 @@ const Header = () => {
   const [category, setCategory] = useState("");
   const { pathname } = useLocation();
   const wishlist = 4;
-  const categorys = [
-    "Điện thoại",
-    "Quần - Áo",
-    "Giày - Dép",
-    "Phụ kiện công nghệ",
-  ];
+  // const categorys = [
+  //   "Điện thoại",
+  //   "Quần - Áo",
+  //   "Giày - Dép",
+  //   "Phụ kiện công nghệ",
+  // ];
 
   return (
     <div className="w-full bg-white">
@@ -361,7 +361,8 @@ const Header = () => {
                         key={i}
                         className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
                       >
-                        <Link className="text-sm block">{c}</Link>
+                         <img src={c.image} className='w-[50px] h-[50px] overflow-hidden' alt={c.name} />
+                        <Link to={`/products?category=${c.name}`} className="text-sm block font-bold">{c.name}</Link>
                       </li>
                     );
                   })}
@@ -383,7 +384,7 @@ const Header = () => {
                       <option value="">Chọn danh mục</option>
                       {categorys.map((c, i) => (
                         <option key={i} value={c}>
-                          {c}
+                          {c.name}
                         </option>
                       ))}
                     </select>
