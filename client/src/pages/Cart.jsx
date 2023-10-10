@@ -1,14 +1,25 @@
 import React from "react";
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
 import Footer from "../components/Footer";
 
 const Cart = () => {
   const { MdOutlineKeyboardArrowRight } = icons;
+  const navigate = useNavigate()
   const cart_products = [1, 2];
   const outOfStockProduct = [1, 2];
 
+  const redirect = () => {
+    navigate("/shipping", {
+      state: {
+        products: [],
+      price: 100000,
+      shipping: 30000,
+      items: 4
+      }
+    })
+  }
   return (
     <div>
       <Header />
@@ -176,7 +187,7 @@ const Cart = () => {
                         <span>Tổng tiền</span>
                         <span className="text-lg text-orange-500">100000đ</span>
                       </div>
-                      <button className='px-5 py-[8px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase'>Thanh toán 4 sản phẩm</button>
+                      <button onClick={redirect} className='px-5 py-[8px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase'>Thanh toán 4 sản phẩm</button>
                     </div>
                   )}
                 </div>
