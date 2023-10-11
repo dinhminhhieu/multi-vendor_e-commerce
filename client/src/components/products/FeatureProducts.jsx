@@ -8,7 +8,7 @@ const FeatureProducts = ({ products }) => {
   return (
     <div className="w-[85%] flex flex-wrap mx-auto">
       <div className="w-full">
-        <div className="text-center flex justify-center items-center flex-col text-4xl text-slate-600 font-bold relative pb-[45px]">
+        <div className="text-center flex justify-center items-center flex-col text-3xl text-red-600 font-bold relative pb-[45px]">
           <h2>Sản Phẩm Nổi Bật</h2>
           <div className="w-[100px] h-[4px] bg-red-500 mt-4"></div>
         </div>

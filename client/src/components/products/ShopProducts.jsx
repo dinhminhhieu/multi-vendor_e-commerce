@@ -50,6 +50,7 @@ const ShopProducts = ({ styles, products }) => {
             </ul>
           </div>
           <div className="flex justify-start items-start flex-col gap-1">
+            <h2 className="text-blue-500 font-medium">{p.brand}</h2>
             <h2 className="text-md text-slate-700 font-medium">{p?.name?.slice(0, 20)}...</h2>
             <div className="flex justify-start items-center gap-2">
                 <span className="text-lg font-bold text-red-500">{(p.price / 1000).toLocaleString("vi-VN", {

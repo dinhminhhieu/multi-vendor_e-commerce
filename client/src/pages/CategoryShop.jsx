@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Range } from "react-range";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import icons from "../assets/icons";
 import { useState } from "react";
 import Products from "../components/products/Products";
@@ -15,7 +15,7 @@ import {
   query_products,
 } from "../store/Reducers/homeReducer";
 
-const Shops = () => {
+const CategoryShop = () => {
   const {
     MdOutlineKeyboardArrowRight,
     AiFillStar,
@@ -24,11 +24,14 @@ const Shops = () => {
     FaThList,
   } = icons;
 
-  const { categorys, products, totalProduct, priceRange, latest_product, parPage } =
+    let [searchParams, setSearchParams] = useSearchParams()
+      const category = searchParams.get("category")
+    console.log(category)
+
+  const { products, totalProduct, priceRange, latest_product, parPage } =
     useSelector((state) => state.home);
 
   const [filter, setFilter] = useState(true);
-  const [category, setCategory] = useState("");
   const [rating, setRatingQ] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [styles, setStyles] = useState("grid");
@@ -48,19 +51,11 @@ const Shops = () => {
     });
   }, [priceRange]);
 
-  const queryCategory = (e, value) => {
-    if (e.target.checked) {
-      setCategory(value);
-    } else {
-      setCategory("");
-    }
-  };
-
   useEffect(() => {
     dispatch(
       query_products({
-        low: state.values[0],
-        high: state.values[1],
+        low: state.values[0] || "",
+        high: state.values[1] || "",
         category,
         rating,
         sortPrice,
@@ -127,29 +122,6 @@ const Shops = () => {
                   : "md:h-auto md:overflow-auto md:mb-0"
               }`}
             >
-              <h2 className="text-xl font-bold mb-3 text-red-600">Danh mục</h2>
-              <div className="py-2">
-                {categorys.map((c, i) => (
-                  <div
-                    className="flex justify-start items-center gap-2 py-1"
-                    key={i}
-                  >
-                    <input
-                      checked={category === c.name ? true : false}
-                      onChange={(e) => queryCategory(e, c.name)}
-                      className="w-4 h-4"
-                      type="checkbox"
-                      id={c.name}
-                    />
-                    <label
-                      className="text-slate-600 block cursor-pointer"
-                      htmlFor={c.name}
-                    >
-                      {c.name}
-                    </label>
-                  </div>
-                ))}
-              </div>
               <div className="py-2 flex flex-col gap-5">
                 <h2 className="text-xl font-bold mb-3 text-red-600">Giá bán</h2>
                 <Range
@@ -374,4 +346,4 @@ const Shops = () => {
   );
 };
 
-export default Shops;
+export default CategoryShop;
