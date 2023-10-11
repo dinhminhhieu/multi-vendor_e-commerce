@@ -15,7 +15,7 @@ import {
   query_products,
 } from "../store/Reducers/homeReducer";
 
-const CategoryShop = () => {
+const SearchProducts = () => {
   const {
     MdOutlineKeyboardArrowRight,
     AiFillStar,
@@ -24,8 +24,9 @@ const CategoryShop = () => {
     FaThList,
   } = icons;
 
-    let [searchParams, setSearchParams] = useSearchParams()
-      const category = searchParams.get("category")
+  let [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const searchValue = searchParams.get("value");
 
   const { products, totalProduct, priceRange, latest_product, parPage } =
     useSelector((state) => state.home);
@@ -59,6 +60,7 @@ const CategoryShop = () => {
         rating,
         sortPrice,
         pageNumber,
+        searchValue
       })
     );
   }, [
@@ -68,6 +70,7 @@ const CategoryShop = () => {
     rating,
     pageNumber,
     sortPrice,
+    searchValue
   ]);
 
   const resetRating = () => {
@@ -345,4 +348,4 @@ const CategoryShop = () => {
   );
 };
 
-export default CategoryShop;
+export default SearchProducts;

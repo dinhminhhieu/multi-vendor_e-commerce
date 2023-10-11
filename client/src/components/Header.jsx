@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import icons from "../assets/icons";
-import { Link, useLocation } from "react-router-dom";
-import {useSelector} from 'react-redux'
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const {
@@ -25,8 +25,13 @@ const Header = () => {
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const wishlist = 4;
-  const {categorys} = useSelector((state) => state.home);
+  const { categorys } = useSelector((state) => state.home);
+
+  const search = () => {
+    navigate(`/products/search?category=${category}&&value=${searchValue}`);
+  };
 
   return (
     <div className="w-full bg-white">
@@ -133,11 +138,10 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shops"
+                    <Link
+                      to="/shops"
                       className={`p-2 block ${
-                        pathname === "/shop"
-                          ? "text-red-500"
-                          : "text-slate-600"
+                        pathname === "/shop" ? "text-red-500" : "text-slate-600"
                       }`}
                     >
                       Sản phẩm
@@ -146,9 +150,7 @@ const Header = () => {
                   <li>
                     <Link
                       className={`p-2 block ${
-                        pathname === "/blog"
-                          ? "text-red-500"
-                          : "text-slate-600"
+                        pathname === "/blog" ? "text-red-500" : "text-slate-600"
                       }`}
                     >
                       Blog
@@ -279,9 +281,7 @@ const Header = () => {
               <li>
                 <Link
                   className={`py-2 block ${
-                    pathname === "/contact"
-                      ? "text-red-500"
-                      : "text-slate-600"
+                    pathname === "/contact" ? "text-red-500" : "text-slate-600"
                   }`}
                 >
                   Liên hệ
@@ -357,8 +357,17 @@ const Header = () => {
                         key={i}
                         className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
                       >
-                         <img src={c.image} className='w-[50px] h-[50px] overflow-hidden' alt={c.name} />
-                        <Link to={`/products?category=${c.name}`} className="text-sm block font-bold">{c.name}</Link>
+                        <img
+                          src={c.image}
+                          className="w-[50px] h-[50px] overflow-hidden"
+                          alt={c.name}
+                        />
+                        <Link
+                          to={`/products?category=${c.name}`}
+                          className="text-sm block font-bold"
+                        >
+                          {c.name}
+                        </Link>
                       </li>
                     );
                   })}
@@ -379,7 +388,7 @@ const Header = () => {
                     >
                       <option value="">Chọn danh mục</option>
                       {categorys.map((c, i) => (
-                        <option key={i} value={c}>
+                        <option key={i} value={c.name}>
                           {c.name}
                         </option>
                       ))}
@@ -393,7 +402,10 @@ const Header = () => {
                     id=""
                     placeholder="Tìm kiếm sản phẩm..."
                   />
-                  <button className="bg-red-500 right-0 absolute px-8 h-full font-semibold uppercase text-white text-sm">
+                  <button
+                    onClick={search}
+                    className="bg-red-500 right-0 absolute px-8 h-full font-semibold uppercase text-white text-sm"
+                  >
                     Tìm Kiếm
                   </button>
                 </div>

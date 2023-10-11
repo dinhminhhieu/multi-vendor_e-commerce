@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Shipping from './pages/Shipping'
 import CategoryShop from './pages/CategoryShop'
+import SearchProducts from './pages/SearchProducts'
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect } from 'react';
 import { get_category } from "./store/Reducers/homeReducer";
@@ -28,6 +29,7 @@ useEffect(() => {
       <Route path='/login' element={<Login />}/>
       <Route path='/shipping' element={<Shipping />}/>
       <Route path='/products?' element={<CategoryShop />}/>
+      <Route path='/products/search?' element={<SearchProducts />}/>
     </Routes>
     </BrowserRouter>
   )
