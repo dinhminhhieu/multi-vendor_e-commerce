@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 import icons from "../assets/icons";
 import { useState } from "react";
 import Products from "../components/products/Products";
-import ShopProducts from '../components/products/ShopProducts'
-import Pagination from '../components/Pagination'
-import {useDispatch, useSelector} from 'react-redux'
+import ShopProducts from "../components/products/ShopProducts";
+import Pagination from "../components/Pagination";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { price_range_product, query_products } from "../store/Reducers/homeReducer";
 
 const Shops = () => {
   const {
@@ -18,20 +19,53 @@ const Shops = () => {
     BsFillGridFill,
     FaThList,
   } = icons;
+
+  const { categorys, products, priceRange, latest_product } = useSelector(
+    (state) => state.home
+  );
+
   const [filter, setFilter] = useState(true);
   const [category, setCategory] = useState("");
   const [rating, setRatingQ] = useState("");
   const [sortPrice, setSortPrice] = useState("");
   const [styles, setStyles] = useState("grid");
   const [pageNumber, setPageNumber] = useState(1);
-  const [parPage, setParPage] = useState(3)
-  const dispatch = useDispatch()
-
-  const {categorys, products} = useSelector(state=>state.home)
+  const [parPage, setParPage] = useState(3);
+  const [state, setState] = useState({
+    values: [priceRange.low, priceRange.high],
+  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(price_range_product());
+  }, []);
 
-  }, [])
+  useEffect(() => {
+    setState({
+      values: [priceRange.low, priceRange.high],
+    });
+  }, [priceRange]);
+
+  const queryCategory = (e, value) => {
+    if (e.target.checked) {
+      setCategory(value);
+    } else {
+      setCategory("");
+    }
+  };
+
+      useEffect(() => {
+        dispatch(
+            query_products({
+                low: state.values[0],
+                high: state.values[1],
+                category,
+                rating,
+                sortPrice,
+                pageNumber
+            })
+        )
+    }, [state.values[0], state.values[1], category, rating, pageNumber, sortPrice])
 
   return (
     <div>
@@ -78,6 +112,8 @@ const Shops = () => {
                     key={i}
                   >
                     <input
+                      checked={category === c.name ? true : false}
+                      onChange={(e) => queryCategory(e, c.name)}
                       className="w-4 h-4"
                       type="checkbox"
                       id={c.name}
@@ -216,7 +252,7 @@ const Shops = () => {
                 </div>
               </div>
               <div className="py-5 flex flex-col gap-4 md:hidden">
-                {/* <Products title="Sản phẩm mới nhất" /> */}
+                <Products title="Sản phẩm mới nhất" products={latest_product} />
               </div>
             </div>
             <div className="w-9/12 md-lg:w-8/12 md:w-full">
@@ -257,10 +293,16 @@ const Shops = () => {
                   </div>
                 </div>
                 <div className="pb-8">
-                      <ShopProducts styles={styles} />
+                  <ShopProducts styles={styles} />
                 </div>
                 <div>
-                  <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber} totalItem={20} parPage={parPage} showItem={Math.floor(20/3)} />
+                  <Pagination
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber}
+                    totalItem={20}
+                    parPage={parPage}
+                    showItem={Math.floor(20 / 3)}
+                  />
                 </div>
               </div>
             </div>
