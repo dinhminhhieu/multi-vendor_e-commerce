@@ -105,7 +105,10 @@ const Products = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>{d.price}</span>
+                    <span>{(d.price / 1000).toLocaleString("vi-VN", {
+                  minimumFractionDigits: 3,
+                  maximumFractionDigits: 3
+                })}đ</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"

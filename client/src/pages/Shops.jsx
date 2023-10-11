@@ -7,6 +7,8 @@ import { useState } from "react";
 import Products from "../components/products/Products";
 import ShopProducts from '../components/products/ShopProducts'
 import Pagination from '../components/Pagination'
+import {useDispatch, useSelector} from 'react-redux'
+import { useEffect } from "react";
 
 const Shops = () => {
   const {
@@ -23,12 +25,14 @@ const Shops = () => {
   const [styles, setStyles] = useState("grid");
   const [pageNumber, setPageNumber] = useState(1);
   const [parPage, setParPage] = useState(3)
-  const categorys = [
-    "Điện thoại",
-    "Quần - Áo",
-    "Giày - Dép",
-    "Phụ kiện công nghệ",
-  ];
+  const dispatch = useDispatch()
+
+  const {categorys, products} = useSelector(state=>state.home)
+
+  useEffect(() => {
+
+  }, [])
+
   return (
     <div>
       <Header />
@@ -74,15 +78,15 @@ const Shops = () => {
                     key={i}
                   >
                     <input
-                      checked={category === c ? true : false}
+                      className="w-4 h-4"
                       type="checkbox"
-                      id={c}
+                      id={c.name}
                     />
                     <label
                       className="text-slate-600 block cursor-pointer"
-                      htmlFor={c}
+                      htmlFor={c.name}
                     >
-                      {c}
+                      {c.name}
                     </label>
                   </div>
                 ))}
@@ -212,7 +216,7 @@ const Shops = () => {
                 </div>
               </div>
               <div className="py-5 flex flex-col gap-4 md:hidden">
-                <Products title="Sản phẩm mới nhất" />
+                {/* <Products title="Sản phẩm mới nhất" /> */}
               </div>
             </div>
             <div className="w-9/12 md-lg:w-8/12 md:w-full">

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import icons from "../assets/icons";
 import { Link, useLocation } from "react-router-dom";
+import {useSelector} from 'react-redux'
 
-const Header = ({categorys}) => {
+const Header = () => {
   const {
     AiOutlineMail,
     AiFillHeart,
@@ -25,6 +26,7 @@ const Header = ({categorys}) => {
   const [category, setCategory] = useState("");
   const { pathname } = useLocation();
   const wishlist = 4;
+  const {categorys} = useSelector((state) => state.home);
 
   return (
     <div className="w-full bg-white">
@@ -391,8 +393,8 @@ const Header = ({categorys}) => {
                     id=""
                     placeholder="Tìm kiếm sản phẩm..."
                   />
-                  <button className="bg-red-500 right-0 absolute px-8 h-full font-semibold uppercase text-white">
-                    Search
+                  <button className="bg-red-500 right-0 absolute px-8 h-full font-semibold uppercase text-white text-sm">
+                    Tìm Kiếm
                   </button>
                 </div>
               </div>

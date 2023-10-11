@@ -75,8 +75,14 @@ const Products = ({ title, products }) => {
                   />
                   <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
                     <h2 className="font-medium text-blue-500">{pl.brand}</h2>
-                    <h2>{pl.name}</h2>
-                    <span className="text-lg font-bold">{pl.price}đ</span>
+                    <h2><h2>{pl?.name?.slice(0, 45)}...</h2></h2>
+                    <span className="text-lg font-bold text-red-500">
+                      {(pl.price / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
                   </div>
                 </Link>
               ))}

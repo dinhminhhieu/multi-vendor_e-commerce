@@ -245,7 +245,7 @@ const AddProducts = () => {
                 <input
                   onChange={inputHandle}
                   value={state.price}
-                  type="number"
+                  type="text"
                   name="price"
                   id="price"
                   placeholder="Nhập giá sản phẩm..."

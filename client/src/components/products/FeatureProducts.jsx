@@ -22,7 +22,7 @@ const FeatureProducts = ({ products }) => {
             <div className="relative overflow-hidden">
               {p.discount ? (
                 <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
-                  {p.discount}%
+                  -{p.discount}%
                 </div>
               ) : (
                 ""
@@ -49,9 +49,12 @@ const FeatureProducts = ({ products }) => {
             </div>
             <div className="py-3 text-slate-600 px-2">
               <h2 className="font-medium text-blue-500">{p.brand}</h2>
-              <h2>{p.name}</h2>
+              <h2>{p?.name?.slice(0, 25)}...</h2>
               <div className="flex justify-start items-center gap-3">
-                <span className="text-lg font-bold">{p.price}đ</span>
+                <span className="text-lg font-bold text-red-500">{(p.price / 1000).toLocaleString("vi-VN", {
+                  minimumFractionDigits: 3,
+                  maximumFractionDigits: 3
+                })}đ</span>
                 <div className="flex">
                   <Ratings ratings={p.rating} />
                 </div>

@@ -9,15 +9,14 @@ import { get_category, get_products } from "../store/Reducers/homeReducer";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const {categorys, products, latest_product, topRating_product, discount_product} = useSelector((state) => state.home);
+  const {products, latest_product, topRating_product, discount_product} = useSelector((state) => state.home);
 
   useEffect(() => {
-    dispatch(get_category());
     dispatch(get_products())
   }, []);
   return (
     <div className="w-full">
-      <Header categorys={categorys} />
+      <Header />
       <Banner />
       <div className="py-[45px]">
         <FeatureProducts products={products} />
