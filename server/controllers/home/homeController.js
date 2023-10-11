@@ -97,7 +97,7 @@ class homeController {
 
   // 4. Truy vấn sản phẩm
   query_products = async(req, res) => {
-    const parPage = 12;
+    const parPage = 16;
     req.query.parPage = parPage;
     try {
       const products = await productModel.find({}).sort({

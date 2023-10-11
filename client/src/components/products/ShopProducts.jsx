@@ -3,7 +3,7 @@ import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
 import Ratings from "../Ratings";
 
-const ShopProducts = ({ styles }) => {
+const ShopProducts = ({ styles, products }) => {
   const { AiFillHeart, FaCartShopping, FaEye } = icons;
   return (
     <div
@@ -13,7 +13,7 @@ const ShopProducts = ({ styles }) => {
           : "grid-cols-1 md-lg:grid-cols-2 md:grid-cols-2"
       } gap-3`}
     >
-      {[1, 2, 3, 4, 5, 6].map((p, i) => (
+      {products.map((p, i) => (
         <div
           key={i}
           className={`flex transition-all duration-1000 hover:shadow-md hover:-translate-y-3 border-[3px] ${
@@ -31,7 +31,7 @@ const ShopProducts = ({ styles }) => {
           >
             <img
               className="h-[240px] rounded-md md:h-[270px] xs:h-[170px] w-full p-5"
-              src={`http://localhost:3000/images/categories/${p}.png`}
+              src={p.images[0]}
               alt="image"
             />
             <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
@@ -50,13 +50,14 @@ const ShopProducts = ({ styles }) => {
             </ul>
           </div>
           <div className="flex justify-start items-start flex-col gap-1">
-            <h2 className="text-md text-slate-700 font-medium">ultra Bộ nhớ 128G Mơi Sẵn điện thoai chơi</h2>
+            <h2 className="text-md text-slate-700 font-medium">{p?.name?.slice(0, 20)}...</h2>
             <div className="flex justify-start items-center gap-2">
-              <span className="text-md  font-bold text-slate-700">
-                100000đ
-              </span>
+                <span className="text-lg font-bold text-red-500">{(p.price / 1000).toLocaleString("vi-VN", {
+                  minimumFractionDigits: 3,
+                  maximumFractionDigits: 3
+                })}đ</span>
               <div className="flex text-lg">
-                <Ratings ratings={4.5} />
+                <Ratings ratings={p.rating} />
               </div>
             </div>
           </div>

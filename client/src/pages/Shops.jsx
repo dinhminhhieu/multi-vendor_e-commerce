@@ -24,7 +24,7 @@ const Shops = () => {
     FaThList,
   } = icons;
 
-  const { categorys, products, priceRange, latest_product } = useSelector(
+  const { categorys, products, totalProduct, priceRange, latest_product } = useSelector(
     (state) => state.home
   );
 
@@ -163,8 +163,7 @@ const Shops = () => {
                 />
                 <div>
                   <span className="text-red-500 font-bold text-lg">
-                    ${Math.floor(state.values[0])} - $
-                    {Math.floor(state.values[1])}
+                    {Math.floor(state.values[0])}đ đến {Math.floor(state.values[1])}đ
                   </span>
                 </div>
               </div>
@@ -334,9 +333,9 @@ const Shops = () => {
                   </div>
                 </div>
                 <div className="pb-8">
-                  <ShopProducts styles={styles} />
+                  <ShopProducts products={products} styles={styles} />
                 </div>
-                <div>
+                <div className="flex justify-end">
                   <Pagination
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}

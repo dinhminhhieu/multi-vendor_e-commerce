@@ -25,7 +25,7 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, parPage, showItem })
         for (let i = startPage; i < endPage; i++) {
             btns.push(
                 <li onClick={() => setPageNumber(i)} className={`
-                    ${pageNumber === i ? 'bg-slate-300 shadow-lg shadow-slate-300/50 text-slate-800' : 'bg-slate-300 hover:bg-slate-300 shadow-lg hover:shadow-slate-300/50 hover:text-slate-800 text-slate-800'} w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer`
+                    ${pageNumber === i ? 'bg-red-500 shadow-lg shadow-red-300/50 text-white' : 'bg-slate-300 hover:bg-slate-300 shadow-lg hover:shadow-slate-300/50 hover:text-slate-800 text-slate-700'} w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer`
                 }>
                     {i}
                 </li>
@@ -37,7 +37,7 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, parPage, showItem })
     return (
         <ul className='flex gap-3'>
             {
-                pageNumber > 1 && <li onClick={() => setPageNumber(pageNumber - 1)} className='w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-slate-800 cursor-pointer'>
+                pageNumber > 1 && <li onClick={() => setPageNumber(pageNumber - 1)} className='w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-slate-800 cursor-pointer hover:text-white hover:bg-red-500'>
                     <BsChevronDoubleLeft />
                 </li>
             }
@@ -45,7 +45,7 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, parPage, showItem })
                 createBtn()
             }
             {
-                pageNumber < totalPage && <li onClick={() => setPageNumber(pageNumber + 1)} className='w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-slate-800 cursor-pointer'>
+                pageNumber < totalPage && <li onClick={() => setPageNumber(pageNumber + 1)} className='w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-slate-800 cursor-pointer hover:text-white hover:bg-red-500'>
                     <BsChevronDoubleRight />
                 </li>
             }
