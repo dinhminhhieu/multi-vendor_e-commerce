@@ -1,12 +1,24 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
 export const get_category = createAsyncThunk(
-  "category/get_category",
+  "product/get_category",
   async (_, { fulfillWithValue }) => {
     try {
       const { data } = await api.get("/home/get-category");
-      console.log(data)
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+);
+
+export const get_products = createAsyncThunk(
+  "product/get_products",
+  async (_, { fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/home/get-products");
       return fulfillWithValue(data);
     } catch (error) {
       console.log(error.response);
@@ -15,18 +27,26 @@ export const get_category = createAsyncThunk(
 );
 
 export const homeReducer = createSlice({
-    name: "home",
-    initialState: {
-        categorys: []
+  name: "home",
+  initialState: {
+    categorys: [],
+    products: [],
+    latest_product: [],
+    topRating_product: [],
+    discount_product: [],
+  },
+  reducers: {},
+  extraReducers: {
+    [get_category.fulfilled]: (state, { payload }) => {
+      state.categorys = payload.categorys;
     },
-    reducers: {
-
+    [get_products.fulfilled]: (state, { payload }) => {
+      state.products = payload.products;
+      state.latest_product = payload.latest_product;
+      state.topRating_product = payload.topRating_product;
+      state.discount_product = payload.discount_product;
     },
-    extraReducers: {
-      [get_category.fulfilled]: (state, {payload}) => {
-        state.categorys = payload.categorys
-      }
-    }
-})
+  },
+});
 
-export default homeReducer.reducer
+export default homeReducer.reducer;

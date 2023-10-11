@@ -25,12 +25,6 @@ const Header = ({categorys}) => {
   const [category, setCategory] = useState("");
   const { pathname } = useLocation();
   const wishlist = 4;
-  // const categorys = [
-  //   "Điện thoại",
-  //   "Quần - Áo",
-  //   "Giày - Dép",
-  //   "Phụ kiện công nghệ",
-  // ];
 
   return (
     <div className="w-full bg-white">

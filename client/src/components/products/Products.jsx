@@ -4,12 +4,8 @@ import { Link } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
 import icons from "../../assets/icons";
 
-const Products = ({ title }) => {
+const Products = ({ title, products }) => {
   const { FiChevronLeft, FiChevronRight } = icons;
-  const products = [
-    [1, 2, 3],
-    [4, 5, 6],
-  ];
 
   const responsive = {
     superLargeDesktop: {
@@ -74,12 +70,13 @@ const Products = ({ title }) => {
                 <Link key={j} className="flex justify-start items-start" to="#">
                   <img
                     className="w-[110px] h-[110px]"
-                    src={`http://localhost:3000/images/categories/${pl}.png`}
+                    src={pl.images[0]}
                     alt="images"
                   />
                   <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
-                    <h2>ultra Bộ nhớ 128G Mơi Sẵn điện thoai chơi</h2>
-                    <span className="text-lg font-bold">10000</span>
+                    <h2 className="font-medium text-blue-500">{pl.brand}</h2>
+                    <h2>{pl.name}</h2>
+                    <span className="text-lg font-bold">{pl.price}đ</span>
                   </div>
                 </Link>
               ))}
