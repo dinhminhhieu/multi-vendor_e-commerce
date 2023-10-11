@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Range } from "react-range";
 import { Link } from "react-router-dom";
 import icons from "../assets/icons";
 import { useState } from "react";
@@ -9,7 +10,10 @@ import ShopProducts from "../components/products/ShopProducts";
 import Pagination from "../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { price_range_product, query_products } from "../store/Reducers/homeReducer";
+import {
+  price_range_product,
+  query_products,
+} from "../store/Reducers/homeReducer";
 
 const Shops = () => {
   const {
@@ -54,18 +58,25 @@ const Shops = () => {
     }
   };
 
-      useEffect(() => {
-        dispatch(
-            query_products({
-                low: state.values[0],
-                high: state.values[1],
-                category,
-                rating,
-                sortPrice,
-                pageNumber
-            })
-        )
-    }, [state.values[0], state.values[1], category, rating, pageNumber, sortPrice])
+  useEffect(() => {
+    dispatch(
+      query_products({
+        low: state.values[0],
+        high: state.values[1],
+        category,
+        rating,
+        sortPrice,
+        pageNumber,
+      })
+    );
+  }, [
+    state.values[0],
+    state.values[1],
+    category,
+    rating,
+    pageNumber,
+    sortPrice,
+  ]);
 
   return (
     <div>
@@ -126,6 +137,36 @@ const Shops = () => {
                     </label>
                   </div>
                 ))}
+              </div>
+              <div className="py-2 flex flex-col gap-5">
+                <h2 className="text-xl font-bold mb-3 text-red-600">Giá bán</h2>
+                <Range
+                  step={5}
+                  min={priceRange.low}
+                  max={priceRange.high}
+                  values={state.values}
+                  onChange={(values) => setState({ values })}
+                  renderTrack={({ props, children }) => (
+                    <div
+                      {...props}
+                      className="w-full h-[6px] bg-slate-200 rounded-full cursor-default"
+                    >
+                      {children}
+                    </div>
+                  )}
+                  renderThumb={({ props }) => (
+                    <div
+                      className="w-[15px] h-[15px] bg-red-500 rounded-full"
+                      {...props}
+                    />
+                  )}
+                />
+                <div>
+                  <span className="text-red-500 font-bold text-lg">
+                    ${Math.floor(state.values[0])} - $
+                    {Math.floor(state.values[1])}
+                  </span>
+                </div>
               </div>
               <div className="py-3 flex flex-col gap-4">
                 <h2 className="text-xl font-bold mb-3 text-red-600">
