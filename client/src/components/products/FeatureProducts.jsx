@@ -1,10 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import icons from "../../assets/icons";
 import Ratings from "../Ratings";
+import {useDispatch, useSelector} from 'react-redux'
+import {add_to_cart} from '../../store/Reducers/cartReducer'
 
 const FeatureProducts = ({ products }) => {
   const { AiFillHeart, FaCartShopping, FaEye } = icons;
+
+  const {userInfo} = useSelector(state=>state.auth)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const add_cart = (id) => {
+    if(userInfo) {
+      dispatch(add_to_cart({
+        userId: userInfo.id,
+        quantity: 1,
+        productId: id
+      }))
+    }else {
+      navigate("/login")
+    }
+  }
+
   return (
     <div className="w-[85%] flex flex-wrap mx-auto">
       <div className="w-full">
@@ -42,7 +62,7 @@ const FeatureProducts = ({ products }) => {
                 >
                   <FaEye />
                 </Link>
-                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all">
+                <li onClick={() => add_cart(p._id)} className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all">
                   <FaCartShopping />
                 </li>
               </ul>

@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import FadeLoader from "react-spinners/FadeLoader";
+import toast from 'react-hot-toast'
+import { Link, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
-import { customer_register } from "../store/Reducers/authReducer";
+import { customer_register, messageClear } from "../store/Reducers/authReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
-  const {loader} = useSelector(state=>state.auth)
+  const { loader, successMessage, errorMessage, userInfo } = useSelector(
+    (state) => state.auth
+  );
   const [visible, setVisible] = useState(false);
   const [state, setState] = useState({
     name: "",
@@ -24,13 +28,34 @@ const Register = () => {
   };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const register = (e) => {
     e.preventDefault();
     dispatch(customer_register(state));
   };
+
+  useEffect(() => {
+    if(successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+    }
+    if(errorMessage) {
+      toast.error(errorMessage)
+      dispatch(messageClear())
+    }
+    if(userInfo) {
+      navigate("/login")
+    }
+  }, [successMessage, errorMessage])
+
   return (
     <div>
+      {loader && (
+        <div className="w-screen h-screen flex justify-center items-center fixed left-0 top-0 bg-[#38303033] z-[999]">
+          <FadeLoader />
+        </div>
+      )}
       <Header />
       <div className="bg-slate-200 mt-4">
         <div className="w-full justify-center items-center p-10">

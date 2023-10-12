@@ -22,6 +22,7 @@ app.use("/api", require("./routes/dashboard/productRoutes"));
 app.use("/api", require("./routes/dashboard/sellerRoutes"));
 app.use("/api/home", require("./routes/home/homeRoutes"));
 app.use("/api", require("./routes/home/customerAuthRoutes"));
+app.use("/api", require("./routes/home/cartRotes"));
 
 const port = process.env.PORT; // Lấy giá trị cổng từ biến môi trường
 dbConnect();

@@ -16,6 +16,20 @@ export const customer_register = createAsyncThunk(
   }
 );
 
+//2. Khách hàng đăng nhập tài khoản
+export const customer_login = createAsyncThunk(
+  "auth/customer_login",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/customer/customer-login", info);
+      localStorage.setItem("customerToken", data.token);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const decodeToken = (token) => {
   if (token) {
     const userInfo = jwt(token);
@@ -29,7 +43,7 @@ export const authReducer = createSlice({
   name: "auth",
   initialState: {
     loader: false,
-    userInfo: decodeToken(localStorage.getItem('customerToken')),
+    userInfo: decodeToken(localStorage.getItem("customerToken")),
     errorMessage: "",
     successMessage: "",
   },
@@ -48,6 +62,19 @@ export const authReducer = createSlice({
       state.loader = false;
     },
     [customer_register.fulfilled]: (state, { payload }) => {
+      const userInfo = decodeToken(payload.token);
+      state.successMessage = payload.message;
+      state.loader = false;
+      state.userInfo = userInfo;
+    },
+    [customer_login.pending]: (state, _) => {
+      state.loader = true;
+    },
+    [customer_login.rejected]: (state, { payload }) => {
+      state.errorMessage = payload.error;
+      state.loader = false;
+    },
+    [customer_login.fulfilled]: (state, { payload }) => {
       const userInfo = decodeToken(payload.token);
       state.successMessage = payload.message;
       state.loader = false;

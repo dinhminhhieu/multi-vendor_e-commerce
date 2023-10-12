@@ -28,6 +28,7 @@ const Header = () => {
   const navigate = useNavigate();
   const wishlist = 4;
   const { categorys } = useSelector((state) => state.home);
+    const { userInfo } = useSelector((state) => state.auth);
 
   const search = () => {
     navigate(`/products/search?category=${category}&&value=${searchValue}`);
@@ -77,7 +78,7 @@ const Header = () => {
                     <li>English</li>
                   </ul>
                 </div>
-                {!user ? (
+                {userInfo ? (
                   <Link
                     className="flex cursor-pointer justify-center items-center gap-2 text-sm"
                     to="/dashboard"
@@ -85,7 +86,7 @@ const Header = () => {
                     <span>
                       <FaUser />
                     </span>
-                    <span className="font-medium">Đinh Minh Hiếu</span>
+                    <span className="font-medium">{userInfo.name}</span>
                   </Link>
                 ) : (
                   <Link
@@ -228,7 +229,7 @@ const Header = () => {
                   <li>English</li>
                 </ul>
               </div>
-              {!user ? (
+              {userInfo ? (
                 <Link
                   className="flex cursor-pointer justify-center items-center gap-2 text-sm"
                   to="/dashboard"
@@ -236,7 +237,7 @@ const Header = () => {
                   <span>
                     <FaUser />
                   </span>
-                  <span className="font-medium">Đinh Minh Hiếu</span>
+                  <span className="font-medium">{userInfo.name}</span>
                 </Link>
               ) : (
                 <Link

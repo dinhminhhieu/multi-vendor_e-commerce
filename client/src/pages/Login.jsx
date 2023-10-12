@@ -1,14 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import FadeLoader from "react-spinners/FadeLoader";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
+import { customer_login, messageClear } from "../store/Reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
   const [visible, setVisible] = useState(false);
+  const { loader, successMessage, errorMessage, userInfo } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+
+  const inputHandle = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const login = (e) => {
+    e.preventDefault();
+    dispatch(customer_login(state));
+  };
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [successMessage, errorMessage]);
+
   return (
     <div>
+      {loader && (
+        <div className="w-screen h-screen flex justify-center items-center fixed left-0 top-0 bg-[#38303033] z-[999]">
+          <FadeLoader />
+        </div>
+      )}
       <Header />
       <div className="bg-slate-200 mt-4">
         <div className="w-full justify-center items-center p-10">
@@ -18,12 +64,13 @@ const Login = () => {
                 ĐĂNG NHẬP
               </h2>
               <div>
-                <form className="text-slate-600">
+                <form onSubmit={login} className="text-slate-600">
                   <div className="flex flex-col gap-1 mb-2">
                     <label className="font-medium" htmlFor="email">
                       Nhập email
                     </label>
                     <input
+                      onChange={inputHandle}
                       type="email"
                       className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
                       id="email"
@@ -36,6 +83,7 @@ const Login = () => {
                       Nhập password
                     </label>
                     <input
+                      onChange={inputHandle}
                       type={visible ? "text" : "password"}
                       className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
                       id="password"

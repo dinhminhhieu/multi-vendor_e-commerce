@@ -1,4 +1,4 @@
-const router = require("express").Router()
+const router = require("express").Router();
 const customerAuthController = require("../../controllers/home/customerAuthController");
 
 router.post(
@@ -6,4 +6,6 @@ router.post(
   customerAuthController.customer_register
 );
 
-module.exports = router
+router.post("/customer/customer-login", customerAuthController.customer_login);
+
+module.exports = router;
