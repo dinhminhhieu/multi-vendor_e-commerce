@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import icons from "../../assets/icons";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PropagateLoader } from "react-spinners"; // Tạo các hiệu ứng loader hoặc tiến trình tải
 import { overrideStyle } from "../../utils/utils";

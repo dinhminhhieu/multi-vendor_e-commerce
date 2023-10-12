@@ -5,7 +5,7 @@ import FeatureProducts from "../components/products/FeatureProducts";
 import Products from "../components/products/Products";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { get_category, get_products } from "../store/Reducers/homeReducer";
+import { get_products } from "../store/Reducers/homeReducer";
 
 const Home = () => {
   const dispatch = useDispatch();

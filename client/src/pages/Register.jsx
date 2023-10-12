@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import icons from "../assets/icons";
+import { customer_register } from "../store/Reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
@@ -20,9 +22,11 @@ const Register = () => {
     });
   };
 
+  const dispatch = useDispatch();
+
   const register = (e) => {
     e.preventDefault();
-    console.log(state);
+    dispatch(customer_register(state));
   };
   return (
     <div>
@@ -56,6 +60,7 @@ const Register = () => {
                       Nhập email
                     </label>
                     <input
+                      required
                       onChange={inputHandle}
                       value={state.email}
                       type="email"
@@ -70,9 +75,10 @@ const Register = () => {
                       Nhập password
                     </label>
                     <input
+                      required
                       onChange={inputHandle}
                       value={state.password}
-                      type="password"
+                      type={visible ? "text" : "password"}
                       className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
                       id="password"
                       name="password"
@@ -92,7 +98,24 @@ const Register = () => {
                       />
                     )}
                   </div>
-                  <button className="px-8 w-full py-2 bg-red-500 shadow-lg hover:shadow-indigo-500/30 text-white rounded-md">
+                  <div className="flex items-center mb-3">
+                    <input
+                      type="checkbox"
+                      name="checkbox"
+                      id="checkbox"
+                      required
+                      className="h-4 w-4 text-red-400 focus:ring-red-400 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="checkbox"
+                      className="ml-2 block text-sm text-gray-900"
+                    >
+                      Đồng ý về{" "}
+                      <Link className="text-red-500">Điều khoản dịch vụ</Link> &{" "}
+                      <Link className="text-red-500">Chính sách bảo mật</Link>
+                    </label>
+                  </div>
+                  <button className="px-8 py-2 w-full bg-red-500 shadow-lg text-white rounded-md">
                     ĐĂNG KÝ
                   </button>
                 </form>

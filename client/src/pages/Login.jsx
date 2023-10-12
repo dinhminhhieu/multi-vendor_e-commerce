@@ -36,7 +36,7 @@ const Login = () => {
                       Nhập password
                     </label>
                     <input
-                      type="password"
+                      type={visible ? "text" : "password"}
                       className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
                       id="password"
                       name="password"
