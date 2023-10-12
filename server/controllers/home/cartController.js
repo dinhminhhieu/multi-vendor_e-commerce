@@ -39,6 +39,11 @@ class cartController {
       console.log(error.message);
     }
   };
+
+  //2. Lấy danh sách sản phẩm trong giỏ hàng
+  get_cart_products = async(req, res) => {
+    console.log("first")
+  }
 }
 
 module.exports = new cartController();

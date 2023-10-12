@@ -27,12 +27,22 @@ const Header = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const wishlist = 4;
+
   const { categorys } = useSelector((state) => state.home);
-    const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { cart_product_count } = useSelector((state) => state.cart);
 
   const search = () => {
     navigate(`/products/search?category=${category}&&value=${searchValue}`);
   };
+
+  const redirect_cart_page = () => {
+    if(userInfo) {
+      navigate("/cart")
+    }else {
+      navigate("/login")
+    }
+  }
 
   return (
     <div className="w-full bg-white">
@@ -175,17 +185,21 @@ const Header = () => {
                       <span>
                         <AiFillHeart size={20} className="text-red-500" />
                       </span>
-                      <div className="w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                      <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
                         {wishlist}
                       </div>
                     </div>
-                    <div className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300">
+                    <div onClick={redirect_cart_page} className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300">
                       <span>
                         <FaCartShopping size={20} className="text-red-500" />
-                      </span>
-                      <div className="w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
-                        {wishlist}
-                      </div>
+                      </span>      
+                        {
+                          cart_product_count !== 0 && <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                            {
+                              cart_product_count
+                            }
+                          </div>
+                        }
                     </div>
                   </div>
                 </div>

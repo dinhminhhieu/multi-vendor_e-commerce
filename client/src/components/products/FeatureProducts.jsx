@@ -1,29 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import icons from "../../assets/icons";
 import Ratings from "../Ratings";
-import {useDispatch, useSelector} from 'react-redux'
-import {add_to_cart} from '../../store/Reducers/cartReducer'
+import { useDispatch, useSelector } from "react-redux";
+import { add_to_cart, messageClear } from "../../store/Reducers/cartReducer";
+import toast from "react-hot-toast";
 
 const FeatureProducts = ({ products }) => {
   const { AiFillHeart, FaCartShopping, FaEye } = icons;
 
-  const {userInfo} = useSelector(state=>state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
+  const { successMessage, errorMessage } = useSelector((state) => state.cart);
 
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const add_cart = (id) => {
-    if(userInfo) {
-      dispatch(add_to_cart({
-        userId: userInfo.id,
-        quantity: 1,
-        productId: id
-      }))
-    }else {
-      navigate("/login")
+    if (userInfo) {
+      dispatch(
+        add_to_cart({
+          userId: userInfo.id,
+          quantity: 1,
+          productId: id,
+        })
+      );
+    } else {
+      navigate("/login");
     }
-  }
+  };
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+  }, [successMessage, errorMessage]);
 
   return (
     <div className="w-[85%] flex flex-wrap mx-auto">
@@ -62,7 +77,10 @@ const FeatureProducts = ({ products }) => {
                 >
                   <FaEye />
                 </Link>
-                <li onClick={() => add_cart(p._id)} className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all">
+                <li
+                  onClick={() => add_cart(p._id)}
+                  className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all"
+                >
                   <FaCartShopping />
                 </li>
               </ul>
@@ -71,10 +89,13 @@ const FeatureProducts = ({ products }) => {
               <h2 className="font-medium text-blue-500">{p.brand}</h2>
               <h2>{p?.name?.slice(0, 25)}...</h2>
               <div className="flex justify-start items-center gap-3">
-                <span className="text-lg font-bold text-red-500">{(p.price / 1000).toLocaleString("vi-VN", {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3
-                })}đ</span>
+                <span className="text-lg font-bold text-red-500">
+                  {(p.price / 1000).toLocaleString("vi-VN", {
+                    minimumFractionDigits: 3,
+                    maximumFractionDigits: 3,
+                  })}
+                  đ
+                </span>
                 <div className="flex">
                   <Ratings ratings={p.rating} />
                 </div>

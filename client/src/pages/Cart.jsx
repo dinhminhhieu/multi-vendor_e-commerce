@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
 import Footer from "../components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { get_cart_products } from "../store/Reducers/cartReducer";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const { MdOutlineKeyboardArrowRight } = icons;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+
   const cart_products = [1, 2];
   const outOfStockProduct = [1, 2];
 
@@ -14,12 +20,17 @@ const Cart = () => {
     navigate("/shipping", {
       state: {
         products: [],
-      price: 100000,
-      shipping: 30000,
-      items: 4
-      }
-    })
-  }
+        price: 100000,
+        shipping: 30000,
+        items: 4,
+      },
+    });
+  };
+
+  useEffect(() => {
+    dispatch(get_cart_products(userInfo.id));
+  }, []);
+
   return (
     <div>
       <Header />
@@ -187,7 +198,12 @@ const Cart = () => {
                         <span>Tổng tiền</span>
                         <span className="text-lg text-orange-500">100000đ</span>
                       </div>
-                      <button onClick={redirect} className='px-5 py-[8px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase'>Thanh toán 4 sản phẩm</button>
+                      <button
+                        onClick={redirect}
+                        className="px-5 py-[8px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase"
+                      >
+                        Thanh toán 4 sản phẩm
+                      </button>
                     </div>
                   )}
                 </div>
