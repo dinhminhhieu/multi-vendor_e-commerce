@@ -1,4 +1,12 @@
+const customerModel = require("../../models/customerModel");
+const sellerToCustomerModel = require("../../models/chat/sellerToCustomerModel");
+const {responseReturn} = require("../../utils/response")
+const {createToken} = require("../../utils/token")
+const bcrypt = require("bcrypt");
+
 class customerAuthController {
+
+    //1. Khách hàng đăng ký tài khoản
   customer_register = async(req, res) => {
     const { name, email, password } = req.body;
 
@@ -13,7 +21,7 @@ class customerAuthController {
           password: await bcrypt.hash(password, 10),
           method: "menualy",
         });
-        await sellerCustomerModel.create({
+        await sellerToCustomerModel.create({
           myId: createCustomer.id,
         });
         const token = await createToken({

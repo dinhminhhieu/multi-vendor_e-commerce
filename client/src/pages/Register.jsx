@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
+  const {loader} = useSelector(state=>state.auth)
   const [visible, setVisible] = useState(false);
   const [state, setState] = useState({
     name: "",

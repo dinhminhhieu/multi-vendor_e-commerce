@@ -1,23 +1,35 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import api from '../../api/api'
+import jwt from "jwt-decode"
 
+//1. Khách hàng đăng ký tài khoản
 export const customer_register = createAsyncThunk(
   "auth/customer_register",
   async (info, { rejectWithValue, fulfillWithValue }) => {
     try {
       const { data } = await api.post("/customer/customer-register", info);
-      console.log(data)
+      localStorage.setItem("customerToken", data.token);
+      return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
+const decodeToken = (token) => {
+  if (token) {
+    const userInfo = jwt(token);
+    return userInfo;
+  } else {
+    return "";
+  }
+};
+
 export const authReducer = createSlice({
   name: "auth",
   initialState: {
     loader: false,
-    userInfo: "",
+    userInfo: decodeToken(localStorage.getItem('customerToken')),
     errorMessage: "",
     successMessage: "",
   },
@@ -28,8 +40,20 @@ export const authReducer = createSlice({
     },
   },
   extraReducers: {
-
-  }
+    [customer_register.pending]: (state, _) => {
+      state.loader = true;
+    },
+    [customer_register.rejected]: (state, { payload }) => {
+      state.errorMessage = payload.error;
+      state.loader = false;
+    },
+    [customer_register.fulfilled]: (state, { payload }) => {
+      const userInfo = decodeToken(payload.token);
+      state.successMessage = payload.message;
+      state.loader = false;
+      state.userInfo = userInfo;
+    },
+  },
 });
 
 export const { messageClear } = authReducer.actions;
