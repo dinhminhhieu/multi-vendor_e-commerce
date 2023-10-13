@@ -46,7 +46,7 @@ class cartController {
   //2. Lấy danh sách sản phẩm trong giỏ hàng
   get_cart_products = async (req, res) => {
     const { userId } = req.params;
-    const co = 5
+    const co = 5;
     try {
       // Truy vấn tập hợp
       const cart_products = await cartModel.aggregate([
@@ -97,15 +97,13 @@ class cartController {
       // Tính toán giá sản phẩm từ nhiều seller khác nhau
       let p = [];
       let unique = [
-        ...new Set(
-          quantityProduct.map((p) => p.products[0].sellerId.toString())
-        ),
+        ...new Set(quantityProduct.map((p) => p.products[0].sellerId.toString())),
       ];
       for (let i = 0; i < unique.length; i++) {
         let price = 0;
         for (let j = 0; j < quantityProduct.length; j++) {
           const tempProduct = quantityProduct[j].products[0];
-          if (unique[j] === tempProduct.sellerId.toString()) {
+          if (unique[i] === tempProduct.sellerId.toString()) {
             let pri = 0;
             if (tempProduct.discount !== 0) {
               pri =
@@ -115,7 +113,7 @@ class cartController {
               pri = tempProduct.price;
             }
             pri = pri - Math.floor((pri * co) / 100);
-            price = price + pri * quantityProduct[j].quantity; 
+            price = price + pri * quantityProduct[j].quantity;
             p[i] = {
               sellerId: unique[i],
               shopName: tempProduct.shopName,
@@ -136,13 +134,17 @@ class cartController {
                       productInfo: tempProduct,
                     },
                   ],
-            };         
+            };
           }
         }
       }
-      console.log(p)
-      console.log(calculatePrice)
-      console.log(outOfStockProduct)
+      responseReturn(res, 200, {
+        cart_products: p,
+        price: calculatePrice,
+        cart_product_count,
+        shipping_fee: 30000 * p.length,
+        outOfStockProduct,
+      });
     } catch (error) {
       console.log(error.message);
     }

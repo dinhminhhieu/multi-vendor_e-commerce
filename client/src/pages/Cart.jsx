@@ -12,9 +12,12 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-
-  const cart_products = [1, 2];
-  const outOfStockProduct = [1, 2];
+  const {
+    cart_products,
+    outofstock_products,
+    cart_product_count,
+    shipping_fee,
+  } = useSelector((state) => state.cart);
 
   const redirect = () => {
     navigate("/shipping", {
@@ -52,54 +55,70 @@ const Cart = () => {
       </section>
       <section className="bg-[#eeeeee]">
         <div className="w-[85%] lg:w-[90%] md:w-[90%] sm:w-[90] mx-auto py-16">
-          {cart_products.length > 0 || outOfStockProduct.length > 0 ? (
+          {cart_products.length > 0 || outofstock_products.length > 0 ? (
             <div className="flex flex-wrap">
               <div className="w-[67%] md-lg:w-full">
                 <div className="pr-3 md-lg:pr-0">
                   <div className="flex flex-col gap-3">
                     <div className="bg-white p-4">
                       <h2 className="text-md text-green-500 font-semibold">
-                        Số lượng sản phẩm {cart_products.length}
+                        Số lượng sản phẩm: {cart_products.length}
                       </h2>
                     </div>
-                    {cart_products.map((pt, i) => (
+                    {cart_products.map((p, i) => (
                       <div className="flex bg-white p-4 flex-col gap-2">
                         <div className="flex justify-start items-center">
-                          <h2 className="text-md text-red-600 font-medium">
-                            cellphoneS
+                          <h2 className="text-md font-medium">
+                            Cửa hàng: <span className="text-red-600 font-medium">{p.shopName}</span>
                           </h2>
                         </div>
-                        {[1, 2].map((p, i) => (
+                        {p.products.map((pt, i) => (
                           <div className="w-full flex flex-wrap">
                             <div className="flex sm:w-full gap-2 w-7/12 mb-3">
                               <div className="flex gap-2 justify-start items-center">
                                 <img
                                   className="w-[80px] h-[80px]"
-                                  src={`http://localhost:3000/images/categories/1.png`}
+                                  src={pt.productInfo.images[0]}
                                   alt="product image"
                                 />
                                 <div className="pr-4 text-slate-600">
-                                  <h2 className="text-md">Iphone 14 promax</h2>
-                                  <span className="text-sm">
-                                    Thương hiệu : Apple
+                                  <h2 className="text-md">
+                                    {pt.productInfo.name}
+                                  </h2>
+                                  <span className="text-sm text-blue-600 font-medium">
+                                    Thương hiệu : {pt.productInfo.brand}
                                   </span>
                                 </div>
                               </div>
                             </div>
                             <div className="flex justify-between w-5/12 sm:w-full sm:mt-3">
                               <div className="pl-4 sm:pl-0">
-                                <h2 className="text-lg text-orange-500">
-                                  100000đ
-                                </h2>
-                                <p className="line-through">150000đ</p>
-                                <p>-5%</p>
+                                <div className="flex justify-between">
+                                  <span className="text-base line-through">
+                                    {(pt.productInfo.price / 1000).toLocaleString("vi-VN", {
+                                      minimumFractionDigits: 3,
+                                      maximumFractionDigits: 3,
+                                    })}
+                                    đ
+                                  </span>
+                                  <span className="text-lg text-red-500 font-bold ml-2">
+                                    {((pt.productInfo.price - Math.floor((pt.productInfo.price * pt.productInfo.discount)/100)) / 1000).toLocaleString("vi-VN", {
+                                      minimumFractionDigits: 3,
+                                      maximumFractionDigits: 3,
+                                    })}
+                                    đ
+                                  </span>
+                                </div>
+                                <p className="ml-6 font-bold text-red-500">
+                                  Giảm {pt.productInfo.discount}%
+                                </p>
                               </div>
                               <div className="flex gap-2 flex-col">
                                 <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
                                   <div className="px-3 cursor-pointer m-2">
                                     -
                                   </div>
-                                  <div>5</div>
+                                  <div className="text-base">{pt.quantity}</div>
                                   <div className="px-3 cursor-pointer m-2">
                                     +
                                   </div>
@@ -113,47 +132,61 @@ const Cart = () => {
                         ))}
                       </div>
                     ))}
-                    {outOfStockProduct.length > 0 && (
+                    {outofstock_products.length > 0 && (
                       <div className="flex flex-col gap-3">
                         <div className="bg-white p-4">
                           <h2 className="text-md text-red-500 font-semibold">
-                            Hết hàng {outOfStockProduct.length}
+                            Hết sản phẩm: {outofstock_products.length}
                           </h2>
                         </div>
                         <div className="bg-white p-4">
-                          {[1, 2].map((p, i) => (
+                          {outofstock_products.map((p, i) => (
                             <div className="w-full flex flex-wrap">
                               <div className="flex sm:w-full gap-2 w-7/12 mb-3">
                                 <div className="flex gap-2 justify-start items-center">
                                   <img
                                     className="w-[80px] h-[80px]"
-                                    src={`http://localhost:3000/images/categories/1.png`}
+                                    src={p.products[0].images[0]}
                                     alt="product image"
                                   />
                                   <div className="pr-4 text-slate-600">
                                     <h2 className="text-md">
-                                      Iphone 14 promax
+                                      {p.products[0].name}
                                     </h2>
-                                    <span className="text-sm">
-                                      Thương hiệu : Apple
+                                    <span className="text-sm text-blue-600 font-medium">
+                                      Thương hiệu : {p.products[0].brand}
                                     </span>
                                   </div>
                                 </div>
                               </div>
                               <div className="flex justify-between w-5/12 sm:w-full sm:mt-3">
                                 <div className="pl-4 sm:pl-0">
-                                  <h2 className="text-lg text-orange-500">
-                                    100000đ
-                                  </h2>
-                                  <p className="line-through">150000đ</p>
-                                  <p>-5%</p>
+                                  <div className="flex justify-between">
+                                  <span className="text-base line-through">
+                                    {(p.products[0].price / 1000).toLocaleString("vi-VN", {
+                                      minimumFractionDigits: 3,
+                                      maximumFractionDigits: 3,
+                                    })}
+                                    đ
+                                  </span>
+                                  <span className="text-lg text-red-500 font-bold ml-2">
+                                    {((p.products[0].price - Math.floor((p.products[0].price * p.products[0].discount)/100)) / 1000).toLocaleString("vi-VN", {
+                                      minimumFractionDigits: 3,
+                                      maximumFractionDigits: 3,
+                                    })}
+                                    đ
+                                  </span>
+                                </div>
+                                <p className="ml-6 font-bold text-red-500">
+                                  Giảm {p.products[0].discount}%
+                                </p>
                                 </div>
                                 <div className="flex gap-2 flex-col">
                                   <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
                                     <div className="px-3 cursor-pointer m-2">
                                       -
                                     </div>
-                                    <div>5</div>
+                                    <div className="text-base">{p.quantity}</div>
                                     <div className="px-3 cursor-pointer m-2">
                                       +
                                     </div>
@@ -177,7 +210,7 @@ const Cart = () => {
                     <div className="bg-white p-3 text-slate-600 flex flex-col gap-3">
                       <h2 className="text-xl font-bold">Đơn hàng</h2>
                       <div className="flex justify-between items-center">
-                        <span> 4 sản phẩm</span>
+                        <span>Tạm tính ({cart_product_count} sản phẩm)</span>
                         <span>100000đ</span>
                       </div>
                       <div className="flex justify-between items-center">

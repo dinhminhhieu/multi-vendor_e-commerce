@@ -19,7 +19,6 @@ const Header = () => {
     IoIosCall,
   } = icons;
 
-  const user = true;
   const [showSideBar, setShowSideBar] = useState(true);
   const [categoryShow, setCategoryShow] = useState(true);
   const [searchValue, setSearchValue] = useState("");
@@ -283,7 +282,7 @@ const Header = () => {
                     pathname === "/shop" ? "text-red-500" : "text-slate-600"
                   }`}
                 >
-                  Cửa hàng
+                  Sản phẩm
                 </Link>
               </li>
               <li>

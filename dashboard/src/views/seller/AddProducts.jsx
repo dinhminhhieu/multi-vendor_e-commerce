@@ -12,6 +12,7 @@ const AddProducts = () => {
   const { BsImages, IoCloseSharp } = icons;
   const dispatch = useDispatch();
   const { categorys } = useSelector((state) => state.category);
+    const { userInfo } = useSelector((state) => state.auth);
   const { successMessage, errorMessage, loader } = useSelector(
     (state) => state.product
   );
@@ -111,7 +112,7 @@ const AddProducts = () => {
     formData.append("category", category);
     formData.append("brand", state.brand);
     formData.append("quantity", state.quantity);
-    formData.append("shopName", "cellphoneS");
+    formData.append("shopName", userInfo.shopInfo.shopName);
     for (let i = 0; i < images.length; i++) {
       formData.append("images", images[i]);
     }
