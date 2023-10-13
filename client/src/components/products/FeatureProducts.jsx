@@ -87,21 +87,33 @@ const FeatureProducts = ({ products }) => {
             </div>
             <div className="py-3 text-slate-600 px-2">
               <div className="flex justify-between">
-                <h2 className="font-medium text-blue-500">{p.brand}</h2>
-                <h2 className="font-medium text-green-600">Số lượng: {p.quantity}</h2>
+                <h2 className="font-medium text-blue-500">{p.brand}.</h2>
               </div>
               <h2>{p?.name?.slice(0, 25)}...</h2>
-              <div className="flex justify-start items-center gap-3">
-                <span className="text-lg font-bold text-red-500">
+              <div className="flex justify-start items-center gap-2 m-[2px]">
+                <span className="text-base font-bold line-through">
                   {(p.price / 1000).toLocaleString("vi-VN", {
                     minimumFractionDigits: 3,
                     maximumFractionDigits: 3,
                   })}
                   đ
                 </span>
-                <div className="flex">
-                  <Ratings ratings={p.rating} />
-                </div>
+                <span className="text-lg font-bold text-red-500">
+                  {(
+                    (p.price - Math.floor(p.price * p.discount) / 100) /
+                    1000
+                  ).toLocaleString("vi-VN", {
+                    minimumFractionDigits: 3,
+                    maximumFractionDigits: 3,
+                  })}
+                  đ
+                </span>
+              </div>
+              <div className="flex justify-start items-center">
+                <Ratings ratings={p.rating} />
+                <h2 className="font-medium text-green-600 ml-10">
+                  Số lượng: {p.quantity}
+                </h2>
               </div>
             </div>
           </div>

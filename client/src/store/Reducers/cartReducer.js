@@ -32,11 +32,54 @@ export const get_cart_products = createAsyncThunk(
   }
 );
 
+//3. Xóa sản phẩm trong giỏ hàng
+export const delete_cart_product = createAsyncThunk(
+  "cart/delete_card_product",
+  async (cartId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete(
+        `/home/product/delete-card-product/${cartId}`
+      );
+      console.log(data)
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//4. Tăng 
+export const quantity_inc = createAsyncThunk(
+  "cart/quantity_inc",
+  async (cartId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.put(`/home/product/quantity-inc/${cartId}`);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//5. Giảm
+export const quantity_dec = createAsyncThunk(
+  "cart/quantity_dec",
+  async (cartId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.put(`/home/product/quantity-dec/${cartId}`);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const cartReducer = createSlice({
   name: "cart",
   initialState: {
     cart_products: [],
     cart_product_count: 0,
+    buy_product_item: 0,
     wishlist_count: 0,
     wishlist: [],
     price: 0,
@@ -65,6 +108,16 @@ export const cartReducer = createSlice({
       state.cart_product_count = payload.cart_product_count;
       state.shipping_fee = payload.shipping_fee;
       state.outofstock_products = payload.outOfStockProduct;
+      state.buy_product_item = payload.buy_product_item;
+    },
+    [delete_cart_product.fulfilled]: (state, { payload }) => {
+      state.successMessage = payload.message;
+    },
+    [quantity_inc.fulfilled]: (state, { payload }) => {
+      state.successMessage = payload.message;
+    },
+    [quantity_dec.fulfilled]: (state, { payload }) => {
+      state.successMessage = payload.message;
     },
   },
 });

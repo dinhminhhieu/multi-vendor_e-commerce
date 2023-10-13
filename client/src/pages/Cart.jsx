@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { get_cart_products } from "../store/Reducers/cartReducer";
+import { get_cart_products, delete_cart_product, messageClear, quantity_inc, quantity_dec } from "../store/Reducers/cartReducer";
 import toast from "react-hot-toast";
 
 const Cart = () => {
@@ -17,6 +17,9 @@ const Cart = () => {
     outofstock_products,
     cart_product_count,
     shipping_fee,
+    buy_product_item,
+    price,
+    successMessage
   } = useSelector((state) => state.cart);
 
   const redirect = () => {
@@ -33,6 +36,28 @@ const Cart = () => {
   useEffect(() => {
     dispatch(get_cart_products(userInfo.id));
   }, []);
+
+    useEffect(() => {
+    if(successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+      dispatch(get_cart_products(userInfo.id))
+    }
+  }, [successMessage])
+
+      const inc = (quantity, stock, cartId) => {
+        const temp = quantity + 1;
+        if (temp <= stock) {
+            dispatch(quantity_inc(cartId))
+        }
+    }
+
+    const dec = (quantity, cartId) => {
+        const temp = quantity - 1;
+        if (temp !== 0) {
+            dispatch(quantity_dec(cartId))
+        }
+    }
 
   return (
     <div>
@@ -62,14 +87,17 @@ const Cart = () => {
                   <div className="flex flex-col gap-3">
                     <div className="bg-white p-4">
                       <h2 className="text-md text-green-500 font-semibold">
-                        Số lượng sản phẩm: {cart_products.length}
+                        Số lượng sản phẩm: {cart_product_count}
                       </h2>
                     </div>
                     {cart_products.map((p, i) => (
                       <div className="flex bg-white p-4 flex-col gap-2">
                         <div className="flex justify-start items-center">
                           <h2 className="text-md font-medium">
-                            Cửa hàng: <span className="text-red-600 font-medium">{p.shopName}</span>
+                            Cửa hàng:{" "}
+                            <span className="text-red-600 font-medium">
+                              {p.shopName}
+                            </span>
                           </h2>
                         </div>
                         {p.products.map((pt, i) => (
@@ -95,14 +123,24 @@ const Cart = () => {
                               <div className="pl-4 sm:pl-0">
                                 <div className="flex justify-between">
                                   <span className="text-base line-through">
-                                    {(pt.productInfo.price / 1000).toLocaleString("vi-VN", {
+                                    {(
+                                      pt.productInfo.price / 1000
+                                    ).toLocaleString("vi-VN", {
                                       minimumFractionDigits: 3,
                                       maximumFractionDigits: 3,
                                     })}
                                     đ
                                   </span>
                                   <span className="text-lg text-red-500 font-bold ml-2">
-                                    {((pt.productInfo.price - Math.floor((pt.productInfo.price * pt.productInfo.discount)/100)) / 1000).toLocaleString("vi-VN", {
+                                    {(
+                                      (pt.productInfo.price -
+                                        Math.floor(
+                                          (pt.productInfo.price *
+                                            pt.productInfo.discount) /
+                                            100
+                                        )) /
+                                      1000
+                                    ).toLocaleString("vi-VN", {
                                       minimumFractionDigits: 3,
                                       maximumFractionDigits: 3,
                                     })}
@@ -115,15 +153,15 @@ const Cart = () => {
                               </div>
                               <div className="flex gap-2 flex-col">
                                 <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                  <div className="px-3 cursor-pointer m-2">
+                                  <div onClick={() => dec(pt.quantity, pt._id)} className="px-3 cursor-pointer m-2">
                                     -
                                   </div>
                                   <div className="text-base">{pt.quantity}</div>
-                                  <div className="px-3 cursor-pointer m-2">
+                                  <div onClick={() => inc(pt.quantity, pt.productInfo.quantity, pt._id)} className="px-3 cursor-pointer m-2">
                                     +
                                   </div>
                                 </div>
-                                <button className="px-5 py-[3px] bg-red-500 text-white">
+                                <button onClick={() => dispatch(delete_cart_product(pt._id))} className="px-5 py-[3px] bg-red-500 text-white">
                                   Xóa
                                 </button>
                               </div>
@@ -162,38 +200,50 @@ const Cart = () => {
                               <div className="flex justify-between w-5/12 sm:w-full sm:mt-3">
                                 <div className="pl-4 sm:pl-0">
                                   <div className="flex justify-between">
-                                  <span className="text-base line-through">
-                                    {(p.products[0].price / 1000).toLocaleString("vi-VN", {
-                                      minimumFractionDigits: 3,
-                                      maximumFractionDigits: 3,
-                                    })}
-                                    đ
-                                  </span>
-                                  <span className="text-lg text-red-500 font-bold ml-2">
-                                    {((p.products[0].price - Math.floor((p.products[0].price * p.products[0].discount)/100)) / 1000).toLocaleString("vi-VN", {
-                                      minimumFractionDigits: 3,
-                                      maximumFractionDigits: 3,
-                                    })}
-                                    đ
-                                  </span>
-                                </div>
-                                <p className="ml-6 font-bold text-red-500">
-                                  Giảm {p.products[0].discount}%
-                                </p>
+                                    <span className="text-base line-through">
+                                      {(
+                                        p.products[0].price / 1000
+                                      ).toLocaleString("vi-VN", {
+                                        minimumFractionDigits: 3,
+                                        maximumFractionDigits: 3,
+                                      })}
+                                      đ
+                                    </span>
+                                    <span className="text-lg text-red-500 font-bold ml-2">
+                                      {(
+                                        (p.products[0].price -
+                                          Math.floor(
+                                            (p.products[0].price *
+                                              p.products[0].discount) /
+                                              100
+                                          )) /
+                                        1000
+                                      ).toLocaleString("vi-VN", {
+                                        minimumFractionDigits: 3,
+                                        maximumFractionDigits: 3,
+                                      })}
+                                      đ
+                                    </span>
+                                  </div>
+                                  <p className="ml-6 font-bold text-red-500">
+                                    Giảm {p.products[0].discount}%
+                                  </p>
                                 </div>
                                 <div className="flex gap-2 flex-col">
                                   <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                    <div className="px-3 cursor-pointer m-2">
+                                    <div onClick={() => dec(p.quantity, p._id)} className="px-3 cursor-pointer m-2">
                                       -
                                     </div>
-                                    <div className="text-base">{p.quantity}</div>
-                                    <div className="px-3 cursor-pointer m-2">
+                                    <div className="text-base">
+                                      {p.quantity}
+                                    </div>
+                                    <div onClick={() => inc(p.quantity, p.products[0].quantity, p._id)} className="px-3 cursor-pointer m-2">
                                       +
                                     </div>
                                   </div>
-                                  <button className="px-5 py-[3px] bg-red-500 text-white">
-                                    Xóa
-                                  </button>
+                                  <button onClick={() => dispatch(delete_cart_product(p._id))} className="px-5 py-[3px] bg-red-500 text-white">
+                                  Xóa
+                                </button>
                                 </div>
                               </div>
                             </div>
@@ -210,12 +260,24 @@ const Cart = () => {
                     <div className="bg-white p-3 text-slate-600 flex flex-col gap-3">
                       <h2 className="text-xl font-bold">Đơn hàng</h2>
                       <div className="flex justify-between items-center">
-                        <span>Tạm tính ({cart_product_count} sản phẩm)</span>
-                        <span>100000đ</span>
+                        <span>Tạm tính ({buy_product_item} sản phẩm)</span>
+                        <span className="text-lg font-bold ml-2">
+                          {(price / 1000).toLocaleString("vi-VN", {
+                            minimumFractionDigits: 3,
+                            maximumFractionDigits: 3,
+                          })}
+                          đ
+                        </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span>Phí vận chuyển</span>
-                        <span>30000đ</span>
+                        <span className="text-lg font-bold ml-2">
+                          {(shipping_fee / 1000).toLocaleString("vi-VN", {
+                            minimumFractionDigits: 3,
+                            maximumFractionDigits: 3,
+                          })}
+                          đ
+                        </span>
                       </div>
                       <div className="flex gap-2">
                         <input
@@ -229,13 +291,19 @@ const Cart = () => {
                       </div>
                       <div className="flex justify-between items-center">
                         <span>Tổng tiền</span>
-                        <span className="text-lg text-orange-500">100000đ</span>
+                        <span className="text-xl font-bold ml-2 text-red-600">
+                          {((price + shipping_fee) / 1000).toLocaleString("vi-VN", {
+                            minimumFractionDigits: 3,
+                            maximumFractionDigits: 3,
+                          })}
+                          đ
+                        </span>
                       </div>
                       <button
                         onClick={redirect}
                         className="px-5 py-[8px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase"
                       >
-                        Thanh toán 4 sản phẩm
+                        Thanh toán ({buy_product_item}) sản phẩm
                       </button>
                     </div>
                   )}

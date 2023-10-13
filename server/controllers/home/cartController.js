@@ -68,7 +68,7 @@ class cartController {
       ]);
       let calculatePrice = 0;
       let cart_product_count = 0;
-
+      let buy_product_item = 0;
       // Hết hàng
       const outOfStockProduct = cart_products.filter(
         (p) => p.products[0].quantity < p.quantity
@@ -84,6 +84,7 @@ class cartController {
       for (let i = 0; i < quantityProduct.length; i++) {
         const { quantity } = quantityProduct[i];
         cart_product_count = cart_product_count + quantity;
+        buy_product_item = buy_product_item + quantity;
         const { price, discount } = quantityProduct[i].products[0];
         // Tính toán giá sản phẩm dựa trên số lượng (quantity), giá gốc (price), và tỷ lệ giảm giá (discount)
         if (discount !== 0) {
@@ -97,7 +98,9 @@ class cartController {
       // Tính toán giá sản phẩm từ nhiều seller khác nhau
       let p = [];
       let unique = [
-        ...new Set(quantityProduct.map((p) => p.products[0].sellerId.toString())),
+        ...new Set(
+          quantityProduct.map((p) => p.products[0].sellerId.toString())
+        ),
       ];
       for (let i = 0; i < unique.length; i++) {
         let price = 0;
@@ -144,6 +147,54 @@ class cartController {
         cart_product_count,
         shipping_fee: 30000 * p.length,
         outOfStockProduct,
+        buy_product_item,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //3. Xóa sản phẩm tron giỏ hàng
+  delete_card_product = async (req, res) => {
+    const { cartId } = req.params;
+    try {
+      await cartModel.findByIdAndDelete(cartId);
+      responseReturn(res, 200, {
+        message: "Xóa thành công!",
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //4. Tăng
+  quantity_inc = async (req, res) => {
+    const { cartId } = req.params;
+    try {
+      const product = await cartModel.findById(cartId);
+      const { quantity } = product;
+      await cartModel.findByIdAndUpdate(cartId, {
+        quantity: quantity + 1,
+      });
+      responseReturn(res, 200, {
+        message: "Thành công!",
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //5. Giảm
+  quantity_dec = async (req, res) => {
+    const { cartId } = req.params;
+    try {
+      const product = await cartModel.findById(cartId);
+      const { quantity } = product;
+      await cartModel.findByIdAndUpdate(cartId, {
+        quantity: quantity - 1,
+      });
+      responseReturn(res, 200, {
+        message: "Thành công!",
       });
     } catch (error) {
       console.log(error.message);
