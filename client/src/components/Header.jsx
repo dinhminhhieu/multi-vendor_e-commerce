@@ -194,10 +194,12 @@ const Header = () => {
                         <FaCartShopping size={20} className="text-red-500" />
                       </span>      
                         {
-                          cart_product_count !== 0 && <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                          cart_product_count !== 0 ? <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
                             {
                               cart_product_count
                             }
+                          </div> : <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                              0
                           </div>
                         }
                     </div>
