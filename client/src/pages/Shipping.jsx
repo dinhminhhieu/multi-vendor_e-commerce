@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
+import { useDispatch, useSelector } from "react-redux";
+import {place_order} from '../store/Reducers/orderReducer'
 
 const Shipping = () => {
   const { MdOutlineKeyboardArrowRight } = icons;
   const [res, setRes] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
   const {
-    state: {},
+    state: { products, price, shipping_fee, items },
   } = useLocation();
   const [state, setState] = useState({
     name: "",
@@ -33,7 +38,19 @@ const Shipping = () => {
       setRes(true);
     }
   };
-  console.log(state)
+
+  const placeOrder = () => {
+    dispatch(place_order({
+        price,
+        products,
+        shipping_fee,
+        shippingInfo: state,
+        userId: userInfo.id,
+        navigate,
+        items
+    }))
+  };
+
   return (
     <div>
       <Header />
@@ -196,14 +213,121 @@ const Shipping = () => {
                         </span>
                       </p>
                       <p className="text-slate-600 text-sm font-medium">
-                        Email: dinhminhhieuvn@gmail.com
+                        Email: {userInfo.email}
                       </p>
                     </div>
                   )}
                 </div>
+                {products.map((p, i) => (
+                  <div key={i} className="flex bg-white p-4 flex-col gap-2">
+                    <div className="flex justify-start items-center">
+                      <h2 className="text-md font-medium">
+                        Cửa hàng:{" "}
+                        <span className="text-red-600 font-medium">
+                          {p.shopName}
+                        </span>
+                      </h2>
+                    </div>
+                    {p.products.map((pt, j) => (
+                      <div key={i + 99} className="w-full flex flex-wrap">
+                        <div className="flex sm:w-full gap-2 w-7/12">
+                          <div className="flex gap-2 justify-start items-center">
+                            <img
+                              className="w-[80px] h-[80px]"
+                              src={pt.productInfo.images[0]}
+                              alt="product image"
+                            />
+                            <div className="pr-4 text-slate-600">
+                              <h2 className="text-md">{pt.productInfo.name}</h2>
+                              <span className="text-sm text-blue-600 font-medium">
+                                Thương hiệu : {pt.productInfo.brand}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex justify-end w-5/12 sm:w-full sm:mt-3">
+                          <div className="pl-4 sm:pl-0">
+                            <div className="flex justify-between">
+                              <span className="text-base line-through">
+                                {(pt.productInfo.price / 1000).toLocaleString(
+                                  "vi-VN",
+                                  {
+                                    minimumFractionDigits: 3,
+                                    maximumFractionDigits: 3,
+                                  }
+                                )}
+                                đ
+                              </span>
+                              <span className="text-lg text-red-500 font-bold ml-2">
+                                {(
+                                  (pt.productInfo.price -
+                                    Math.floor(
+                                      (pt.productInfo.price *
+                                        pt.productInfo.discount) /
+                                        100
+                                    )) /
+                                  1000
+                                ).toLocaleString("vi-VN", {
+                                  minimumFractionDigits: 3,
+                                  maximumFractionDigits: 3,
+                                })}
+                                đ
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="w-[33%] md-lg:w-full"></div>
+            <div className="w-[33%] md-lg:w-full">
+              <div className="pl-3 md-lg:pl-0">
+                <div className="bg-white font-medium p-5 text-slate-600 flex flex-col gap-3">
+                  <h2 className="text-xl font-semibold">Tóm tắt đơn hàng</h2>
+                  <div className="flex justify-between items-center">
+                    <span>Tổng cộng ({items} sản phẩm)</span>
+                    <span className="text-lg font-bold ml-2">
+                          {(price / 1000).toLocaleString("vi-VN", {
+                            minimumFractionDigits: 3,
+                            maximumFractionDigits: 3,
+                          })}
+                          đ
+                        </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Phí vận chuyển</span>
+                    <span className="text-lg font-bold ml-2">
+                          {(shipping_fee / 1000).toLocaleString("vi-VN", {
+                            minimumFractionDigits: 3,
+                            maximumFractionDigits: 3,
+                          })}
+                          đ
+                        </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Tổng cộng</span>
+                    <span className="text-xl font-bold ml-2 text-red-600">
+                          {((price + shipping_fee) / 1000).toLocaleString("vi-VN", {
+                            minimumFractionDigits: 3,
+                            maximumFractionDigits: 3,
+                          })}
+                          đ
+                        </span>
+                  </div>
+                  <button
+                    onClick={placeOrder}
+                    disabled={res ? false : true}
+                    className={`px-5 py-[8px] rounded-sm hover:shadow-red-700/20 hover:shadow-lg ${
+                      res ? "bg-red-500" : "bg-red-700"
+                    } text-sm text-white uppercase`}
+                  >
+                    Đặt Hàng
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

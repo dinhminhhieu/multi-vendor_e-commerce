@@ -25,10 +25,10 @@ const Cart = () => {
   const redirect = () => {
     navigate("/shipping", {
       state: {
-        products: [],
-        price: 100000,
-        shipping: 30000,
-        items: 4,
+        products: cart_products,
+        price: price,
+        shipping_fee: shipping_fee,
+        items: buy_product_item,
       },
     });
   };
@@ -290,7 +290,7 @@ const Cart = () => {
                         </button>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>Tổng tiền</span>
+                        <span>Tổng cộng</span>
                         <span className="text-xl font-bold ml-2 text-red-600">
                           {((price + shipping_fee) / 1000).toLocaleString("vi-VN", {
                             minimumFractionDigits: 3,
