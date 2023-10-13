@@ -46,6 +46,7 @@ class cartController {
   //2. Lấy danh sách sản phẩm trong giỏ hàng
   get_cart_products = async (req, res) => {
     const { userId } = req.params;
+    const co = 5
     try {
       // Truy vấn tập hợp
       const cart_products = await cartModel.aggregate([
@@ -67,7 +68,7 @@ class cartController {
       ]);
       let calculatePrice = 0;
       let cart_product_count = 0;
-      
+
       // Hết hàng
       const outOfStockProduct = cart_products.filter(
         (p) => p.products[0].quantity < p.quantity
@@ -83,12 +84,68 @@ class cartController {
       for (let i = 0; i < quantityProduct.length; i++) {
         const { quantity } = quantityProduct[i];
         cart_product_count = cart_product_count + quantity;
-        const {price, discount} = quantityProduct[i].products[0]
-
+        const { price, discount } = quantityProduct[i].products[0];
+        // Tính toán giá sản phẩm dựa trên số lượng (quantity), giá gốc (price), và tỷ lệ giảm giá (discount)
+        if (discount !== 0) {
+          calculatePrice =
+            calculatePrice +
+            quantity * (price - Math.floor((price * discount) / 100));
+        } else {
+          calculatePrice = calculatePrice + quantity * price;
+        }
       }
-      
-
-    } catch (error) {}
+      // Tính toán giá sản phẩm từ nhiều seller khác nhau
+      let p = [];
+      let unique = [
+        ...new Set(
+          quantityProduct.map((p) => p.products[0].sellerId.toString())
+        ),
+      ];
+      for (let i = 0; i < unique.length; i++) {
+        let price = 0;
+        for (let j = 0; j < quantityProduct.length; j++) {
+          const tempProduct = quantityProduct[j].products[0];
+          if (unique[j] === tempProduct.sellerId.toString()) {
+            let pri = 0;
+            if (tempProduct.discount !== 0) {
+              pri =
+                tempProduct.price -
+                Math.floor((tempProduct.price * tempProduct.discount) / 100);
+            } else {
+              pri = tempProduct.price;
+            }
+            pri = pri - Math.floor((pri * co) / 100);
+            price = price + pri * quantityProduct[j].quantity; 
+            p[i] = {
+              sellerId: unique[i],
+              shopName: tempProduct.shopName,
+              price,
+              products: p[i]
+                ? [
+                    ...p[i].products,
+                    {
+                      _id: quantityProduct[j]._id,
+                      quantity: quantityProduct[j].quantity,
+                      productInfo: tempProduct,
+                    },
+                  ]
+                : [
+                    {
+                      _id: quantityProduct[j]._id,
+                      quantity: quantityProduct[j].quantity,
+                      productInfo: tempProduct,
+                    },
+                  ],
+            };         
+          }
+        }
+      }
+      console.log(p)
+      console.log(calculatePrice)
+      console.log(outOfStockProduct)
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 }
 
