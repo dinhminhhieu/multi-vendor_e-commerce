@@ -38,7 +38,7 @@ const Dashboard = () => {
           <div>
             <button
               onClick={() => setFilterShow(!filterShow)}
-              className="text-center py-3 px-3 bg-indigo-500 text-white"
+              className="text-center py-3 px-3 bg-red-500 text-white"
             >
               <FaList />
             </button>
