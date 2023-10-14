@@ -7,5 +7,9 @@ router.get(
   "/home/customer/get-dashboard-index-data/:userId",
   orderController.get_dashboard_index_data
 );
+router.get(
+  "/home/customer/get-orders/:customerId/:status",
+  orderController.get_orders
+);
 
 module.exports = router

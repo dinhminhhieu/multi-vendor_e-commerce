@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import icons from "../../assets/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { get_dashboard_index_data } from "../../store/Reducers/dashboardReducer";
 const Index = () => {
   const { AiOutlineShoppingCart } = icons;
