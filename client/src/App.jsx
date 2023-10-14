@@ -12,6 +12,10 @@ import SearchProducts from './pages/SearchProducts'
 import Dashboard from './pages/Dashboard'
 import ProtectUser from './utils/ProtectUser'
 import Index from './components/dashboard/Index'
+import Orders from './components/dashboard/Orders'
+import Order from './components/dashboard/Order'
+import Wishlist from './components/dashboard/Wishlist'
+import ChangePassword from './components/dashboard/ChangePassword'
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect } from 'react';
 import { get_category } from "./store/Reducers/homeReducer";
@@ -39,6 +43,10 @@ useEffect(() => {
       <Route path='/dashboard' element={<ProtectUser />}>
         <Route path='' element={<Dashboard />}>
             <Route path='' element={<Index />} />
+            <Route path='my-orders' element={<Orders />} />
+            <Route path='my-wishlist' element={<Wishlist />} />
+            <Route path='order/details/:orderId' element={<Order />} />
+            <Route path='change-password' element={<ChangePassword />} />
         </Route>
       </Route>
     </Routes>

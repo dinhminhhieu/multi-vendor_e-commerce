@@ -312,6 +312,7 @@ const Cart = () => {
             </div>
           ) : (
             <div>
+              <h2 className="text-xl font-medium mb-4">Chưa có sản phẩm nào trong giỏ hàng!</h2>
               <Link to="/shops" className="px-4 py-1 bg-red-500 text-white">
                 Mua Ngay
               </Link>

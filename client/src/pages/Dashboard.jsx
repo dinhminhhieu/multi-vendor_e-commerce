@@ -89,7 +89,7 @@ const Dashboard = () => {
                   <span className="text-xl">
                     <TfiLock />
                   </span>
-                  <Link to="/dashboard/chage-password" className="block">
+                  <Link to="/dashboard/change-password" className="block">
                     Bảo mật tài khoản
                   </Link>
                 </li>
