@@ -1,16 +1,42 @@
 const authOrder = require("../../models/authOrder");
+const cartModel = require("../../models/cartModel");
 const customerOrder = require("../../models/customerOrder");
 const moment = require("moment");
-const {responseReturn} = require("../../utils/response")
+const { responseReturn } = require("../../utils/response");
+const {
+  mongo: { ObjectId },
+} = require("mongoose");
 
 class orderController {
+  paymentCheck = async (id) => {
+    try {
+      const order = await customerOrder.findById(id);
+      if (order.payment_status === "unpaid") {
+        await customerOrder.findByIdAndUpdate(id, {
+          delivery_status: "cancelled",
+        });
+        await authOrder.updateMany(
+          {
+            orderId: id,
+          },
+          {
+            delivery_status: "cancelled",
+          }
+        );
+      }
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //1. Đặt hàng
   place_order = async (req, res) => {
     const { price, products, shipping_fee, shippingInfo, userId } = req.body;
     let authorOrderData = [];
     let cartId = [];
     const tempDate = moment(Date.now()).format("LLL");
-    
+
     let customerOrderProduct = [];
 
     for (let i = 0; i < products.length; i++) {
@@ -24,6 +50,7 @@ class orderController {
         }
       }
     }
+
     try {
       const order = await customerOrder.create({
         customerId: userId,
@@ -45,26 +72,26 @@ class orderController {
           storePro.push(tempPro);
         }
 
-        authOrderData.push({
+        authorOrderData.push({
           orderId: order.id,
           sellerId,
           products: storePro,
           price: pri,
           payment_status: "unpaid",
-          shippingInfo: "Dhaka myshop Warehouse",
+          shippingInfo: "Giao hàng tiết kiệm",
           delivery_status: "pending",
           date: tempDate,
         });
       }
-      await authOrderModel.insertMany(authOrderData);
-      for (let k = 0; k < cardId.length; k++) {
-        await cardModel.findByIdAndDelete(cardId[k]);
+      await authOrder.insertMany(authorOrderData);
+      for (let k = 0; k < cartId.length; k++) {
+        await cartModel.findByIdAndDelete(cartId[k]);
       }
       setTimeout(() => {
         this.paymentCheck(order.id);
       }, 15000);
       responseReturn(res, 201, {
-        message: "Đặt hàng thành công!",
+        message: "order placeed success",
         orderId: order.id,
       });
     } catch (error) {

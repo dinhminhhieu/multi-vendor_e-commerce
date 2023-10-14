@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Shipping from './pages/Shipping'
 import CategoryShop from './pages/CategoryShop'
+import Payment from './pages/Payment'
 import SearchProducts from './pages/SearchProducts'
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect } from 'react';
@@ -30,6 +31,7 @@ useEffect(() => {
       <Route path='/shipping' element={<Shipping />}/>
       <Route path='/products?' element={<CategoryShop />}/>
       <Route path='/products/search?' element={<SearchProducts />}/>
+      <Route path='/payment' element={<Payment />}/>
     </Routes>
     </BrowserRouter>
   )

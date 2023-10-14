@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const authOrderSchema = new Schema(
+const authorSchema = new Schema(
   {
     orderId: {
       type: Schema.ObjectId,
@@ -38,4 +38,4 @@ const authOrderSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model("authOrders", authOrderSchema);
+module.exports = model("authorOrders", authorSchema);
