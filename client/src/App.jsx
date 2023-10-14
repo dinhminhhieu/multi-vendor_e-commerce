@@ -39,7 +39,6 @@ useEffect(() => {
       <Route path='/products?' element={<CategoryShop />}/>
       <Route path='/products/search?' element={<SearchProducts />}/>
       <Route path='/payment' element={<Payment />}/>
-
       <Route path='/dashboard' element={<ProtectUser />}>
         <Route path='' element={<Dashboard />}>
             <Route path='' element={<Index />} />
