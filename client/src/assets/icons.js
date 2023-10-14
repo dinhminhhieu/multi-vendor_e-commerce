@@ -24,6 +24,9 @@ import {
   BsFillGridFill,
   BsChevronDoubleRight,
   BsChevronDoubleLeft,
+  BsHeart,
+  BsChat,
+
 } from "react-icons/bs";
 import {
   MdOutlineKeyboardArrowDown,
@@ -32,8 +35,11 @@ import {
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosCall } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import {BiSolidCheckShield} from "react-icons/bi"
+import { FiChevronLeft, FiChevronRight, FiLogOut } from "react-icons/fi";
+import { BiSolidCheckShield, BiLogInCircle } from "react-icons/bi";
+import { RxDashboard } from "react-icons/rx";
+import { RiProductHuntLine } from "react-icons/ri";
+import { TfiLock } from "react-icons/tfi";
 
 const icons = {
   AiOutlineMail,
@@ -58,13 +64,20 @@ const icons = {
   BsFillGridFill,
   BsChevronDoubleRight,
   BsChevronDoubleLeft,
+  BsHeart,
+  BsChat,
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
   IoIosCall,
   CiStar,
   FiChevronLeft,
   FiChevronRight,
+  FiLogOut,
   BiSolidCheckShield,
+  BiLogInCircle,
+  RxDashboard,
+  RiProductHuntLine,
+  TfiLock,
 };
 
 export default icons
