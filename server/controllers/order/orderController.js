@@ -35,7 +35,8 @@ class orderController {
     const { price, products, shipping_fee, shippingInfo, userId } = req.body;
     let authorOrderData = [];
     let cartId = [];
-    const tempDate = moment(Date.now()).format("LLL");
+    const tempDate = moment(Date.now());
+    const formattedDate = moment(tempDate).format("DD/MM/YYYY HH:mm");
 
     let customerOrderProduct = [];
 
@@ -59,7 +60,7 @@ class orderController {
         price: price + shipping_fee,
         delivery_status: "pending",
         payment_status: "unpaid",
-        date: tempDate,
+        date: formattedDate,
       });
       for (let i = 0; i < products.length; i++) {
         const pro = products[i].products;
@@ -80,7 +81,7 @@ class orderController {
           payment_status: "unpaid",
           shippingInfo: "Giao hàng tiết kiệm",
           delivery_status: "pending",
-          date: tempDate,
+          date: formattedDate,
         });
       }
       await authOrder.insertMany(authorOrderData);
@@ -154,6 +155,19 @@ class orderController {
       }
       responseReturn(res, 200, {
         orders,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  get_order = async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+      const order = await customerOrder.findById(orderId);
+      responseReturn(res, 200, {
+        order,
       });
     } catch (error) {
       console.log(error.message);

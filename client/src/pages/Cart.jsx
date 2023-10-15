@@ -148,7 +148,7 @@ const Cart = () => {
                                   </span>
                                 </div>
                                 <p className="ml-6 font-bold text-red-500">
-                                  Giảm {pt.productInfo.discount}%
+                                  (Giảm {pt.productInfo.discount}%)
                                 </p>
                               </div>
                               <div className="flex gap-2 flex-col">
@@ -226,7 +226,7 @@ const Cart = () => {
                                     </span>
                                   </div>
                                   <p className="ml-6 font-bold text-red-500">
-                                    Giảm {p.products[0].discount}%
+                                    (Giảm {p.products[0].discount}%)
                                   </p>
                                 </div>
                                 <div className="flex gap-2 flex-col">
