@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import icons from "../assets/icons";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Ratings from "../components/Ratings";
 import Reviews from "../components/Reviews";
-import ShopProducts from "../components/products/ShopProducts";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
+import { useDispatch, useSelector } from "react-redux";
+import { get_product } from "../store/Reducers/homeReducer";
+import {
+  messageClear,
+  add_to_cart,
+  add_to_wishlist,
+} from "../store/Reducers/cartReducer";
+import toast from "react-hot-toast";
 
 const Details = () => {
   const {
@@ -22,11 +29,19 @@ const Details = () => {
     BsTwitter,
     BsGithub,
   } = icons;
-  const images = [1, 2, 3, 4, 5, 6, 7, 8];
-  const discount = 50;
+  const navigate = useNavigate();
+  const { slug } = useParams();
+  const dispatch = useDispatch();
+  const { product, moreProducts, relatedProducts } = useSelector(
+    (state) => state.home
+  );
+  const { userInfo } = useSelector((state) => state.auth);
+  const { errorMessage, successMessage } = useSelector((state) => state.cart);
+
   const stock = 5;
   const [image, setImage] = useState("");
   const [state, setState] = useState("reviews");
+  const [quantity, setQuantity] = useState(1);
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -58,6 +73,99 @@ const Details = () => {
     },
   };
 
+  useEffect(() => {
+    dispatch(get_product(slug));
+  }, [slug]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+  }, [errorMessage, successMessage]);
+
+  const add_cart = () => {
+    if (userInfo) {
+      dispatch(
+        add_to_cart({
+          userId: userInfo.id,
+          quantity,
+          productId: product._id,
+        })
+      );
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const add_wishlist = () => {
+    if (userInfo) {
+      dispatch(
+        add_to_wishlist({
+          userId: userInfo.id,
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          image: product.images[0],
+          discount: product.discount,
+          rating: product.rating,
+          slug: product.slug,
+        })
+      );
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const inc = () => {
+    if (quantity >= product.stock) {
+      toast.error("Hết hàng");
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const dec = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const buy_now = () => {
+    let price = 0;
+    if (product.discount !== 0) {
+      price =
+        product.price - Math.floor((product.price * product.discount) / 100);
+    } else {
+      price = product.price;
+    }
+    const obj = [
+      {
+        sellerId: product.sellerId,
+        shopName: product.shopName,
+        price: quantity * (price - Math.floor((price * 5) / 100)),
+        products: [
+          {
+            quantity,
+            productInfo: product,
+          },
+        ],
+      },
+    ];
+    navigate("/shipping", {
+      state: {
+        products: obj,
+        price: price * quantity,
+        shipping_fee: 30000,
+        items: 1,
+      },
+    });
+  };
+
   return (
     <div>
       <Header />
@@ -73,15 +181,17 @@ const Details = () => {
       <div className="bg-slate-100 py-5 mb-5">
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
           <div className="flex justify-start items-center text-lg text-slate-600 w-full">
-            <Link to="/">Trang chủ</Link>
+            <Link to="/" className="text-sm font-medium">
+              Trang chủ
+            </Link>
             <span className="pt-1">
               <MdOutlineKeyboardArrowRight />
             </span>
-            <Link to="/">Điện thoại di động</Link>
+            <Link className="text-sm font-medium">{product.category}</Link>
             <span className="pt-1">
               <MdOutlineKeyboardArrowRight />
             </span>
-            <span>Iphone 14 promax</span>
+            <span className="text-sm font-medium">{product.name}</span>
           </div>
         </div>
       </div>
@@ -92,28 +202,24 @@ const Details = () => {
               <div className="p-9 border h-[450px] w-[450px]">
                 <img
                   className="h-[400px] w-[400px]"
-                  src={
-                    image
-                      ? `http://localhost:3000/images/categories/${image}.png`
-                      : `http://localhost:3000/images/categories/${images[2]}.png`
-                  }
+                  src={image ? image : product.images?.[0]}
                   alt=""
                 />
               </div>
               <div className="py-3 w-[500px]">
-                {images && (
+                {product.images && (
                   <Carousel
                     autoPlay={true}
                     infinite={true}
                     responsive={responsive}
                     transitionDuration={500}
                   >
-                    {images.map((img, i) => {
+                    {product.images.map((img, i) => {
                       return (
-                        <div onClick={() => setImage(img)}>
+                        <div key={i} onClick={() => setImage(img)}>
                           <img
                             className="h-[120px] cursor-pointer"
-                            src={`http://localhost:3000/images/categories/${img}.png`}
+                            src={img}
                             alt=""
                           />
                         </div>
@@ -124,54 +230,81 @@ const Details = () => {
               </div>
             </div>
             <div className="flex flex-col gap-5">
-              <div className="text-2xl font-bold">
-                <h2>Iphone 14</h2>
-              </div>
+              <h2 className="font-medium text-lg">{product.name}</h2>
               <div className="flex justify-start items-center gap-4">
                 <div className="flex text-xl">
-                  <Ratings ratings={4.5} />
+                  <Ratings ratings={product.rating} />
                 </div>
                 <span className="text-green-500">(23 đánh giá)</span>
               </div>
-              <span className="text-blue-500">Thương hiệu: cellphoneS</span>
-              <div className="text-2xl text-red-500 font-bold flex gap-3">
-                {discount ? (
-                  <>
-                    <span>Giá bán: </span>
-                    <h2 className="line-through">100000đ</h2>
-                    <h2>
-                      {100000 - Math.floor((100000 * discount) / 100)}đ (Giảm{" "}
-                      {discount}%)
+              <span className="text-blue-500 font-medium">
+                Thương hiệu: {product.brand}
+              </span>
+              {product.discount ? (
+                <>
+                  <div className="flex gap-3">
+                    <h2 className="text-base font-medium text-slate-500">
+                      Giá bán:{" "}
                     </h2>
-                  </>
-                ) : (
-                  <h2>Giá bán: 100000đ</h2>
-                )}
-              </div>
-              <div className="text-slate-600">
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
+                    <span className="text-base line-through">
+                      {(product.price / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
+                    <span className="text-xl text-red-500 font-bold ml-2">
+                      {(
+                        (product.price -
+                          Math.floor(
+                            (product.price * product.discount) / 100
+                          )) /
+                        1000
+                      ).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
+                  </div>
+                  <h2 className="text-base font-medium text-slate-500 gap-3">
+                    Giảm giá:{" "}
+                    <span className="text-red-500 font-medium text-lg">
+                      {product.discount}%
+                    </span>
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-lg font-medium text-slate-500">
+                    Giá bán:{" "}
+                    <span className="text-lg text-red-500 font-bold">
+                      {(product.price / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
+                  </h2>
+                </>
+              )}
               <div className="flex gap-3 pb-10 border-b">
-                {stock ? (
+                {product.quantity ? (
                   <>
                     <div className="flex bg-slate-200 h-[50px] justify-center items-center text-xl">
-                      <div className="px-6 cursor-pointer">-</div>
-                      <div className="px-5">5</div>
-                      <div className="px-6 cursor-pointer">+</div>
+                      <div onClick={dec} className="px-4 cursor-pointer">
+                        -
+                      </div>
+                      <div className="px-4">{quantity}</div>
+                      <div onClick={inc} className="px-4 cursor-pointer">
+                        +
+                      </div>
                     </div>
                     <div>
-                      <button className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-purple-500/40 bg-red-500 text-white">
+                      <button
+                        onClick={add_cart}
+                        className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-purple-500/40 bg-red-500 text-white"
+                      >
                         Thêm vào giỏ hàng
                       </button>
                     </div>
@@ -180,19 +313,28 @@ const Details = () => {
                   ""
                 )}
                 <div>
-                  <div className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-red-500/40 bg-red-500 text-white">
+                  <div
+                    onClick={add_wishlist}
+                    className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-red-500/40 bg-red-500 text-white"
+                  >
                     <AiFillHeart />
                   </div>
                 </div>
               </div>
               <div className="flex py-5 gap-5">
-                <div className="w-[150px] text-black font-bold text-xl flex flex-col gap-5">
+                <div className="w-[150px] font-bold text-base flex flex-col gap-5">
                   <span>Số lượng: </span>
                   <span>Chia sẻ: </span>
                 </div>
                 <div className="flex flex-col gap-5">
-                  <span className={`text-${stock ? "green" : "red"}-500`}>
-                    {stock ? `(${stock}) sản phẩm` : "Hết hàng"}
+                  <span
+                    className={`font-medium text-${
+                      product.quantity ? "green" : "red"
+                    }-500`}
+                  >
+                    {product.quantity
+                      ? `(${product.quantity}) sản phẩm`
+                      : "Hết hàng"}
                   </span>
                   <ul className="flex justify-start items-center gap-3">
                     <li>
@@ -231,8 +373,11 @@ const Details = () => {
                 </div>
               </div>
               <div className="flex gap-3">
-                {stock ? (
-                  <button className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-red-500/40 bg-red-500 text-white">
+                {product.quantity ? (
+                  <button
+                    onClick={buy_now}
+                    className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-red-500/40 bg-red-500 text-white"
+                  >
                     Mua ngay
                   </button>
                 ) : (
@@ -246,45 +391,6 @@ const Details = () => {
           </div>
         </div>
       </section>
-      {/* <section>
-        <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
-          <div className="flex flex-wrap">
-            <div className="w-full md-lg:w-full">
-              <div className="pr-4 md-lg:pr-0">
-                <div className="grid grid-cols-2">
-                  <button
-                    onClick={() => setState("reviews")}
-                    className={`py-1 hover:text-white px-5 hover:bg-red-500 ${
-                      state === "reviews"
-                        ? "bg-red-500 text-white"
-                        : "bg-slate-200 text-slate-700"
-                    } rounded-sm`}
-                  >
-                    Đánh giá
-                  </button>
-                  <button
-                    onClick={() => setState("description")}
-                    className={`py-1 px-5 hover:text-white hover:bg-red-500 ${
-                      state === "description"
-                        ? "bg-red-500 text-white"
-                        : "bg-slate-200 text-slate-700"
-                    } rounded-sm`}
-                  >
-                    Mô tả sản phẩm
-                  </button>
-                </div>
-                <div>
-                  {state === "reviews" ? (
-                    <Reviews />
-                  ) : (
-                    <p className="py-5 text-slate-600">Mô tả sản phẩm</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <section>
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
           <div className="flex flex-wrap">
@@ -293,7 +399,7 @@ const Details = () => {
                 <div className="grid grid-cols-2">
                   <button
                     onClick={() => setState("reviews")}
-                    className={`py-1 hover:text-white px-5 hover:bg-green-500 ${
+                    className={`py-1 hover:text-white px-5 hover:bg-slate-500 ${
                       state === "reviews"
                         ? "bg-red-500 text-white"
                         : "bg-slate-200 text-slate-700"
@@ -303,7 +409,7 @@ const Details = () => {
                   </button>
                   <button
                     onClick={() => setState("description")}
-                    className={`py-2 px-5 hover:text-white hover:bg-green-500 ${
+                    className={`py-2 px-5 hover:text-white hover:bg-slate-500 ${
                       state === "description"
                         ? "bg-red-500 text-white"
                         : "bg-slate-200 text-slate-700"
@@ -321,20 +427,17 @@ const Details = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[28%] md-lg:w-full">
+            <div className="w-[25%] md-lg:w-full">
               <div className="pl-4 md-lg:pl-0">
                 <div className="px-3 py-2 text-white text-center bg-red-500">
-                  <h2>cellphoneS</h2>
+                  <h2>{product.shopName}</h2>
                 </div>
-                <div className="flex flex-col gap-5 mt-3 border p-3">
-                  {[1, 2, 3].map((p, i) => {
+                <div className="flex flex-col gap-2 mt-3 p-3">
+                  {moreProducts.map((p, i) => {
                     return (
-                      <Link className="block">
+                      <Link to={`/product/details/${p.slug}`} className="block border-2 p-3">
                         <div className="relative h-[270px]">
-                          <img
-                            className="w-full h-full"
-                            src={`http://localhost:3000/images/categories/${p}.png`}
-                          />
+                          <img className="w-full h-full" src={p.images[0]} />
                           {p.discount !== 0 && (
                             <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
                               {p.discount}%
@@ -342,13 +445,28 @@ const Details = () => {
                           )}
                         </div>
                         <h2 className="text-slate-600 py-1">{p.name}</h2>
-                        <div className="flex gap-2">
-                          <h2 className="text-red-500 text-lg font-bold">
-                            {p.price}đ
-                          </h2>
-                          <div className="flex items-center gap-2">
-                            <Ratings ratings={p.rating} />
-                          </div>
+                        <div className="flex justify-start items-center gap-2 m-[2px]">
+                          <span className="text-base font-bold line-through">
+                            {(p.price / 1000).toLocaleString("vi-VN", {
+                              minimumFractionDigits: 3,
+                              maximumFractionDigits: 3,
+                            })}
+                            đ
+                          </span>
+                          <span className="text-lg font-bold text-red-500">
+                            {(
+                              (p.price -
+                                Math.floor(p.price * p.discount) / 100) /
+                              1000
+                            ).toLocaleString("vi-VN", {
+                              minimumFractionDigits: 3,
+                              maximumFractionDigits: 3,
+                            })}
+                            đ
+                          </span>
+                        </div>
+                        <div className="flex items-center">
+                          <Ratings ratings={p.rating} />
                         </div>
                       </Link>
                     );
@@ -361,7 +479,9 @@ const Details = () => {
       </section>
       <section>
         <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
-          <h2 className="text-2xl py-8 text-slate-600">Sản phẩm tương tự</h2>
+          <h2 className="text-2xl py-8 text-red-600 font-medium">
+            Sản phẩm tương tự
+          </h2>
           <div>
             <Swiper
               slidesPerView="auto"
@@ -382,13 +502,13 @@ const Details = () => {
               modules={[Pagination]}
               className="mySwiper"
             >
-              {[1, 2, 3, 4, 5, 6, 7].map((p, i) => {
+              {relatedProducts.map((p, i) => {
                 return (
                   <SwiperSlide key={i}>
-                    <Link className="block">
+                    <Link to={`/product/details/${p.slug}`} className="block">
                       <div className="relative h-[270px]">
                         <div className="w-full h-full">
-                          <div className=""></div>
+                          <img className="w-full h-full" src={p.images[0]} />
                           <div className="absolute h-full w-full top-0 left-0 bg-[#000] opacity-25 hover:opacity-50 transition-all duration-500"></div>
                         </div>
                         {p.discount !== 0 && (
@@ -398,16 +518,31 @@ const Details = () => {
                         )}
                       </div>
                       <div className="p-4 flex flex-col gap-1">
-                        <h2 className="text-slate-600 text-lg font-semibold">
-                          {p.name}
+                        <h2 className="font-semibold text-sm">
+                          {p?.name?.slice(0, 25)}...
                         </h2>
                         <div className="flex justify-start items-center gap-3">
-                          <h2 className="text-red-500 text-lg font-bold">
-                            {p.price}đ
-                          </h2>
-                          <div className="flex">
-                            <Ratings ratings={p.rating} />
-                          </div>
+                          <span className="text-base font-bold line-through">
+                            {(p.price / 1000).toLocaleString("vi-VN", {
+                              minimumFractionDigits: 3,
+                              maximumFractionDigits: 3,
+                            })}
+                            đ
+                          </span>
+                          <span className="text-lg font-bold text-red-500">
+                            {(
+                              (p.price -
+                                Math.floor(p.price * p.discount) / 100) /
+                              1000
+                            ).toLocaleString("vi-VN", {
+                              minimumFractionDigits: 3,
+                              maximumFractionDigits: 3,
+                            })}
+                            đ
+                          </span>
+                        </div>
+                        <div className="flex">
+                          <Ratings ratings={p.rating} />
                         </div>
                       </div>
                     </Link>

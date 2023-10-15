@@ -1,18 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Ratings from "../components/Ratings";
 import RatingTemp from "../components/RatingTemp";
 import icons from "../assets/icons";
 import Pagination from "../components/Pagination";
 import { Link } from "react-router-dom";
-import Rating from 'react-rating';
+import Rating from "react-rating";
 
 const Reviews = () => {
   const { BiSolidCheckShield, AiFillStar, CiStar } = icons;
   const [pageNumber, setPageNumber] = useState(1);
-  const [parPage, setParPage] = useState(3)
-    const [rat, setRat] = useState('')
-  const [re, setRe] = useState('')
-  const userInfo = ""
+  const [parPage, setParPage] = useState(3);
+  const [rat, setRat] = useState("");
+  const [re, setRe] = useState("");
+  const userInfo = "";
   return (
     <div className="mt-8">
       <div className="flex gap-10 md:flex-col">
@@ -117,28 +117,54 @@ const Reviews = () => {
           />
         </div>
       </div>
-          <div>
-            {
-          userInfo ? <div className='flex flex-col gap-3'>
-            <div className='flex gap-1'>
+      <div>
+        {userInfo ? (
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-1">
               <Rating
                 onChange={(e) => setRat(e)}
                 initialRating={rat}
-                emptySymbol={<span className='text-slate-600 text-4xl'><CiStar /></span>}
-                fullSymbol={<span className='text-[#EDBB0E] text-4xl'><AiFillStar /></span>}
+                emptySymbol={
+                  <span className="text-slate-600 text-4xl">
+                    <CiStar />
+                  </span>
+                }
+                fullSymbol={
+                  <span className="text-[#EDBB0E] text-4xl">
+                    <AiFillStar />
+                  </span>
+                }
               />
             </div>
             <form>
-              <textarea value={re} required onChange={(e) => setRe(e.target.value)} className='border outline-0 p-3 w-full' name="" id="" cols="30" rows="5"></textarea>
-              <div className='mt-2'>
-                <button className='py-2 px-5 bg-red-500 text-white rounded-sm'>Gửi đánh giá</button>
+              <textarea
+                value={re}
+                required
+                onChange={(e) => setRe(e.target.value)}
+                className="border outline-0 p-3 w-full"
+                name=""
+                id=""
+                cols="30"
+                rows="5"
+              ></textarea>
+              <div className="mt-2">
+                <button className="py-2 px-5 bg-red-500 text-white rounded-sm">
+                  Gửi đánh giá
+                </button>
               </div>
             </form>
-          </div> : <div>
-            <Link className='py-2 px-5 bg-red-500 text-white rounded-sm' to='/login'>Đăng nhập</Link>
           </div>
-        }
+        ) : (
+          <div>
+            <Link
+              className="py-2 px-5 bg-red-500 text-white rounded-sm"
+              to="/login"
+            >
+              Đăng nhập
+            </Link>
           </div>
+        )}
+      </div>
     </div>
   );
 };

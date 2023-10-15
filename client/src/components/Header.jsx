@@ -29,7 +29,7 @@ const Header = () => {
 
   const { categorys } = useSelector((state) => state.home);
   const { userInfo } = useSelector((state) => state.auth);
-  const { cart_product_count } = useSelector((state) => state.cart);
+  const { cart_product_count, wishlist_count } = useSelector((state) => state.cart);
 
   const search = () => {
     navigate(`/products/search?category=${category}&&value=${searchValue}`);
@@ -38,6 +38,14 @@ const Header = () => {
   const redirect_cart_page = () => {
     if(userInfo) {
       navigate("/cart")
+    }else {
+      navigate("/login")
+    }
+  }
+
+    const redirect_wishlist_page = () => {
+    if(userInfo) {
+      navigate("/dashboard/my-wishlist")
     }else {
       navigate("/login")
     }
@@ -180,13 +188,19 @@ const Header = () => {
                 </ul>
                 <div className="flex md-lg:hidden justify-center items-center gap-5">
                   <div className="flex justify-center gap-5">
-                    <div className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300">
+                    <div onClick={redirect_wishlist_page} className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300">
                       <span>
                         <AiFillHeart size={20} className="text-red-500" />
                       </span>
-                      <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
-                        {wishlist}
-                      </div>
+                      {
+                          wishlist_count !== 0 ? <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                            {
+                              wishlist_count
+                            }
+                          </div> : <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                              0
+                          </div>
+                        }
                     </div>
                     <div onClick={redirect_cart_page} className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300">
                       <span>
