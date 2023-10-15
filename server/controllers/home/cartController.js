@@ -1,4 +1,5 @@
 const cartModel = require("../../models/cartModel");
+const wishlistModel = require("../../models/wishlistModel");
 const { responseReturn } = require("../../utils/response");
 const {
   mongo: { ObjectId },
@@ -196,6 +197,28 @@ class cartController {
       responseReturn(res, 200, {
         message: "Thành công!",
       });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //6. Thêm vào giỏ hàng
+  add_to_wishlist = async (req, res) => {
+    const { slug } = req.body;
+    try {
+      const product = await wishlistModel.findOne({
+        slug,
+      });
+      if (product) {
+        responseReturn(res, 404, {
+          error: "Sản phẩm đã tồn tại!",
+        });
+      } else {
+        await wishlistModel.create(req.body);
+        responseReturn(res, 201, {
+          message: "Đã thêm vào danh sách yêu thích!",
+        });
+      }
     } catch (error) {
       console.log(error.message);
     }

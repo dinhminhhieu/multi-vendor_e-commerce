@@ -10,4 +10,6 @@ router.delete(
 router.put("/home/product/quantity-inc/:cartId", cartController.quantity_inc);
 router.put("/home/product/quantity-dec/:cartId", cartController.quantity_dec);
 
+router.post("/home/product/add-to-wishlist", cartController.add_to_wishlist);
+
 module.exports = router;

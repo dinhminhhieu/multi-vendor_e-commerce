@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
 //1. Thêm sản phẩm vào giỏ hàng
@@ -7,7 +7,7 @@ export const add_to_cart = createAsyncThunk(
   async (info, { rejectWithValue, fulfillWithValue }) => {
     try {
       const { data } = await api.post("/home/product/add-to-cart", info);
-    //   console.log(data)
+      //   console.log(data)
       return fulfillWithValue(data);
     } catch (error) {
       console.log(error.response);
@@ -40,7 +40,7 @@ export const delete_cart_product = createAsyncThunk(
       const { data } = await api.delete(
         `/home/product/delete-card-product/${cartId}`
       );
-      console.log(data)
+      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -48,7 +48,7 @@ export const delete_cart_product = createAsyncThunk(
   }
 );
 
-//4. Tăng 
+//4. Tăng
 export const quantity_inc = createAsyncThunk(
   "cart/quantity_inc",
   async (cartId, { rejectWithValue, fulfillWithValue }) => {
@@ -67,6 +67,20 @@ export const quantity_dec = createAsyncThunk(
   async (cartId, { rejectWithValue, fulfillWithValue }) => {
     try {
       const { data } = await api.put(`/home/product/quantity-dec/${cartId}`);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//6. Thêm vào danh sách yêu thích
+export const add_to_wishlist = createAsyncThunk(
+  "wishlist/add_to_wishlist",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/home/product/add-to-wishlist", info);
+      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -119,8 +133,16 @@ export const cartReducer = createSlice({
     [quantity_dec.fulfilled]: (state, { payload }) => {
       state.successMessage = payload.message;
     },
+    [add_to_wishlist.rejected]: (state, { payload }) => {
+      state.errorMessage = payload.error;
+    },
+    [add_to_wishlist.fulfilled]: (state, { payload }) => {
+      state.successMessage = payload.message;
+      state.wishlist_count =
+        state.wishlist_count > 0 ? state.wishlist_count + 1 : 1;
+    },
   },
 });
 
-export const {messageClear} = cartReducer.actions
-export default cartReducer.reducer
+export const { messageClear } = cartReducer.actions;
+export default cartReducer.reducer;
