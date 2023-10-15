@@ -88,6 +88,36 @@ export const add_to_wishlist = createAsyncThunk(
   }
 );
 
+//7. Lấy danh sách yêu thích
+export const get_wishlist = createAsyncThunk(
+  "wishlist/get_wishlist",
+  async (userId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(
+        `/home/product/get-wishlist/${userId}`
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//8. Xóa danh sách yêu thích
+export const remove_wishlist = createAsyncThunk(
+  "wishlist/remove_wishlist",
+  async (wishlistId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete(
+        `/home/product/remove-wishlist/${wishlistId}`
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const cartReducer = createSlice({
   name: "cart",
   initialState: {
@@ -140,6 +170,17 @@ export const cartReducer = createSlice({
       state.successMessage = payload.message;
       state.wishlist_count =
         state.wishlist_count > 0 ? state.wishlist_count + 1 : 1;
+    },
+    [get_wishlist.fulfilled]: (state, { payload }) => {
+      state.wishlist = payload.wishlists;
+      state.wishlist_count = payload.wishlistCount;
+    },
+    [remove_wishlist.fulfilled]: (state, { payload }) => {
+      state.successMessage = payload.message;
+      state.wishlist = state.wishlist.filter(
+        (p) => p._id !== payload.wishlistId
+      );
+      state.wishlist_count = state.wishlist_count - 1;
     },
   },
 });

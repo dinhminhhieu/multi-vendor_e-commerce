@@ -108,9 +108,7 @@ const FeatureProducts = ({ products }) => {
               </ul>
             </div>
             <div className="py-3 text-slate-600 px-2">
-              <div className="flex justify-between">
-                <h2 className="font-medium text-blue-500">{p.brand}.</h2>
-              </div>
+              <h2 className="font-medium text-blue-500">{p.brand}.</h2>
               <h2>{p?.name?.slice(0, 25)}...</h2>
               <div className="flex justify-start items-center gap-2 m-[2px]">
                 <span className="text-base font-bold line-through">

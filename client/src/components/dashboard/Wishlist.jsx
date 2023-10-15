@@ -1,13 +1,29 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import Ratings from "../../components/Ratings";
 import icons from "../../assets/icons";
+import { useSelector, useDispatch } from 'react-redux'
+import { get_wishlist, remove_wishlist, messageClear } from '../../store/Reducers/cartReducer'
+import toast from 'react-hot-toast'
 
 const Wishlist = () => {
   const { AiFillHeart, AiOutlineShoppingCart, FaEye } = icons;
+  const dispatch = useDispatch()
+    const { userInfo } = useSelector(state => state.auth)
+    const { wishlist, successMessage } = useSelector(state => state.cart)
+    useEffect(() => {
+        dispatch(get_wishlist(userInfo.id))
+    }, [])
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage)
+            dispatch(messageClear())
+        }
+    }, [successMessage])
+
   return (
     <div className="w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
-      {[1, 2, 3, 4, 5, 6, 7, 8].map((p, i) => (
+      {wishlist.map((p, i) => (
         <div
           key={i}
           className="border group transition-all duration-500 hover:shadow-md hover:-mt-3 bg-white"
@@ -25,7 +41,7 @@ const Wishlist = () => {
               alt="product image"
             />
             <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
-              <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all">
+              <li onClick={() => dispatch(remove_wishlist(p._id))} className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all">
                 <AiFillHeart />
               </li>
               <Link
@@ -40,13 +56,30 @@ const Wishlist = () => {
             </ul>
           </div>
           <div className="py-3 text-slate-600 px-2">
-            <h2>{p.name}</h2>
+            <h2 className="font-medium text-blue-500">{p.brand}.</h2>
+            <h2>{p?.name?.slice(0, 30)}...</h2>
             <div className="flex justify-start items-center gap-3">
-              <span className="text-lg  font-bold">${p.price}</span>
-              <div className="flex">
+              <span className="text-base font-bold line-through">
+                  {(p.price / 1000).toLocaleString("vi-VN", {
+                    minimumFractionDigits: 3,
+                    maximumFractionDigits: 3,
+                  })}
+                  đ
+                </span>
+                <span className="text-lg font-bold text-red-500">
+                  {(
+                    (p.price - Math.floor(p.price * p.discount) / 100) /
+                    1000
+                  ).toLocaleString("vi-VN", {
+                    minimumFractionDigits: 3,
+                    maximumFractionDigits: 3,
+                  })}
+                  đ
+                </span>
+            </div>
+            <div className="flex">
                 <Ratings ratings={p.rating} />
               </div>
-            </div>
           </div>
         </div>
       ))}

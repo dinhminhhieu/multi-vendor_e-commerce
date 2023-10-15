@@ -202,7 +202,7 @@ class cartController {
     }
   };
 
-  //6. Thêm vào giỏ hàng
+  //6. Thêm vào danh sách yêu thích
   add_to_wishlist = async (req, res) => {
     const { slug } = req.body;
     try {
@@ -219,6 +219,36 @@ class cartController {
           message: "Đã thêm vào danh sách yêu thích!",
         });
       }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //7. Lấy danh sách yêu thích
+  get_wishlist = async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const wishlists = await wishlistModel.find({
+        userId,
+      });
+      responseReturn(res, 200, {
+        wishlistCount: wishlists.length,
+        wishlists,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //8. Xóa danh sách yêu thích
+  remove_wishlist = async (req, res) => {
+    const { wishlistId } = req.params;
+    try {
+      const wishlist = await wishlistModel.findByIdAndDelete(wishlistId);
+      responseReturn(res, 200, {
+        message: "Xóa thành công!",
+        wishlistId,
+      });
     } catch (error) {
       console.log(error.message);
     }
