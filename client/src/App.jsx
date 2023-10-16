@@ -16,6 +16,7 @@ import Orders from "./components/dashboard/Orders";
 import Order from "./components/dashboard/Order";
 import Wishlist from "./components/dashboard/Wishlist";
 import ChangePassword from "./components/dashboard/ChangePassword";
+import Chat from "./components/dashboard/Chat";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { get_category } from "./store/Reducers/homeReducer";
@@ -45,7 +46,9 @@ function App() {
             <Route path="my-orders" element={<Orders />} />
             <Route path="my-wishlist" element={<Wishlist />} />
             <Route path="order/details/:orderId" element={<Order />} />
-            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="change-password" element={<ChangePassword />} /> 
+            <Route path="chat" element={<Chat />} /> 
+            <Route path="chat/:sellerId" element={<Chat />} /> 
           </Route>
         </Route>
       </Routes>

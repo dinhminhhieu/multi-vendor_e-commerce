@@ -6,6 +6,8 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
   AiFillStar,
+  AiOutlineMessage,
+  AiOutlinePlus,
 } from "react-icons/ai";
 import {
   FaFacebookF,
@@ -17,7 +19,7 @@ import {
   FaStarHalfAlt,
   FaThList,
 } from "react-icons/fa";
-import { GrInstagram } from "react-icons/gr";
+import { GrInstagram, GrEmoji } from "react-icons/gr";
 import {
   BsTwitter,
   BsGithub,
@@ -40,6 +42,7 @@ import { BiSolidCheckShield, BiLogInCircle } from "react-icons/bi";
 import { RxDashboard } from "react-icons/rx";
 import { RiProductHuntLine } from "react-icons/ri";
 import { TfiLock } from "react-icons/tfi";
+import { IoSend } from "react-icons/io5";
 
 const icons = {
   AiOutlineMail,
@@ -49,6 +52,8 @@ const icons = {
   AiOutlineEye,
   AiOutlineEyeInvisible,
   AiFillStar,
+  AiOutlineMessage,
+  AiOutlinePlus,
   FaFacebookF,
   FaUser,
   FaLock,
@@ -59,6 +64,7 @@ const icons = {
   FaCartShopping,
   FaThList,
   GrInstagram,
+  GrEmoji,
   BsTwitter,
   BsGithub,
   BsFillGridFill,
@@ -68,11 +74,12 @@ const icons = {
   BsChat,
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
-  IoIosCall,
+  IoIosCall,   
+  IoSend,         
   CiStar,
   FiChevronLeft,
   FiChevronRight,
-  FiLogOut,
+  FiLogOut,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
   BiSolidCheckShield,
   BiLogInCircle,
   RxDashboard,

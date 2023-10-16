@@ -81,7 +81,7 @@ const Dashboard = () => {
                     <BsChat />
                   </span>
                   <Link to="/dashboard/chat" className="block">
-                    Trò chuyện
+                    Hỗ trợ
                   </Link>
                 </li>
 

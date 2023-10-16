@@ -383,7 +383,7 @@ const Details = () => {
                 ) : (
                   ""
                 )}
-                <Link className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-green-500 text-white block">
+                <Link to={`/dashboard/chat/${product.sellerId}`} className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-green-500 text-white block">
                   Chat với người bán
                 </Link>
               </div>
