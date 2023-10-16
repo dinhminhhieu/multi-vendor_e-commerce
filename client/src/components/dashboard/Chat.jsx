@@ -2,6 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import icons from "../../assets/icons";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import io from "socket.io-client";
+import { add_friend } from "../../store/Reducers/chatReducer";
+
+const socket = io("http://localhost:5000");
 
 const Chat = () => {
   const { AiOutlineMessage, GrEmoji, IoSend, AiOutlinePlus } = icons;
@@ -13,6 +17,22 @@ const Chat = () => {
   const [receverMessage, setReceverMessage] = useState("");
   const [activeSeller, setActiveSeller] = useState([]);
   const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    socket.emit("add_user", userInfo.id, userInfo);
+  }, []);
+
+  useEffect(() => {
+    if (sellerId) {
+      dispatch(
+        add_friend({
+          sellerId: sellerId || "",
+          userInfo: userInfo.id,
+        })
+      );
+    }
+  }, [sellerId]);
+
   return (
     <div className="bg-white p-3 rounded-md">
       <div className="w-full flex">

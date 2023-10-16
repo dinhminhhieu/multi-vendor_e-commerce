@@ -1,12 +1,13 @@
 const express = require("express");
 const { dbConnect } = require("./utils/db");
 const app = express();
+const http = require("http");
 const cors = require("cors"); // Cơ chế cho phép hoặc từ chối các yêu cầu từ các tên miền khác nhau trên web
 const bodyParser = require("body-parser"); // Trích xuất dữ liệu từ phần thân (body) của yêu cầu HTTP có chứa dữ liệu từ máy khách
 const cookieParser = require("cookie-parser"); // Lưu trữ thông tin trên máy khách và gửi nó lại cho máy chủ trong mỗi yêu cầu HTTP
-
-// config
 require("dotenv").config();
+const socket = require("socket.io")
+const server = http.createServer(app)
 
 app.use(
   cors({
@@ -14,8 +15,45 @@ app.use(
     credentials: true, // Kiểm tra xem các yêu cầu có chứa thông tin xác thực như cookie hay không
   })
 );
+
+const io = socket(server, {
+  cors: {
+    origin: "*",
+    credentials: true
+  }
+})
+
+var allCustomer = []
+
+const addUser = (customerId, socketId, userInfo) => {
+  const checkUser = allCustomer.some((u) => u.customerId === customerId);
+  if (!checkUser) {
+    allCustomer.push({
+      customerId,
+      socketId,
+      userInfo,
+    });
+  }
+};
+
+io.on("connection", (soc) => {
+  console.log("Socket.io server is connected...")
+
+  soc.on("add_user", (customerId, userInfo) => {
+    addUser(customerId, soc.id, userInfo);
+    console.log(allCustomer)
+    // io.emit("activeSeller", allSeller);
+    // io.emit("activeCustomer", allCustomer);
+  });
+
+
+})
+
 app.use(bodyParser.json());
-app.use(cookieParser())
+app.use(cookieParser());
+
+app.use("/api", require("./routes/chatRoutes"));
+
 app.use("/api", require("./routes/authRoutes"));
 app.use("/api", require("./routes/dashboard/categoryRoutes"));
 app.use("/api", require("./routes/dashboard/productRoutes"));
@@ -27,4 +65,4 @@ app.use("/api", require("./routes/order/orderRoutes"));
 
 const port = process.env.PORT; // Lấy giá trị cổng từ biến môi trường
 dbConnect();
-app.listen(port, () => console.log(`Server is running on port ${port}!`));
+server.listen(port, () => console.log(`Server is running on port ${port}!`));
