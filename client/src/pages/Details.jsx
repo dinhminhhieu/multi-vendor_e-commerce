@@ -399,7 +399,7 @@ const Details = () => {
                 <div className="grid grid-cols-2">
                   <button
                     onClick={() => setState("reviews")}
-                    className={`py-1 hover:text-white px-5 hover:bg-slate-500 ${
+                    className={`py-1 px-5 ${
                       state === "reviews"
                         ? "bg-red-500 text-white"
                         : "bg-slate-200 text-slate-700"
@@ -409,7 +409,7 @@ const Details = () => {
                   </button>
                   <button
                     onClick={() => setState("description")}
-                    className={`py-2 px-5 hover:text-white hover:bg-slate-500 ${
+                    className={`py-2 px-5 ${
                       state === "description"
                         ? "bg-red-500 text-white"
                         : "bg-slate-200 text-slate-700"
@@ -420,9 +420,9 @@ const Details = () => {
                 </div>
                 <div>
                   {state === "reviews" ? (
-                    <Reviews />
+                    <Reviews product={product} />
                   ) : (
-                    <p className="py-5 text-slate-600">Mô tả sản phẩm</p>
+                    <p className="py-5 text-slate-600">{product.description}</p>
                   )}
                 </div>
               </div>

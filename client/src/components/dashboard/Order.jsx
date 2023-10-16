@@ -97,9 +97,7 @@ const Order = () => {
                       <h2>Số lượng: {p.quantity}</h2>
                     </p>
                   </div>
-                </div>
-                <div className="pl-4">
-                  <div className="flex justify-between">
+                  <div className="pl-4 flex justify-end">
                     <span className="text-base line-through">
                       {(p.price / 1000).toLocaleString("vi-VN", {
                         minimumFractionDigits: 3,
@@ -117,10 +115,10 @@ const Order = () => {
                       })}
                       đ
                     </span>
+                    <p className="ml-6 font-bold text-red-500">
+                      (Giảm {p.discount}%)
+                    </p>
                   </div>
-                  <p className="ml-6 font-bold text-red-500">
-                    (Giảm {p.discount}%)
-                  </p>
                 </div>
               </div>
             </div>

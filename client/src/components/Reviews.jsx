@@ -1,30 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Ratings from "../components/Ratings";
 import RatingTemp from "../components/RatingTemp";
 import icons from "../assets/icons";
 import Pagination from "../components/Pagination";
 import { Link } from "react-router-dom";
 import Rating from "react-rating";
+import { useDispatch, useSelector } from "react-redux";
+import {customer_review, get_reviews, get_product, messageClear} from '../store/Reducers/homeReducer'
+import toast from "react-hot-toast"
 
-const Reviews = () => {
+const Reviews = ({ product }) => {
   const { BiSolidCheckShield, AiFillStar, CiStar } = icons;
   const [pageNumber, setPageNumber] = useState(1);
   const [parPage, setParPage] = useState(3);
   const [rat, setRat] = useState("");
   const [re, setRe] = useState("");
-  const userInfo = "";
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const {successMessage, reviews, totalReview, rating_review} = useSelector(state=>state.home)
+
+  const review_submit = (e) => {
+    e.preventDefault()
+    const obj = {
+      name: userInfo.name,
+      review: re,
+      rating: rat,
+      productId: product._id
+    }
+    dispatch(customer_review(obj))
+  }
+
+    useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(get_reviews({
+        productId: product._id,
+        pageNumber
+      }))
+      dispatch(get_product(product.slug))
+      setRat('')
+      setRe('')
+      dispatch(messageClear())
+    }
+  }, [successMessage])
+
+  useEffect(() => {
+    if (product._id) {
+      dispatch(get_reviews({
+        productId: product._id,
+        pageNumber
+      }))
+    }
+  }, [pageNumber, product])
+
   return (
     <div className="mt-8">
       <div className="flex gap-10 md:flex-col">
         <div className="flex flex-col gap-2 justify-start items-start py-4">
           <div>
-            <span className="text-4xl font-semibold">4.5</span>
+            <span className="text-4xl font-semibold">{product.rating}</span>
             <span className="text-2xl font-semibold text-slate-600">/5</span>
           </div>
           <div className="flex text-2xl">
             <Ratings ratings={4.5} />
           </div>
-          <p className="text-sm text-green-600 font-semibold">23 đánh giá</p>
+        <p className="text-base text-green-600 font-semibold">({totalReview} đánh giá)</p>
         </div>
         <div className="flex gap-2 flex-col py-4">
           <div className="flex justify-start items-center gap-5">
@@ -96,7 +136,7 @@ const Reviews = () => {
               <span>23 thg 10 2023</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-slate-600 text-md font-medium">
+              <span className="text-slate-600 text-sm font-medium">
                 Đinh Minh Hiếu
               </span>
               <BiSolidCheckShield className="text-green-500" size={20} />
@@ -136,7 +176,7 @@ const Reviews = () => {
                 }
               />
             </div>
-            <form>
+            <form onSubmit={review_submit}>
               <textarea
                 value={re}
                 required

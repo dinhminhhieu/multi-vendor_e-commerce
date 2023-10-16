@@ -24,6 +24,7 @@ const Shipping = () => {
     district: "",
     ward: "",
   });
+  
   const inputHandle = (e) => {
     setState({
       ...state,
