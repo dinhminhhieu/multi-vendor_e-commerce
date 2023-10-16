@@ -6,7 +6,7 @@ import { get_order } from "../../store/Reducers/orderReducer";
 const Order = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const { myOrder } = useSelector((state) => state.order);
+  const { myOrder, products } = useSelector((state) => state.order);
   const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(get_order(orderId));
@@ -16,7 +16,7 @@ const Order = () => {
       <h2 className="text-red-600 font-semibold">
         #{myOrder._id}
         <h2 className="text-green-500">
-          Đặt hàng <span>{myOrder.date}</span>
+          Ngày đặt hàng: <span>{myOrder.date}</span>
         </h2>
       </h2>
       <div className="grid grid-cols-2 gap-3">
@@ -89,7 +89,7 @@ const Order = () => {
                     alt="image"
                   />
                   <div className="flex text-sm flex-col justify-start items-start">
-                    <Link>{p.name}</Link>
+                    <Link to={`/product/details/${p.slug}`}>{p.name}</Link>
                     <p>
                       <span className="text-sm text-blue-600 font-medium">
                         Thương hiệu : {p.brand}

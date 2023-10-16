@@ -1,9 +1,9 @@
 import React from 'react'
 import icons from '../assets/icons'
 
-const ratingTempTemp = ({ratingTemp}) => {
+const ratingTemp = ({rating}) => {
     const {AiFillStar, CiStar} = icons
-  if (ratingTemp === 5) {
+  if (rating === 5) {
         return (
             <>
                 <span className='text-[#EDBB0E]'><AiFillStar /></span>
@@ -14,7 +14,7 @@ const ratingTempTemp = ({ratingTemp}) => {
             </>
         )
     }
-    else if (ratingTemp === 4) {
+    else if (rating === 4) {
         return (
             <>
                 <span className='text-[#EDBB0E]'><AiFillStar /></span>
@@ -25,7 +25,7 @@ const ratingTempTemp = ({ratingTemp}) => {
             </>
         )
     }
-    else if (ratingTemp === 3) {
+    else if (rating === 3) {
         return (
             <>
                 <span className='text-[#EDBB0E]'><AiFillStar /></span>
@@ -36,7 +36,7 @@ const ratingTempTemp = ({ratingTemp}) => {
             </>
         )
     }
-    else if (ratingTemp === 2) {
+    else if (rating === 2) {
         return (
             <>
                 <span className='text-[#EDBB0E]'><AiFillStar /></span>
@@ -47,7 +47,7 @@ const ratingTempTemp = ({ratingTemp}) => {
             </>
         )
     }
-    else if (ratingTemp === 1) {
+    else if (rating === 1) {
         return (
             <>
                 <span className='text-[#EDBB0E]'><AiFillStar /></span>
@@ -71,4 +71,4 @@ const ratingTempTemp = ({ratingTemp}) => {
     }
 }
 
-export default ratingTempTemp
+export default ratingTemp

@@ -3,6 +3,10 @@ const productModel = require("../../models/productModel");
 const reviewModel = require("../../models/reviewModel");
 const { responseReturn } = require("../../utils/response");
 const queryProducts = require("../../utils/queryProducts");
+const moment = require("moment");
+const {
+  mongo: { ObjectId },
+} = require("mongoose");
 
 class homeController {
   //1. Chia danh sách sản phẩm thành các nhóm, mỗi nhóm có tối đa 3 sản phẩm
@@ -144,7 +148,7 @@ class homeController {
     }
   };
 
-  // 4. Truy vấn sản phẩm
+  // 5. Truy vấn sản phẩm
   query_products = async (req, res) => {
     const parPage = 16;
     req.query.parPage = parPage;
@@ -180,17 +184,16 @@ class homeController {
     }
   };
 
-  //5. Khách hàng review
+  //6. Khách hàng review
   customer_review = async (req, res) => {
     const { name, rating, review, productId } = req.body;
-    console.log(req.body);
     try {
       await reviewModel.create({
         productId,
         name,
         rating,
         review,
-        date: moment(Date.now()).format("LL"),
+        date: moment(Date.now()).format("DD/MM/YYYY HH:mm"),
       });
 
       let rat = 0;
@@ -211,14 +214,14 @@ class homeController {
       });
 
       responseReturn(res, 201, {
-        message: "Review Success",
+        message: "Đã gửi đánh giá!",
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  //6. Lấy review của khách hàng
+  //7. Lấy review của khách hàng
   get_reviews = async (req, res) => {
     const { productId } = req.params;
     let { pageNo } = req.query;
