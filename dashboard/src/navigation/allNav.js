@@ -46,24 +46,24 @@ export const allNav = [
   },
   {
     id: 5,
-    title: "Yêu Cầu Thanh Toán",
-    icon: <MdOutlinePayment size={20} />,
-    role: "admin",
-    path: "/admin/dashboard/payment-request",
-  },
-  {
-    id: 6,
     title: "Vô hiệu hóa seller",
     icon: <FiUsers size={20} />,
     role: "admin",
     path: "/admin/dashboard/deactive-sellers",
   },
   {
-    id: 7,
+    id: 6,
     title: "Kích hoạt Seller",
     icon: <BiLoaderCircle size={20} />,
     role: "admin",
     path: "/admin/dashboard/sellers-request",
+  },
+  {
+    id: 7,
+    title: "Yêu Cầu Thanh Toán",
+    icon: <MdOutlinePayment size={20} />,
+    role: "admin",
+    path: "/admin/dashboard/payment-request",
   },
   {
     id: 8,

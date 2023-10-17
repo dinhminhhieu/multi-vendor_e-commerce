@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
 import Pagiantion from "../Pagiantion";
+import { useDispatch, useSelector } from "react-redux";
+import { get_deactive_sellers } from "../../store/Reducers/sellerReducer";
 
 const DeactiveSellers = () => {
   const { FaEye } = icons;
@@ -9,6 +11,18 @@ const DeactiveSellers = () => {
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
   const [show, setShow] = useState(false);
+
+  const dispatch = useDispatch();
+  const { sellers, totalSellers } = useSelector((state) => state.seller);
+
+  useEffect(() => {
+    const obj = {
+      parPage: parseInt(parPage),
+      page: parseInt(currentPage),
+      searchValue,
+    };
+    dispatch(get_deactive_sellers(obj));
+  }, [searchValue, currentPage, parPage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -59,54 +73,59 @@ const DeactiveSellers = () => {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, , 4, 5].map((d, i) => (
+              {sellers.map((d, i) => (
                 <tr key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    {d}
+                    {i + 1}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <img
-                      className="w-[45px] h-[45px]"
-                      src={`http://localhost:3000/images/sellers/${d}.png`}
-                      alt=""
-                    />
+                    <img className="w-[45px] h-[45px]" src={d.image} alt="" />
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Đinh Minh Hiếu</span>
+                    <span>{d.name}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>dinhminhhieuvn@gmail.com</span>
+                    <span>{d.email}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Hoạt động</span>
+                    <span>{d.shopInfo?.shopName}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Vô hiệu hóa</span>
+                    <span>{d.status}</span>
+                  </td>
+                  <td
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                    scope="row"
+                  >
+                    <span>{d.shopInfo?.province}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link
+                        to={`/admin/dashboard/seller/details/${d._id}`}
+                        className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+                      >
                         <FaEye size={20} />
                       </Link>
                     </div>
@@ -116,15 +135,19 @@ const DeactiveSellers = () => {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-end mt-4 bottom-4 right-4">
-          <Pagiantion
-            pageNumber={currentPage}
-            setPageNumber={setCurrentPage}
-            totalItem={50}
-            parPage={parPage}
-            showItem={3}
-          />
-        </div>
+        {totalSellers <= parPage ? (
+          <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+            <Pagiantion
+              pageNumber={currentPage}
+              setPageNumber={setCurrentPage}
+              totalItem={totalSellers}
+              parPage={parPage}
+              showItem={4}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

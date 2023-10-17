@@ -89,11 +89,7 @@ const Sellers = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <img
-                      className="w-[45px] h-[45px]"
-                      src={d.image}
-                      alt=""
-                    />
+                    <img className="w-[45px] h-[45px]" src={d.image} alt="" />
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
@@ -131,7 +127,7 @@ const Sellers = () => {
                   >
                     <div className="flex justify-start items-center gap-4">
                       <Link
-                        to="/admin/dashboard/sellers/details/1"
+                        to={`/admin/dashboard/seller/details/${d._id}`}
                         className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
                       >
                         <FaEye size={20} />
@@ -143,15 +139,19 @@ const Sellers = () => {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-end mt-4 bottom-4 right-4">
-          <Pagiantion
-            pageNumber={currentPage}
-            setPageNumber={setCurrentPage}
-            totalItem={50}
-            parPage={parPage}
-            showItem={3}
-          />
-        </div>
+        {totalSellers <= parPage ? (
+          <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+            <Pagiantion
+              pageNumber={currentPage}
+              setPageNumber={setCurrentPage}
+              totalItem={totalSellers}
+              parPage={parPage}
+              showItem={4}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
