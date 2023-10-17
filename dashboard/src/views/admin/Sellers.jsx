@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagiantion from "../Pagiantion";
 import icons from "../../assets/icons";
 import { Link } from "react-router-dom";
+import { get_active_sellers } from "../../store/Reducers/sellerReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const Sellers = () => {
   const { FaEye } = icons;
@@ -9,6 +11,17 @@ const Sellers = () => {
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const { sellers, totalSellers } = useSelector((state) => state.seller);
+
+  useEffect(() => {
+    const obj = {
+      parPage: parseInt(parPage),
+      page: parseInt(currentPage),
+      searchValue,
+    };
+    dispatch(get_active_sellers(obj));
+  }, [searchValue, currentPage, parPage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -25,6 +38,8 @@ const Sellers = () => {
             <option value="5">25</option>
           </select>
           <input
+            onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
             type="text"
             id="name"
             placeholder="Tìm kiếm..."
@@ -54,9 +69,6 @@ const Sellers = () => {
                   Trạng thái
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Phân loại
-                </th>
-                <th className="py-3 px-4" scope="col">
                   Địa chỉ
                 </th>
                 <th className="py-3 px-4" scope="col">
@@ -65,13 +77,13 @@ const Sellers = () => {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, , 4, 5].map((d, i) => (
+              {sellers.map((d, i) => (
                 <tr key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    {d}
+                    {i + 1}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
@@ -79,7 +91,7 @@ const Sellers = () => {
                   >
                     <img
                       className="w-[45px] h-[45px]"
-                      src={`http://localhost:3000/images/sellers/${d}.png`}
+                      src={d.image}
                       alt=""
                     />
                   </td>
@@ -87,44 +99,41 @@ const Sellers = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Đinh Minh Hiếu</span>
+                    <span>{d.name}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>dinhminhhieuvn@gmail.com</span>
+                    <span>{d.email}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Thời trang</span>
+                    <span>{d.shopInfo?.shopName}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Hoạt động</span>
+                    <span>{d.status}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Gò Vấp</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span>Gò Vấp</span>
+                    <span>{d.shopInfo?.province}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link to="/admin/dashboard/sellers/details/1" className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link
+                        to="/admin/dashboard/sellers/details/1"
+                        className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+                      >
                         <FaEye size={20} />
                       </Link>
                     </div>

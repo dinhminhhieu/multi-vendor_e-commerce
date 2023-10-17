@@ -18,7 +18,7 @@ root.render(
           toastOptions={{
             position: "top-right",
             error: {
-              duration: 5000,
+              duration: 3000,
               iconTheme: {
                 primary: "#990000",
               },
@@ -28,7 +28,7 @@ root.render(
               },
             },
             success: {
-              duration: 5000,
+              duration: 3000,
               iconTheme: {
                 primary: "#00e64d",
               },

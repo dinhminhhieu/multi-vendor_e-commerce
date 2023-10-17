@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getNavs } from "../navigation/index";
 import icons from "../assets/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {logout} from '../store/Reducers/authReducer'
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const { role } = useSelector((state) => state.auth);
   const { FiLogOut } = icons;
   const [allNav, setAllNav] = useState([]);
   const { pathname } = useLocation();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const navs = getNavs(role);
@@ -55,7 +58,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
               </li>
             ))}
             <li>
-              <button className="text-white font-normal duration-200 px-[12px] py-[9px] rounded-sm flex justify-start items-center gap-[12px] hover:pl-4 transition-all w-full mb-5">
+              <button onClick={() => dispatch(logout({ navigate, role }))} className="text-white font-normal duration-200 px-[12px] py-[9px] rounded-sm flex justify-start items-center gap-[12px] hover:pl-4 transition-all w-full mb-5">
                 <span>
                   <FiLogOut size={20} />
                 </span>
