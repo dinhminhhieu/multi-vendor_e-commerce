@@ -127,7 +127,7 @@ const Sellers = () => {
                   >
                     <div className="flex justify-start items-center gap-4">
                       <Link
-                        to={`/admin/dashboard/seller/details/${d._id}`}
+                        to={`/admin/dashboard/sellers/details/${d._id}`}
                         className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
                       >
                         <FaEye size={20} />
