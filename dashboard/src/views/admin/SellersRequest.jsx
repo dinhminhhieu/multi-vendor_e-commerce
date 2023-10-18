@@ -27,15 +27,15 @@ const SellersRequest = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-[#283046] rounded-md">
+      <div className="w-full p-4 bg-white rounded-md">
         <Search
           setParPage={setParPage}
           setSearchValue={setSearchValue}
           searchValue={searchValue}
         />
         <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-left text-white">
-            <thead className="text-sm text-white uppercase border-b border-slate-700">
+          <table className="w-full text-sm text-left">
+            <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                 <th className="py-3 px-4" scope="col">
                   STT
@@ -99,7 +99,7 @@ const SellersRequest = () => {
                         to={`/admin/dashboard/sellers/details/${d._id}`}
                         className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
                       >
-                        <FaEye size={20} />
+                        <FaEye color="white" size={18} />
                       </Link>
                     </div>
                   </td>

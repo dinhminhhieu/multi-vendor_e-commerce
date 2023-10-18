@@ -12,15 +12,15 @@ const Orders = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-[#283046] rounded-md">
+      <div className="w-full p-4 bg-white rounded-md">
         <Search
           setParPage={setParPage}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
         />
         <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-left text-white">
-            <thead className="text-sm text-white uppercase border-b border-slate-700">
+          <table className="w-full text-sm text-left">
+            <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                 <th className="py-3 px-4" scope="col">
                   Mã đơn hàng
@@ -29,7 +29,7 @@ const Orders = () => {
                   Đơn giá
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Trạng thái
+                  Thanh toán
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Tình trạng đơn hàng
@@ -75,8 +75,8 @@ const Orders = () => {
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link to={`/seller/dashboard/order/order-details/1`} className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
-                        <FaEye size={18} />
+                      <Link to={`/seller/dashboard/order/order-details/1`} className="p-[5px] text-white bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                        <FaEye size={15} />
                       </Link>
                     </div>
                   </td>

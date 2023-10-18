@@ -26,12 +26,12 @@ const DeactiveSellers = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-[#283046] rounded-md">
+      <div className="w-full p-4 bg-white rounded-md">
         <div className="flex justify-between items-center">
           <select
             name=""
             id=""
-            className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#283046] border border-slate-400 rounded-md text-white"
+            className="py-2 px-4 hover:border-indigo-500 outline-none bg-white border border-slate-400 rounded-md"
             onChange={(e) => setParPage(parseInt(e.target.value))}
           >
             <option value="5">5</option>
@@ -42,12 +42,12 @@ const DeactiveSellers = () => {
             type="text"
             id="name"
             placeholder="Tìm kiếm..."
-            className="w-[250px] px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+            className="w-[250px] px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md focus:border-indigo-500 overflow-hidden"
           />
         </div>
         <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-left text-white">
-            <thead className="text-sm text-white uppercase border-b border-slate-700">
+          <table className="w-full text-sm text-left">
+            <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                 <th className="py-3 px-4" scope="col">
                   STT
@@ -62,7 +62,7 @@ const DeactiveSellers = () => {
                   Email
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Thanh toán
+                  Tên shop
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Trạng thái
@@ -126,7 +126,7 @@ const DeactiveSellers = () => {
                         to={`/admin/dashboard/sellers/details/${d._id}`}
                         className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
                       >
-                        <FaEye size={20} />
+                        <FaEye color="white" size={18} />
                       </Link>
                     </div>
                   </td>

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import icons from "../../assets/icons";
 
-const SellerToCustomer = () => {
+const ChatSellers = () => {
   const { IoMdClose, FaListAlt, MdSend } = icons;
   const [show, setShow] = useState(false);
   const sellerId = 32;
 
   return (
     <div className="px-2 lg:px-7 py-5">
-      <div className="w-full bg-[#283046] px-4 py-4 rounded-md h-[calc(100vh-140px)]">
+      <div className="w-full bg-white px-4 py-4 rounded-md h-[calc(100vh-140px)]">
         <div className="flex w-full h-full relative">
           <div
             className={`w-[280px] h-full z-10 absolute ${
@@ -16,8 +16,8 @@ const SellerToCustomer = () => {
             } md:left-0 md:relative transition-all`}
           >
             <div className="w-full h-[calc(100vh-177px)] bg-[#252b3b] md:bg-transparent overflow-y-auto">
-              <div className="flex text-xl justify-between items-center p-4 md:p-0 md:px-3 md:pb-3 text-white">
-                <h2>Khách Hàng</h2>
+              <div className="flex text-xl justify-between items-center p-4 md:p-0 md:px-3 md:pb-3">
+                <h2>Sellers</h2>
                 <span
                   onClick={() => setShow(!show)}
                   className="block cursor-pointer md:hidden"
@@ -26,11 +26,11 @@ const SellerToCustomer = () => {
                 </span>
               </div>
               <div
-                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 text-white rounded-sm cursor-pointer`}
+                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-sm cursor-pointer`}
               >
                 <div className="relative">
                   <img
-                    className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full"
+                    className="w-[38px] h-[38px] border-slate-700 border-2 max-w-[38px] p-[2px] rounded-full"
                     src="http://localhost:3000/images/sellers/1.png"
                     alt=""
                   />
@@ -44,11 +44,11 @@ const SellerToCustomer = () => {
                 </div>
               </div>
               <div
-                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 text-white rounded-sm cursor-pointer bg-slate-700`}
+                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-sm cursor-pointer bg-[#b3b3b3]`}
               >
                 <div className="relative">
                   <img
-                    className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full"
+                    className="w-[38px] h-[38px] border-slate-700 border-2 max-w-[38px] p-[2px] rounded-full"
                     src="http://localhost:3000/images/sellers/1.png"
                     alt=""
                   />
@@ -75,12 +75,12 @@ const SellerToCustomer = () => {
                     />
                     <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
                   </div>
-                  <h2 className="text-base text-white font-semibold">Đinh Minh Hiếu</h2>
+                  <h2 className="text-base font-semibold">Đinh Minh Hiếu</h2>
                 </div>
               )}
               <div
                 onClick={() => setShow(!show)}
-                className="w-[35px] flex md:hidden h-[35px] rounded-sm bg-blue-500 shadow-lg hover:shadow-blue-500/50 justify-center cursor-pointer items-center text-white"
+                className="w-[35px] flex md:hidden h-[35px] rounded-sm bg-blue-500 shadow-lg hover:shadow-blue-500/50 justify-center cursor-pointer items-center"
               >
                 <span>
                   <FaListAlt />
@@ -88,12 +88,12 @@ const SellerToCustomer = () => {
               </div>
             </div>
             <div className="py-4">
-              <div className="bg-slate-700 h-[calc(100vh-290px)] rounded-md p-3 overflow-y-auto">
+              <div className="bg-[#b3b3b3] h-[calc(100vh-290px)] rounded-md p-3 overflow-y-auto">
                 <div className="w-full flex justify-start items-center">
                   <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                     <div>
                       <img
-                        className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
+                        className="w-[38px] h-[38px] border-2 border-slate-700 rounded-full max-w-[38px] p-[3px]"
                         src="http://localhost:3000/images/sellers/1.png"
                         alt=""
                       />
@@ -111,7 +111,7 @@ const SellerToCustomer = () => {
                     </div>
                     <div>
                       <img
-                        className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
+                        className="w-[38px] h-[38px] border-2 border-slate-700 rounded-full max-w-[38px] p-[3px]"
                         src="http://localhost:3000/images/sellers/1.png"
                         alt=""
                       />
@@ -123,7 +123,7 @@ const SellerToCustomer = () => {
                   <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                     <div>
                       <img
-                        className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
+                        className="w-[38px] h-[38px] border-2 border-slate-700 rounded-full max-w-[38px] p-[3px]"
                         src="http://localhost:3000/images/sellers/1.png"
                         alt=""
                       />
@@ -139,11 +139,11 @@ const SellerToCustomer = () => {
               <input
                 type="text"
                 placeholder="Nhập tin nhắn của bạn"
-                className="relative w-full flex justify-between items-center border border-slate-500 px-2 py-[5px] focus:border-blue-500 rounded-md outline-none bg-transparent text-white"
+                className="relative w-full flex justify-between items-center border border-slate-500 px-2 py-[5px] focus:border-blue-500 rounded-md outline-none bg-transparent"
               />
               <MdSend
                 size={25}
-                className="absolute right-2 mt-[5px] cursor-pointer text-red-500"
+                className="absolute right-2 mt-[5px] cursor-pointer text-blue-500"
               />
             </form>
           </div>
@@ -153,4 +153,4 @@ const SellerToCustomer = () => {
   );
 };
 
-export default SellerToCustomer;
+export default ChatSellers;

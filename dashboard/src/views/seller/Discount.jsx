@@ -12,15 +12,15 @@ const Discount = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-[#283046] rounded-md">
+      <div className="w-full p-4 bg-white rounded-md">
         <Search
           setParPage={setParPage}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
         />
         <div className="relative overflow-x-auto mt-5">
-          <table className="w-full text-sm text-left text-white">
-            <thead className="text-sm text-white uppercase border-b border-slate-700">
+          <table className="w-full text-sm text-left">
+            <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                     <th className="py-3 px-4" scope="col">
                       STT
@@ -111,14 +111,14 @@ const Discount = () => {
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link className="p-[5px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
-                        <FaEdit size={18} />
+                      <Link className="p-[5px] text-white bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
+                        <FaEdit size={15} />
                       </Link>
-                      <button className="p-[5px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
-                        <FaTrash size={18} />
+                      <button className="p-[5px] text-white bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
+                        <FaTrash size={15} />
                       </button>
-                      <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
-                        <FaEye size={18} />
+                      <Link className="p-[5px] text-white bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                        <FaEye size={15} />
                       </Link>
                     </div>
                   </td>

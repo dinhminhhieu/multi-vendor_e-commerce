@@ -143,11 +143,11 @@ const AddProducts = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-[#283046] rounded-md">
+      <div className="w-full p-4 bg-white rounded-md">
         <div className="flex justify-between items-center pb-4">
-          <h1 className="text-white text-xl font-semibold">Thêm Sản Phẩm</h1>
+          <h1 className="text-xl font-semibold">Thêm Sản Phẩm</h1>
           <Link
-            className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-sm px-7 py-2 my-2"
+            className="bg-red-500 text-white hover:shadow-red-500/50 hover:shadow-lg  rounded-sm px-7 py-2 my-2"
             to="/seller/dashboard/products"
           >
             Sản Phẩm
@@ -155,7 +155,7 @@ const AddProducts = () => {
         </div>
         <div>
           <form onSubmit={add_p}>
-            <div className="flex flex-col mb-3 md:flex-row gap-4 text-white">
+            <div className="flex flex-col mb-3 md:flex-row gap-4 ">
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="name">Tên sản phẩm</label>
                 <input
@@ -165,7 +165,7 @@ const AddProducts = () => {
                   name="name"
                   id="name"
                   placeholder="Nhập tên sản phẩm..."
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                 />
               </div>
               <div className="flex flex-col w-full gap-1">
@@ -177,11 +177,11 @@ const AddProducts = () => {
                   name="brand"
                   id="brand"
                   placeholder="Nhập tên thương hiệu..."
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                 />
               </div>
             </div>
-            <div className="flex flex-col mb-3 md:flex-row gap-4 text-white">
+            <div className="flex flex-col mb-3 md:flex-row gap-4 ">
               <div className="flex flex-col w-full gap-1 relative">
                 <label htmlFor="category">Danh mục sản phẩm</label>
                 <input
@@ -192,10 +192,10 @@ const AddProducts = () => {
                   type="text"
                   id="category"
                   placeholder="--Chọn danh mục--"
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                 />
                 <div
-                  className={`absolute top-[101%] bg-slate-800 w-full transition-all ${
+                  className={`absolute top-[101%] bg-[#eeeeee] w-full transition-all ${
                     cateShow ? "scale-100" : "scale-0"
                   }`}
                 >
@@ -205,7 +205,7 @@ const AddProducts = () => {
                       onChange={categorySearch}
                       type="text"
                       placeholder="Tìm kiếm tên danh mục  ..."
-                      className="w-full px-3 py-1 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                      className="w-full px-3 py-1 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                     />
                   </div>
                   <div className="pt-14"></div>
@@ -236,11 +236,11 @@ const AddProducts = () => {
                   name="quantity"
                   id="quantity"
                   placeholder="Nhập số lượng sản phẩm..."
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                 />
               </div>
             </div>
-            <div className="flex flex-col mb-3 md:flex-row gap-4 text-white">
+            <div className="flex flex-col mb-3 md:flex-row gap-4 ">
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="name">Giá sản phẩm</label>
                 <input
@@ -250,7 +250,7 @@ const AddProducts = () => {
                   name="price"
                   id="price"
                   placeholder="Nhập giá sản phẩm..."
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                 />
               </div>
               <div className="flex flex-col w-full gap-1">
@@ -263,11 +263,11 @@ const AddProducts = () => {
                   name="discount"
                   id="discount"
                   placeholder="% Giảm giá..."
-                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                  className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
                 />
               </div>
             </div>
-            <div className="flex flex-col w-full gap-1 text-white mb-5">
+            <div className="flex flex-col w-full gap-1  mb-5">
               <label htmlFor="brand">Mô tả sản phẩm</label>
               <textarea
                 rows={7}
@@ -277,10 +277,10 @@ const AddProducts = () => {
                 name="description"
                 id="description"
                 placeholder="Mô tả sản phẩm..."
-                className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
               ></textarea>
             </div>
-            <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full text-white mb-4">
+            <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full  mb-4">
               {imageShow.map((img, i) => (
                 <div className="h-[180px] relative">
                   <label htmlFor={i}>
@@ -298,7 +298,7 @@ const AddProducts = () => {
                   />
                   <span
                     onClick={() => removeImage(i)}
-                    className="p-2 z-10 cursor-pointer bg-slate-700 hover:shadow-lg hover:shadow-slate-400/50 text-white absolute top-1 right-1 rounded-full"
+                    className="p-2 z-10 cursor-pointer text-white bg-black hover:shadow-lg hover:shadow-slate-400/50  absolute top-1 right-1 rounded-full"
                   >
                     <IoCloseSharp />
                   </span>
@@ -306,7 +306,7 @@ const AddProducts = () => {
               ))}
               <label
                 htmlFor="image"
-                className="flex justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed hover:border-indigo-500 w-full text-white"
+                className="flex justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed border-black hover:border-indigo-500 w-full "
               >
                 <span>
                   <BsImages />
@@ -325,7 +325,7 @@ const AddProducts = () => {
               <button
                 type="submit"
                 disabled={loader ? true : false}
-                className="group relative w-[200px] h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600"
+                className="group relative w-[200px] h-[40px] text-white flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-md  bg-red-500 hover:bg-red-600"
               >
                 {loader ? (
                   <PropagateLoader color="#fff" cssOverride={overrideStyle} />

@@ -37,8 +37,8 @@ const SellersDetails = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-[#283046] rounded-md">
-        <div className="w-full flex flex-wrap text-white">
+      <div className="w-full p-4 bg-white rounded-md">
+        <div className="w-full flex flex-wrap">
           <div className="w-3/12 flex justify-center items-center py-3">
             <div>
               {
@@ -58,7 +58,7 @@ const SellersDetails = () => {
               <div className="py-2 text-lg">
                 <h2>Thông tin cá nhân</h2>
               </div>
-              <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-700 rounded-md">
+              <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#eeeeee] rounded-md">
                 <div className="flex gap-2">
                   <span>Họ tên:</span>
                   <span>{seller?.name}</span>
@@ -87,7 +87,7 @@ const SellersDetails = () => {
               <div className="py-2 text-lg">
                 <h2>Địa chỉ</h2>
               </div>
-              <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-700 rounded-md">
+              <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#eeeeee] rounded-md">
                 <div className="flex gap-2">
                   <span>Tên shop:</span>
                   <span>{seller?.shopInfo?.shopName}</span>
@@ -111,7 +111,7 @@ const SellersDetails = () => {
         <div>
           <form onSubmit={submit}>
             <div className="flex gap-4 py-3">
-              <select value={status} onChange={(e) => setStatus(e.target.value)} required className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#283046] border border-slate-400 rounded-md text-white">
+              <select value={status} onChange={(e) => setStatus(e.target.value)} required className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#eeeeee] border border-slate-400 rounded-md">
                 <option value="">--Chọn trạng thái--</option>
                 <option value="active">Hoạt động</option>
                 <option value="deactive">Vô hiệu hóa</option>

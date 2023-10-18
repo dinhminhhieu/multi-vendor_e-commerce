@@ -31,7 +31,7 @@ const Pagiantion = ({
           className={`${
             pageNumber === i
               ? "bg-red-500 shadow-lg shadow-red-500/50 text-white"
-              : "bg-slate-700 hover:bg-red-500 shadow-lg hover:shadow-red-500/50 hover:text-white text-white"
+              : "bg-[#eeeeee] hover:bg-red-500 shadow-lg hover:shadow-red-500/50 hover:text-white"
           } w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer`}
           onClick={() => setPageNumber(i)}
         >
@@ -47,7 +47,7 @@ const Pagiantion = ({
       {pageNumber > 1 && (
         <li
           onClick={() => setPageNumber(pageNumber - 1)}
-          className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-700 text-white cursor-pointer"
+          className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-[#eeeeee] cursor-pointer"
         >
           <BsChevronDoubleLeft />
         </li>
@@ -56,7 +56,7 @@ const Pagiantion = ({
       {pageNumber < totalPage && (
         <li
           onClick={() => setPageNumber(pageNumber + 1)}
-          className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-700 text-white cursor-pointer"
+          className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-[#eeeeee] cursor-pointer"
         >
           <BsChevronDoubleRight />
         </li>

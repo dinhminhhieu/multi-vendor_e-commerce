@@ -15,5 +15,6 @@ router.get("/home/customer/get-order/:orderId", orderController.get_order);
 
 // admin
 router.get("/admin/get-admin-orders", orderController.get_admin_orders);
+router.get("/admin/get-admin-order/:orderId", orderController.get_admin_order);
 
 module.exports = router

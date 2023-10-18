@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import icons from "../assets/icons";
 import { useDispatch, useSelector } from "react-redux";
-import {place_order} from '../store/Reducers/orderReducer'
+import { place_order } from "../store/Reducers/orderReducer";
 
 const Shipping = () => {
   const { MdOutlineKeyboardArrowRight } = icons;
@@ -24,7 +24,7 @@ const Shipping = () => {
     district: "",
     ward: "",
   });
-  
+
   const inputHandle = (e) => {
     setState({
       ...state,
@@ -41,15 +41,17 @@ const Shipping = () => {
   };
 
   const placeOrder = () => {
-    dispatch(place_order({
+    dispatch(
+      place_order({
         price,
         products,
         shipping_fee,
         shippingInfo: state,
         userId: userInfo.id,
         navigate,
-        items
-    }))
+        items,
+      })
+    );
   };
 
   return (
@@ -84,6 +86,19 @@ const Shipping = () => {
                       </h2>
                       <form onSubmit={save}>
                         <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
+                            <div className="flex flex-col gap-1 mb-2 w-full">
+                            <label htmlFor="province">Tỉnh/Thành phố</label>
+                            <input
+                              onChange={inputHandle}
+                              required
+                              value={state.province}
+                              type="text"
+                              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
+                              name="province"
+                              placeholder="Nhập tên tỉnh/thành phố ví dụ: Hồ Chí Minh"
+                              id="province"
+                            />
+                          </div>
                           <div className="flex flex-col gap-1 mb-2 w-full">
                             <label htmlFor="name">Họ và tên</label>
                             <input
@@ -97,32 +112,19 @@ const Shipping = () => {
                               id="name"
                             />
                           </div>
-                          <div className="flex flex-col gap-1 mb-2 w-full">
-                            <label htmlFor="address">Địa chỉ</label>
-                            <input
-                              onChange={inputHandle}
-                              required
-                              value={state.address}
-                              type="text"
-                              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
-                              name="address"
-                              placeholder="Số nhà/Tòa nhà, tên đường"
-                              id="address"
-                            />
-                          </div>
                         </div>
                         <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
                           <div className="flex flex-col gap-1 mb-2 w-full">
-                            <label htmlFor="phone">Số điện thoại</label>
+                            <label htmlFor="city">Quận/Huyện</label>
                             <input
                               onChange={inputHandle}
                               required
-                              value={state.phone}
+                              value={state.district}
                               type="text"
                               className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
-                              name="phone"
-                              placeholder="Nhập số điện thoại ví dụ: xxxxxxx205"
-                              id="phone"
+                              name="district"
+                              placeholder="Nhập tên quận/huyện ví dụ: Gò Vấp"
+                              id="city"
                             />
                           </div>
                           <div className="flex flex-col gap-1 mb-2 w-full">
@@ -142,35 +144,7 @@ const Shipping = () => {
                           </div>
                         </div>
                         <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
-                          <div className="flex flex-col gap-1 mb-2 w-full">
-                            <label htmlFor="province">Tỉnh/Thành phố</label>
-                            <input
-                              onChange={inputHandle}
-                              required
-                              value={state.province}
-                              type="text"
-                              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
-                              name="province"
-                              placeholder="Nhập tên tỉnh/thành phố ví dụ: Hồ Chí Minh"
-                              id="province"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1 mb-2 w-full">
-                            <label htmlFor="city">Quận/Huyện</label>
-                            <input
-                              onChange={inputHandle}
-                              required
-                              value={state.district}
-                              type="text"
-                              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
-                              name="district"
-                              placeholder="Nhập tên quận/huyện ví dụ: Gò Vấp"
-                              id="city"
-                            />
-                          </div>
-                        </div>
-                        <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
-                          <div className="flex flex-col gap-1 mb-2 w-full">
+                                                    <div className="flex flex-col gap-1 mb-2 w-full">
                             <label htmlFor="area">Xã/Phường</label>
                             <input
                               onChange={inputHandle}
@@ -181,6 +155,34 @@ const Shipping = () => {
                               name="ward"
                               placeholder="Nhập tên xã/phường ví dụ: Thạnh Xuân"
                               id="ward"
+                            />
+                          </div>
+                          <div className="flex flex-col gap-1 mb-2 w-full">
+                            <label htmlFor="phone">Số điện thoại</label>
+                            <input
+                              onChange={inputHandle}
+                              required
+                              value={state.phone}
+                              type="text"
+                              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
+                              name="phone"
+                              placeholder="Nhập số điện thoại ví dụ: xxxxxxx205"
+                              id="phone"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
+                          <div className="flex flex-col gap-1 mb-2 w-full">
+                            <label htmlFor="address">Địa chỉ</label>
+                            <input
+                              onChange={inputHandle}
+                              required
+                              value={state.address}
+                              type="text"
+                              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
+                              name="address"
+                              placeholder="Số nhà/Tòa nhà, tên đường"
+                              id="address"
                             />
                           </div>
                           <div className="flex flex-col gap-1 mt-7 w-full">
@@ -290,32 +292,32 @@ const Shipping = () => {
                   <div className="flex justify-between items-center">
                     <span>Tổng cộng ({items} sản phẩm)</span>
                     <span className="text-lg font-bold ml-2">
-                          {(price / 1000).toLocaleString("vi-VN", {
-                            minimumFractionDigits: 3,
-                            maximumFractionDigits: 3,
-                          })}
-                          đ
-                        </span>
+                      {(price / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Phí vận chuyển</span>
                     <span className="text-lg font-bold ml-2">
-                          {(shipping_fee / 1000).toLocaleString("vi-VN", {
-                            minimumFractionDigits: 3,
-                            maximumFractionDigits: 3,
-                          })}
-                          đ
-                        </span>
+                      {(shipping_fee / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Tổng cộng</span>
                     <span className="text-xl font-bold ml-2 text-red-600">
-                          {((price + shipping_fee) / 1000).toLocaleString("vi-VN", {
-                            minimumFractionDigits: 3,
-                            maximumFractionDigits: 3,
-                          })}
-                          đ
-                        </span>
+                      {((price + shipping_fee) / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}
+                      đ
+                    </span>
                   </div>
                   <button
                     onClick={placeOrder}

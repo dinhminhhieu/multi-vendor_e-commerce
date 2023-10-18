@@ -13,8 +13,11 @@ const Order = () => {
   }, [orderId]);
   return (
     <div className="bg-white p-5">
+      <h1 className="text-2xl font-semibold text-center mb-2">
+        Chi tiết đơn hàng
+      </h1>
       <h2 className="text-red-600 font-semibold">
-        #{myOrder._id}
+        Mã đơn hàng: #{myOrder._id}
         <h2 className="text-green-500">
           Ngày đặt hàng: <span>{myOrder.date}</span>
         </h2>
@@ -39,45 +42,47 @@ const Order = () => {
             Email: {userInfo.email}
           </p>
         </div>
-        <div className="text-slate-600">
-          <h2>
-            Đơn giá:{" "}
-            <span className="text-base font-bold">
-              {(myOrder.price / 1000).toLocaleString("vi-VN", {
-                minimumFractionDigits: 3,
-                maximumFractionDigits: 3,
-              })}
-              đ
-            </span>
-          </h2>
-          <p>
-            Trạng thái thanh toán:{" "}
-            <span
-              className={`py-[1px] text-xs px-3 ${
-                myOrder.payment_status === "paid"
-                  ? "bg-green-500 text-white"
-                  : "bg-red-500 text-white"
-              } rounded-md `}
-            >
-              {myOrder.payment_status}
-            </span>
-          </p>
-          <p>
-            Tình trạng đơn hàng:{" "}
-            <span
-              className={`py-[1px] text-xs px-3 ${
-                myOrder.delivery_status === "paid"
-                  ? "bg-green-500 text-white"
-                  : "bg-red-500 text-white"
-              } rounded-md `}
-            >
-              {myOrder.delivery_status}
-            </span>
-          </p>
-        </div>
+      </div>
+      <div className="text-slate-600">
+        <p>
+          Đơn giá:{" "}
+          <span className="text-base text-red-500 font-bold">
+            {(myOrder.price / 1000).toLocaleString("vi-VN", {
+              minimumFractionDigits: 3,
+              maximumFractionDigits: 3,
+            })}
+            đ
+          </span>
+        </p>
+        <p>
+          Trạng thái thanh toán:{" "}
+          <span
+            className={`py-[1px] text-xs px-3 ${
+              myOrder.payment_status === "paid"
+                ? "bg-green-500 text-white"
+                : "bg-red-500 text-white"
+            } rounded-md `}
+          >
+            {myOrder.payment_status}
+          </span>
+        </p>
+        <p>
+          Tình trạng đơn hàng:{" "}
+          <span
+            className={`py-[1px] text-xs px-3 ${
+              myOrder.delivery_status === "paid"
+                ? "bg-green-500 text-white"
+                : "bg-red-500 text-white"
+            } rounded-md `}
+          >
+            {myOrder.delivery_status}
+          </span>
+        </p>
       </div>
       <div className="mt-3">
-        <h2 className="text-slate-600 text-lg pb-2">Sản phẩm</h2>
+        <h2 className="text-slate-600 text-lg pb-2 font-semibold">
+          Sản phẩm đã mua
+        </h2>
         <div className="flex gap-5 flex-col">
           {myOrder.products?.map((p, i) => (
             <div key={i}>

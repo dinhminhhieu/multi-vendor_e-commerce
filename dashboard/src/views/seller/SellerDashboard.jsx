@@ -4,8 +4,12 @@ import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
 
 const SellerDashboard = () => {
-  const { FaMoneyCheck, GrProductHunt, AiOutlineShoppingCart, RiShoppingBasketLine } =
-    icons;
+  const {
+    FaMoneyCheck,
+    GrProductHunt,
+    AiOutlineShoppingCart,
+    RiShoppingBasketLine,
+  } = icons;
 
   const state = {
     series: [
@@ -28,8 +32,7 @@ const SellerDashboard = () => {
         radius: 30,
       },
       chart: {
-        background: "transparent",
-        foreColor: "#d0d2d6",
+        background: "#F0F8FF",
       },
       dataLables: {
         enable: false,
@@ -98,49 +101,49 @@ const SellerDashboard = () => {
   return (
     <div className="px-2 md:px-7 py-5">
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7">
-        <div className="flex justify-between items-center p-5 bg-[#283046] rounded-md gap-3">
+        <div className="flex justify-between items-center p-5 bg-red-500 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
             <h2 className="text-2xl font-bold">10.000.000</h2>
             <span className="text-sm font-medium">Tổng Doanh Thu</span>
           </div>
-          <div className="w-[46px] h-[47px] rounded-full bg-[#008000] flex justify-center items-center text-xl">
+          <div className="w-[46px] h-[47px] rounded-full bg-[#FF0800] flex justify-center items-center text-xl">
             <FaMoneyCheck size={22} className="text-white shadow-lg" />
           </div>
         </div>
 
-        <div className="flex justify-between items-center p-5 bg-[#283046] rounded-md gap-3">
+        <div className="flex justify-between items-center p-5 bg-[#0D98BA] rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
             <h2 className="text-2xl font-bold">16</h2>
             <span className="text-sm font-medium">Sản Phẩm</span>
           </div>
-          <div className="w-[46px] h-[47px] rounded-full bg-[#ff6600] flex justify-center items-center text-xl">
+          <div className="w-[46px] h-[47px] rounded-full bg-[#02a8c2] flex justify-center items-center text-xl">
             <GrProductHunt size={22} className="text-white shadow-lg" />
           </div>
         </div>
 
-        <div className="flex justify-between items-center p-5 bg-[#283046] rounded-md gap-3">
+        <div className="flex justify-between items-center p-5 bg-green-600 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
             <h2 className="text-2xl font-bold">10</h2>
             <span className="text-sm font-medium">Đơn Hàng</span>
           </div>
-          <div className="w-[46px] h-[47px] rounded-full bg-[#660000] flex justify-center items-center text-xl">
+          <div className="w-[46px] h-[47px] rounded-full bg-[#006600] flex justify-center items-center text-xl">
             <AiOutlineShoppingCart size={22} className="text-white shadow-lg" />
           </div>
         </div>
 
-        <div className="flex justify-between items-center p-5 bg-[#283046] rounded-md gap-3">
+        <div className="flex justify-between items-center p-5 bg-[#fdba35] rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
             <h2 className="text-2xl font-bold">4</h2>
             <span className="text-sm font-medium">Đơn Hàng Chờ Xử Lý</span>
           </div>
-          <div className="w-[46px] h-[47px] rounded-full bg-[#999900] flex justify-center items-center text-xl">
+          <div className="w-[46px] h-[47px] rounded-full bg-[#EF9B0F] flex justify-center items-center text-xl">
             <RiShoppingBasketLine size={22} className="text-white shadow-lg" />
           </div>
         </div>
       </div>
       <div className="w-full flex flex-wrap mt-7">
         <div className="w-full lg:w-7/12 lg:pr-3">
-          <div className="w-full bg-[#283046] p-4 rounded-md">
+          <div className="w-full bg-[#F0F8FF] p-4 rounded-md">
             <Chart
               options={state.options}
               series={state.series}
@@ -150,17 +153,13 @@ const SellerDashboard = () => {
           </div>
         </div>
         <div className="w-full lg:w-5/12 lg:pl-4 mt-6 lg:mt-0">
-          <div className="w-full bg-[#283046] p-4 rounded-md text-white">
+          <div className="w-full bg-white p-4 rounded-md">
             <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-base text-white">
-                Tin nhắn gần đây
-              </h2>
-              <Link className="font-semibold text-sm text-[#cccccc]">
-                Xem tất cả
-              </Link>
+              <h2 className="font-semibold text-base">Tin nhắn gần đây</h2>
+              <Link className="font-semibold text-sm">Xem tất cả</Link>
             </div>
-            <div className="flex flex-col gap-2 pt-6 text-white">
-              <ol className="relative border-1 border-slate-600 ml-4">
+            <div className="flex flex-col gap-2 pt-6">
+              <ol className="relative border-1 ml-4">
                 <li className="mb-3 ml-6">
                   <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] rounded-full z-10 bg-[#000000]">
                     <img
@@ -169,14 +168,14 @@ const SellerDashboard = () => {
                       className="rounded-full w-full h-full shadow-lg"
                     />
                   </div>
-                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                  <div className="p-2 bg-[#eeeeee] rounded-lg border shadow-sm">
                     <div className="flex justify-between items-center mb-2">
                       <Link className="text-sm font-normal">admin</Link>
                       <time className="mb-1 text-sm font-normal sm:order-last">
                         4 ngày trước
                       </time>
                     </div>
-                    <div className="p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800">
+                    <div className="p-1 text-xs font-medium rounded-lg border">
                       Xin chào
                     </div>
                   </div>
@@ -190,14 +189,14 @@ const SellerDashboard = () => {
                       className="rounded-full w-full h-full shadow-lg"
                     />
                   </div>
-                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                  <div className="p-2 bg-[#eeeeee] rounded-lg border shadow-sm">
                     <div className="flex justify-between items-center mb-2">
                       <Link className="text-sm font-normal">admin</Link>
                       <time className="mb-1 text-sm font-normal sm:order-last">
                         4 ngày trước
                       </time>
                     </div>
-                    <div className="p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800">
+                    <div className="p-1 text-xs font-medium rounded-lg border">
                       Xin chào
                     </div>
                   </div>
@@ -211,14 +210,14 @@ const SellerDashboard = () => {
                       className="rounded-full w-full h-full shadow-lg"
                     />
                   </div>
-                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                  <div className="p-2 bg-[#eeeeee] rounded-lg border shadow-sm">
                     <div className="flex justify-between items-center mb-2">
                       <Link className="text-sm font-normal">admin</Link>
                       <time className="mb-1 text-sm font-normal sm:order-last">
                         4 ngày trước
                       </time>
                     </div>
-                    <div className="p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800">
+                    <div className="p-1 text-xs font-medium rounded-lg border">
                       Xin chào
                     </div>
                   </div>
@@ -228,18 +227,16 @@ const SellerDashboard = () => {
           </div>
         </div>
       </div>
-      <div className="w-full p-4 bg-[#283046] rounded-md mt-6">
+      <div className="w-full p-4 bg-white rounded-md mt-6">
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-base text-white">
-            Đơn hàng gần đây
-          </h2>
+          <h2 className="font-semibold text-base ">Đơn hàng gần đây</h2>
           <Link className="font-semibold text-sm text-[#cccccc]">
             Xem tất cả
           </Link>
         </div>
         <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-left text-white">
-            <thead className="text-sm text-white uppercase border-b border-slate-700">
+          <table className="w-full text-sm text-left ">
+            <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                 <th className="py-3 px-4" scope="col">
                   Mã đơn hàng

@@ -8,6 +8,7 @@ const {
 } = require("mongoose");
 
 class orderController {
+  //Kiểm tra xem đơn hàng đã được thanh toán hay chưa
   paymentCheck = async (id) => {
     try {
       const order = await customerOrder.findById(id);
@@ -30,7 +31,7 @@ class orderController {
     }
   };
 
-  //1. Đặt hàng
+  // 1. Đặt hàng
   place_order = async (req, res) => {
     const { price, products, shipping_fee, shippingInfo, userId } = req.body;
     let authorOrderData = [];
@@ -62,6 +63,7 @@ class orderController {
         payment_status: "unpaid",
         date: formattedDate,
       });
+
       for (let i = 0; i < products.length; i++) {
         const pro = products[i].products;
         const pri = products[i].price;
@@ -92,7 +94,7 @@ class orderController {
         this.paymentCheck(order.id);
       }, 15000);
       responseReturn(res, 201, {
-        message: "order placeed success",
+        message: "Đặt hàng thành công",
         orderId: order.id,
       });
     } catch (error) {
@@ -100,7 +102,7 @@ class orderController {
     }
   };
 
-  //2. Lấy dữ liệu order
+  // 2. Lấy dữ liệu order
   get_dashboard_index_data = async (req, res) => {
     const { userId } = req.params;
 
@@ -138,6 +140,7 @@ class orderController {
     }
   };
 
+  // 3. Lấy danh sách đơn hàng trả về customer
   get_orders = async (req, res) => {
     const { customerId, status } = req.params;
 
@@ -161,6 +164,7 @@ class orderController {
     }
   };
 
+  // 4. Lấy chi tiết đơn hàng trả về customer
   get_order = async (req, res) => {
     const { orderId } = req.params;
 
@@ -174,7 +178,7 @@ class orderController {
     }
   };
 
-  //3. Lấy danh sách order trả về admin
+  // 5. Lấy danh sách đơn hàng trả về admin
   get_admin_orders = async (req, res) => {
     let { page, parPage, searchValue } = req.query;
     page = parseInt(page);
@@ -215,6 +219,30 @@ class orderController {
       }
     } catch (error) {
       console.log(error.message);
+    }
+  };
+
+  // 6. Lấy chi tiết đơn hàng
+  get_admin_order = async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+      const order = await customerOrder.aggregate([
+        {
+          $match: { _id: new ObjectId(orderId) },
+        },
+        {
+          $lookup: {
+            from: "authororders",
+            localField: "_id",
+            foreignField: "orderId",
+            as: "suborder",
+          },
+        },
+      ]);
+      responseReturn(res, 200, { order: order[0] });
+    } catch (error) {
+      console.log("get admin order " + error.message);
     }
   };
 }

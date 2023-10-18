@@ -94,7 +94,7 @@ const Index = () => {
                       scope="row"
                       className="px-6 py-4 font-medium whitespace-nowrap"
                     >
-                      {o._id}
+                      #{o._id}
                     </td>
                     <td
                       scope="row"

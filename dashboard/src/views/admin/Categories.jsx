@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   categoryAdd,
   messageClear,
-  get_category
+  get_category,
 } from "../../store/Reducers/categoryReducer";
 import toast from "react-hot-toast";
 import Search from "../components/Search";
@@ -73,26 +73,26 @@ const Categories = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <div className="flex justify-between items-center lg:hidden mb-5 p-4 bg-[#283046] rounded-md">
-        <h1 className="text-white font-semibold text-lg">Danh mục</h1>
+      <div className="flex justify-between items-center lg:hidden mb-5 p-4 bg-white rounded-md">
+        <h1 className="font-semibold text-lg">Danh mục</h1>
         <button
           onClick={() => setShow(true)}
-          className="bg-indigo-500 shadow-lg hover:shadow-indigo-500/50 px-4 py-2 cursor-pointer text-white rounded-sm text-sm"
+          className="bg-red-500 shadow-lg hover:shadow-indigo-500/50 px-4 py-2 cursor-pointer text-white font-medium rounded-sm text-sm"
         >
           Thêm
         </button>
       </div>
       <div className="flex flex-wrap w-full">
         <div className="w-full lg:w-7/12">
-          <div className="w-full p-4 bg-[#283046] rounded-md">
+          <div className="w-full p-4 bg-white rounded-md">
             <Search
               setParPage={setParPage}
               setSearchValue={setSearchValue}
               searchValue={searchValue}
             />
             <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left text-white">
-                <thead className="text-sm text-white uppercase border-b border-slate-700">
+              <table className="w-full text-sm text-left">
+                <thead className="text-sm uppercase border-b border-slate-700">
                   <tr>
                     <th className="py-3 px-4" scope="col">
                       STT
@@ -110,12 +110,12 @@ const Categories = () => {
                 </thead>
                 <tbody className="text-sm font-normal">
                   {categorys.map((d, i) => (
-                    <tr key={i}>
+                    <tr className="border-b border-slate-700" key={i}>
                       <td
                         className="py-3 px-4 font-medium whitespace-nowrap"
                         scope="row"
                       >
-                        {i+1}
+                        {i + 1}
                       </td>
                       <td
                         className="py-3 px-4 font-medium whitespace-nowrap"
@@ -139,13 +139,13 @@ const Categories = () => {
                       >
                         <div className="flex justify-start items-center gap-4">
                           <Link className="p-[5px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
-                            <FaEdit size={18} />
+                            <FaEdit size={15} color="white" />
                           </Link>
                           <Link className="p-[5px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
-                            <FaTrash size={18} />
+                            <FaTrash size={15} color="white" />
                           </Link>
                           <Link className="p-[5px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
-                            <FaEye size={18} />
+                            <FaEye size={15} color="white" />
                           </Link>
                         </div>
                       </td>
@@ -171,16 +171,16 @@ const Categories = () => {
           } z-[9999] z-20 top-0 transition-all duration-500`}
         >
           <div className="w-full p-5">
-            <div className="bg-[#283046] h-screen lg:h-auto px-3 py-2 lg:rounded-md text-white">
+            <div className="bg-white h-screen lg:h-auto px-3 py-2 lg:rounded-md">
               <div className="flex justify-between items-center mb-3">
-                <h1 className="text-xl text-white font-semibold mb-4 w-full text-center">
+                <h1 className="text-xl font-semibold mb-4 w-full text-center">
                   Thêm danh mục
                 </h1>
                 <div
                   onClick={() => setShow(false)}
                   className="block lg:hidden cursor-pointer"
                 >
-                  <GrClose className="text-white" size={20} />
+                  <GrClose size={20} />
                 </div>
               </div>
               <form onSubmit={add_category}>
@@ -196,13 +196,13 @@ const Categories = () => {
                     name="category_name"
                     required
                     placeholder="Ví dụ: Tai nghe, quần áo..."
-                    className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md text-white focus:border-indigo-500 overflow-hidden"
+                    className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md focus:border-indigo-500 overflow-hidden"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="image"
-                    className="flex justify-center items-center flex-col h-[283px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-white"
+                    className="flex justify-center items-center flex-col h-[283px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-black"
                   >
                     {imageShow ? (
                       <img className="w-full h-full" src={imageShow} alt="" />

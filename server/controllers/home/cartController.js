@@ -96,6 +96,7 @@ class cartController {
           calculatePrice = calculatePrice + quantity * price;
         }
       }
+
       // Tính toán giá sản phẩm từ nhiều seller khác nhau
       let p = [];
       let unique = [
@@ -142,6 +143,7 @@ class cartController {
           }
         }
       }
+      // console.log(p)
       responseReturn(res, 200, {
         cart_products: p,
         price: calculatePrice,
