@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_admin_order,
   messageClear,
+  admin_order_status_update,
 } from "../../store/Reducers/orderReducer";
 
 const OrdersDetails = () => {
@@ -18,21 +19,46 @@ const OrdersDetails = () => {
     dispatch(get_admin_order(orderId));
   }, [orderId]);
 
+  const [status, setStatus] = useState("");
+
+  const status_update = (e) => {
+    dispatch(
+      admin_order_status_update({ orderId, info: { status: e.target.value } })
+    );
+    setStatus(e.target.value);
+  };
+
+  useEffect(() => {
+    setStatus(order?.delivery_status);
+  }, [order]);
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+  }, [successMessage, errorMessage]);
+
   return (
     <div className="px-2 lg:px-7 pt-5">
       <div className="w-full p-4 bg-white rounded-md">
         <div className="flex justify-between items-center p-4">
           <h2 className="text-xl font-medium">Chi tiết đơn hàng</h2>
           <select
+            onChange={status_update}
             name=""
             id=""
             className="py-2 px-4 hover:border-indigo-500 outline-none border border-slate-400 rounded-md"
           >
-            <option value="">Chờ xử lý</option>
-            <option value="">Đang xử lý</option>
-            <option value="">Kho hàng</option>
-            <option value="">Đã giao</option>
-            <option value="">Đã hủy</option>
+            <option value="pending">Chờ xử lý</option>
+            <option value="processing">Đang xử lý</option>
+            <option value="warehouse">Kho hàng</option>
+            <option value="placed">Đã giao</option>
+            <option value="cannelled">Đã hủy</option>
           </select>
         </div>
         <div className="p-4">
@@ -109,9 +135,15 @@ const OrdersDetails = () => {
                 <div className="mt-4 flex flex-col">
                   {order?.suborder?.map((o, i) => (
                     <div className="mb-6">
-                        <h2 className="font-medium">Đơn hàng của seller {i + 1}</h2>
-                        <span className="text-red-500 font-medium">Mã seller: {o?.sellerId}</span>
-                        <p className="text-green-500 font-medium">Tình trạng đơn hàng: {o?.delivery_status}</p>
+                      <h2 className="font-medium">
+                        Đơn hàng của seller {i + 1}
+                      </h2>
+                      <span className="text-red-500 font-medium">
+                        Mã seller: {o?.sellerId}
+                      </span>
+                      <p className="text-green-500 font-medium">
+                        Tình trạng đơn hàng: {o?.delivery_status}
+                      </p>
                       {o?.products?.map((p, i) => (
                         <div className="flex gap-3 text-md mt-2">
                           <img
@@ -125,7 +157,9 @@ const OrdersDetails = () => {
                               <span className="text-sm text-blue-600 font-medium">
                                 Thương hiệu : {p.brand}
                               </span>
-                              <h2 className="text-sm">Số lượng: {p.quantity}</h2>
+                              <h2 className="text-sm">
+                                Số lượng: {p.quantity}
+                              </h2>
                             </p>
                           </div>
                         </div>

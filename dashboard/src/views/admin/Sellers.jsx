@@ -51,7 +51,10 @@ const Sellers = () => {
             <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                 <th className="py-3 px-4" scope="col">
-                  STT
+                 STT
+                </th>
+                <th className="py-3 px-4" scope="col">
+                  Mã seller
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Hình ảnh
@@ -69,9 +72,6 @@ const Sellers = () => {
                   Trạng thái
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Địa chỉ
-                </th>
-                <th className="py-3 px-4" scope="col">
                   Hành động
                 </th>
               </tr>
@@ -79,11 +79,17 @@ const Sellers = () => {
             <tbody>
               {sellers.map((d, i) => (
                 <tr key={i}>
-                  <td
+                                    <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     {i + 1}
+                  </td>
+                  <td
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                    scope="row"
+                  >
+                    #{d?._id}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
@@ -114,12 +120,6 @@ const Sellers = () => {
                     scope="row"
                   >
                     <span>{d.status}</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span>{d.shopInfo?.province}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"

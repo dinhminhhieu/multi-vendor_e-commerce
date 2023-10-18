@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { get_seller, messageClear, seller_status_update } from "../../store/Reducers/sellerReducer";
-import toast from 'react-hot-toast'
+import {
+  get_seller,
+  messageClear,
+  seller_status_update,
+} from "../../store/Reducers/sellerReducer";
+import toast from "react-hot-toast";
 
 const SellersDetails = () => {
   const dispatch = useDispatch();
@@ -12,28 +16,30 @@ const SellersDetails = () => {
     dispatch(get_seller(sellerId));
   }, [sellerId]);
 
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("");
 
   const submit = (e) => {
-    e.preventDefault()
-    dispatch(seller_status_update({
-      sellerId,
-      status
-    }))
-  }
+    e.preventDefault();
+    dispatch(
+      seller_status_update({
+        sellerId,
+        status,
+      })
+    );
+  };
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
-      dispatch(messageClear())
+      toast.success(successMessage);
+      dispatch(messageClear());
     }
-  }, [successMessage])
+  }, [successMessage]);
 
   useEffect(() => {
     if (seller) {
-      setStatus(seller.status)
+      setStatus(seller.status);
     }
-  }, [seller])
+  }, [seller]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -41,16 +47,16 @@ const SellersDetails = () => {
         <div className="w-full flex flex-wrap">
           <div className="w-3/12 flex justify-center items-center py-3">
             <div>
-              {
-                seller?.image ? <img
-                src={seller?.image}
-                className="w-full h-[230px]"
-                alt=""
-              /> : <label
+              {seller?.image ? (
+                <img src={seller?.image} className="w-full h-[230px]" alt="" />
+              ) : (
+                <label
                   className="flex justify-center items-center flex-col h-[210px] w-[300px] cursor-pointer border border-dashed hover:border-indigo-500 border-[#d0d2d6] relative"
                   htmlFor="img"
-                ><span>Không tìm thấy ảnh!</span></label>
-              }
+                >
+                  <span>Không tìm thấy ảnh!</span>
+                </label>
+              )}
             </div>
           </div>
           <div className="w-4/12">
@@ -59,6 +65,10 @@ const SellersDetails = () => {
                 <h2>Thông tin cá nhân</h2>
               </div>
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#eeeeee] rounded-md">
+                <div className="flex gap-2">
+                  <span>Mã seller:</span>
+                  <span>{seller?._id}</span>
+                </div>
                 <div className="flex gap-2">
                   <span>Họ tên:</span>
                   <span>{seller?.name}</span>
@@ -111,7 +121,12 @@ const SellersDetails = () => {
         <div>
           <form onSubmit={submit}>
             <div className="flex gap-4 py-3">
-              <select value={status} onChange={(e) => setStatus(e.target.value)} required className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#eeeeee] border border-slate-400 rounded-md">
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                required
+                className="py-2 px-4 hover:border-indigo-500 outline-none bg-[#eeeeee] border border-slate-400 rounded-md"
+              >
                 <option value="">--Chọn trạng thái--</option>
                 <option value="active">Hoạt động</option>
                 <option value="deactive">Vô hiệu hóa</option>

@@ -70,7 +70,7 @@ const Order = () => {
           Tình trạng đơn hàng:{" "}
           <span
             className={`py-[1px] text-xs px-3 ${
-              myOrder.delivery_status === "paid"
+              myOrder.delivery_status === "placed"
                 ? "bg-green-500 text-white"
                 : "bg-red-500 text-white"
             } rounded-md `}

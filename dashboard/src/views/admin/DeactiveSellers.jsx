@@ -50,7 +50,7 @@ const DeactiveSellers = () => {
             <thead className="text-sm uppercase border-b border-slate-700">
               <tr>
                 <th className="py-3 px-4" scope="col">
-                  STT
+                  Mã seller
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Hình ảnh
@@ -79,13 +79,13 @@ const DeactiveSellers = () => {
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    {i + 1}
+                    #{d?._id}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <img className="w-[45px] h-[45px]" src={d.image} alt="" />
+                    <img className="w-[45px] h-[45px]" src={d?.image} alt="" />
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
@@ -110,12 +110,6 @@ const DeactiveSellers = () => {
                     scope="row"
                   >
                     <span>{d.status}</span>
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span>{d.shopInfo?.province}</span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"

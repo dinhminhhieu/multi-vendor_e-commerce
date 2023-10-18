@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import icons from "../../assets/icons";
 import Search from "../components/Search";
 import { Link } from "react-router-dom";
 import Pagiantion from "../Pagiantion";
+import { useDispatch, useSelector } from "react-redux";
+import { get_seller_orders } from "../../store/Reducers/orderReducer";
 
 const Orders = () => {
   const { FaEye } = icons;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
+  const dispatch = useDispatch();
+  const { totalOrder, myOrders } = useSelector((state) => state.order);
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(
+      get_seller_orders({
+        parPage: parseInt(parPage),
+        page: parseInt(currentPage),
+        searchValue,
+        sellerId: userInfo._id
+      })
+    );
+  });
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -35,47 +51,77 @@ const Orders = () => {
                   Tình trạng đơn hàng
                 </th>
                 <th className="py-3 px-4" scope="col">
+                  Ngày đặt hàng
+                </th>
+                <th className="py-3 px-4" scope="col">
                   Hành động
                 </th>
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, , 4, 5].map((d, i) => (
+              {myOrders?.map((d, i) => (
                 <tr key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    1
+                    #{d?._id}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    10.000
-                  </td>
-                  <td
-                    className="py-3 px-4 font-medium whitespace-nowrap"
-                    scope="row"
-                  >
-                    <span className="py-[2px] px-[6px] bg-slate-700 text-blue-500 rounded-md text-xs">
-                      Đang xử lý
+                    <span>
+                      {(d?.price / 1000).toLocaleString("vi-VN", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}{" "}
+                      đ
                     </span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span className="py-[2px] px-[6px] bg-slate-700 text-blue-500 rounded-md text-xs">
-                      Đang xử lý
+                    <span
+                      className={`py-[1px] text-xs px-3 ${
+                        d?.payment_status === "paid"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } rounded-md `}
+                    >
+                      {d?.payment_status}
                     </span>
+                  </td>
+                  <td
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                    scope="row"
+                  >
+                    <span
+                      className={`py-[1px] text-xs px-3 ${
+                        d?.delivery_status === "placed"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } rounded-md `}
+                    >
+                      {d?.delivery_status}
+                    </span>
+                  </td>
+                                    <td
+                    className="py-3 px-4 font-medium whitespace-nowrap"
+                    scope="row"
+                  >
+                    {d?.date}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
                     <div className="flex justify-start items-center gap-4">
-                      <Link to={`/seller/dashboard/order/order-details/1`} className="p-[5px] text-white bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link
+                        to={`/seller/dashboard/order/order-details/${d?._id}`}
+                        className="p-[5px] text-white bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+                      >
                         <FaEye size={15} />
                       </Link>
                     </div>
@@ -85,15 +131,19 @@ const Orders = () => {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-end mt-4 bottom-4 right-4">
-          <Pagiantion
-            pageNumber={currentPage}
-            setPageNumber={setCurrentPage}
-            totalItem={50}
-            parPage={parPage}
-            showItem={3}
-          />
-        </div>
+        {totalOrder <= parPage ? (
+          ""
+        ) : (
+          <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+            <Pagiantion
+              pageNumber={currentPage}
+              setPageNumber={setCurrentPage}
+              totalItem={totalOrder}
+              parPage={parPage}
+              showItem={3}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

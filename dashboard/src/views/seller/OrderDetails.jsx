@@ -1,6 +1,16 @@
-import React from 'react'
+import React from "react";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  messageClear,
+  get_seller_order,
+} from "../../store/Reducers/orderReducer";
 
 const OrderDetails = () => {
+  const { orderId } = useParams();
+  const dispatch = useDispatch();
+
   return (
     <div className="px-2 lg:px-7 pt-5">
       <div className="w-full p-4 bg-[#283046] rounded-md">
@@ -28,13 +38,12 @@ const OrderDetails = () => {
               <div className="pr-3 text-white text-lg">
                 <div className="flex flex-col gap-1">
                   <h2 className="pb-2 font-semibold">Vận chuyển đến: Gò Vấp</h2>
-                  
                 </div>
                 <div className="flex justify-start items-center gap-3">
                   <h2>Trạng thái thanh toán: </h2>
                   <span className="py-[2px] px-[6px] bg-green-600 text-white rounded-md text-xs font-medium">
-                      Đã thanh toán
-                    </span>
+                    Đã thanh toán
+                  </span>
                 </div>
                 <span>Đơn giá: 10.000</span>
                 <div className="mt-4 flex flex-col gap-4">
@@ -74,12 +83,11 @@ const OrderDetails = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OrderDetails
+export default OrderDetails;
