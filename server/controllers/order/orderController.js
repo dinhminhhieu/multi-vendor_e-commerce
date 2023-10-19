@@ -1,7 +1,8 @@
 const authOrder = require("../../models/authOrder");
 const cartModel = require("../../models/cartModel");
 const customerOrder = require("../../models/customerOrder");
-const productModel = require("../../models/productModel");
+const snapdealWallet = require("../../models/snapdealWallet");
+const sellerWallet = require("../../models/sellerWallet");
 const moment = require("moment");
 const { responseReturn } = require("../../utils/response");
 const {
@@ -350,10 +351,50 @@ class orderController {
     }
   };
 
-  //12. Xác nhận đơn hàng
+  //12. Xác nhận đơn hàng và thay đổi trạng thái thanh toán
   order_confirm = async (req, res) => {
     const { orderId } = req.params;
-    console.log(orderId)
+    try {
+      await customerOrder.findByIdAndUpdate(orderId, {
+        payment_status: "paid",
+        delivery_status: "pending",
+      });
+      await authOrder.updateMany(
+        { orderId: new ObjectId(orderId) },
+        {
+          payment_status: "paid",
+          delivery_status: "pending",
+        }
+      );
+      const cuOrder = await customerOrder.findById(orderId);
+
+      const auOrder = await authOrder.find({
+        orderId: new ObjectId(orderId),
+      });
+
+      const time = moment(Date.now()).format("l");
+
+      const splitTime = time.split("/");
+
+      await snapdealWallet.create({
+        amount: cuOrder.price,
+        month: splitTime[0],
+        year: splitTime[2],
+      });
+
+      for (let i = 0; i < auOrder.length; i++) {
+        await sellerWallet.create({
+          sellerId: auOrder[i].sellerId.toString(),
+          amount: auOrder[i].price,
+          month: splitTime[0],
+          year: splitTime[2],
+        });
+      }
+
+      responseReturn(res, 200, { message: "success" });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 }
 
