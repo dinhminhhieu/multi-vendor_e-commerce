@@ -75,7 +75,7 @@ const Orders = () => {
                       {(d?.price / 1000).toLocaleString("vi-VN", {
                         minimumFractionDigits: 3,
                         maximumFractionDigits: 3,
-                      })}{" "}
+                      })}
                       đ
                     </span>
                   </td>

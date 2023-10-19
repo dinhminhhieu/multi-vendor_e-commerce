@@ -1,12 +1,15 @@
 const authOrder = require("../../models/authOrder");
 const cartModel = require("../../models/cartModel");
 const customerOrder = require("../../models/customerOrder");
-const productModel = require("../../models/productModel")
+const productModel = require("../../models/productModel");
 const moment = require("moment");
 const { responseReturn } = require("../../utils/response");
 const {
   mongo: { ObjectId },
 } = require("mongoose");
+const stripe = require("stripe")(
+  "sk_test_51O2qq4DfL3StjNhv6m2WDvEl2YXFACBoufn2fVRbSgrNoxZ0sRREOlKjBxTT9gaNVMQPXAENAQVCWoY6Kr4XVawM00UjJ2WXe7"
+);
 
 class orderController {
   //Kiểm tra xem đơn hàng đã được thanh toán hay chưa
@@ -320,10 +323,30 @@ class orderController {
       await authOrder.findByIdAndUpdate(orderId, {
         delivery_status: status,
       });
-      responseReturn(res, 200, { message: "Thay đổi trạng thái đơn hàng thành công!" });
+      responseReturn(res, 200, {
+        message: "Thay đổi trạng thái đơn hàng thành công!",
+      });
     } catch (error) {
       console.log("get admin order status error " + error.message);
       responseReturn(res, 500, { message: "internal server error" });
+    }
+  };
+
+  //11. Tạo hóa đơn thanh toán
+  create_payment = async (req, res) => {
+    const { price } = req.body;
+
+    try {
+      const payment = await stripe.paymentIntents.create({
+        amount: price,
+        currency: "vnd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+      responseReturn(res, 200, { clientSecret: payment.client_secret });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 }
