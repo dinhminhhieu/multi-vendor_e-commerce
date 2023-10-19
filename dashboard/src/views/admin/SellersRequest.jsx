@@ -50,7 +50,7 @@ const SellersRequest = () => {
                   Trạng thái
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Thanh toán
+                  TK Thanh toán
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Hành động

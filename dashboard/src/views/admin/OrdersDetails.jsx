@@ -109,7 +109,7 @@ const OrdersDetails = () => {
                   </span>
                 </div>
                 <div className="mt-4 flex flex-col gap-4">
-                  {order?.products?.map((p, i) => (
+                  {order?.products && order?.products?.map((p, i) => (
                     <div key={i} className="flex gap-3 text-md">
                       <img
                         className="w-[50px] h-[50px]"

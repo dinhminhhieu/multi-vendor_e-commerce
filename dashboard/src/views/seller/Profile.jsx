@@ -10,6 +10,7 @@ import {
 import { overrideStyle } from "../../utils/utils";
 import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import {create_stripe_connect_account} from '../../store/Reducers/sellerReducer'
 
 const Profile = () => {
   const { BsImages, FaEdit } = icons;
@@ -17,7 +18,6 @@ const Profile = () => {
   const { userInfo, loader, successMessage } = useSelector(
     (state) => state.auth
   );
-  const status = "active";
 
   const [state, setState] = useState({
     shopName: "",
@@ -75,7 +75,7 @@ const Profile = () => {
                 </label>
               ) : (
                 <label
-                  className="flex justify-center items-center flex-col h-[210px] w-[300px] cursor-pointer border border-black border-dashed hover:border-indigo-500 border-[#d0d2d6] relative"
+                  className="flex justify-center items-center flex-col h-[210px] w-[300px] cursor-pointer border border-black border-dashed hover:border-indigo-500 relative"
                   htmlFor="img"
                 >
                   <span>
@@ -122,12 +122,12 @@ const Profile = () => {
                 <div className="flex gap-2">
                   <span>Tài khoản thanh toán: </span>
                   <p>
-                    {status === "active" ? (
-                      <span className="bg-red-500 text-white text-xs cursor-default font-normal px-2 py-1 rounded-md">
+                    {userInfo.payment === "active" ? (
+                      <span className="bg-green-500 text-white text-xs cursor-default font-normal px-2 py-1 rounded-md">
                         {userInfo.payment}
                       </span>
                     ) : (
-                      <span className="bg-green-500 text-white text-xs cursor-default font-medium px-2 py-1 rounded-md">
+                      <span onClick={() => dispatch(create_stripe_connect_account())} className="bg-red-500 cursor-pointer text-white text-xs cursor-default font-medium px-2 py-1 rounded-md">
                         Nhấn để kích hoạt
                       </span>
                     )}

@@ -1,6 +1,7 @@
 const authOrder = require("../../models/authOrder");
 const cartModel = require("../../models/cartModel");
 const customerOrder = require("../../models/customerOrder");
+const productModel = require("../../models/productModel")
 const moment = require("moment");
 const { responseReturn } = require("../../utils/response");
 const {
@@ -90,6 +91,7 @@ class orderController {
       for (let k = 0; k < cartId.length; k++) {
         await cartModel.findByIdAndDelete(cartId[k]);
       }
+
       setTimeout(() => {
         this.paymentCheck(order.id);
       }, 15000);
@@ -292,6 +294,35 @@ class orderController {
       }
     } catch (error) {
       console.log("get seller order error " + error.message);
+      responseReturn(res, 500, { message: "internal server error" });
+    }
+  };
+
+  //9. Lấy chi tiết đơn hàng trả về seller
+  get_seller_order = async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+      const order = await authOrder.findById(orderId);
+
+      responseReturn(res, 200, { order });
+    } catch (error) {
+      console.log("get admin order " + error.message);
+    }
+  };
+
+  //10. Thay đổi trạng thái đơn hàng
+  seller_order_status_update = async (req, res) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    try {
+      await authOrder.findByIdAndUpdate(orderId, {
+        delivery_status: status,
+      });
+      responseReturn(res, 200, { message: "Thay đổi trạng thái đơn hàng thành công!" });
+    } catch (error) {
+      console.log("get admin order status error " + error.message);
       responseReturn(res, 500, { message: "internal server error" });
     }
   };

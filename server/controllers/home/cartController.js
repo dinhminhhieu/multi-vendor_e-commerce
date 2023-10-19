@@ -47,7 +47,6 @@ class cartController {
   //2. Lấy danh sách sản phẩm trong giỏ hàng
   get_cart_products = async (req, res) => {
     const { userId } = req.params;
-    const co = 5;
     try {
       // Truy vấn tập hợp
       const cart_products = await cartModel.aggregate([
@@ -117,7 +116,6 @@ class cartController {
             } else {
               pri = tempProduct.price;
             }
-            pri = pri - Math.floor((pri * co) / 100);
             price = price + pri * quantityProduct[j].quantity;
             p[i] = {
               sellerId: unique[i],
