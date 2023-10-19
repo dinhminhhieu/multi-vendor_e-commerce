@@ -349,6 +349,12 @@ class orderController {
       console.log(error.message);
     }
   };
+
+  //12. Xác nhận đơn hàng
+  order_confirm = async (req, res) => {
+    const { orderId } = req.params;
+    console.log(orderId)
+  };
 }
 
 module.exports = new orderController();

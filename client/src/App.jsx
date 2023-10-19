@@ -17,7 +17,8 @@ import Order from "./components/dashboard/Order";
 import Wishlist from "./components/dashboard/Wishlist";
 import ChangePassword from "./components/dashboard/ChangePassword";
 import Chat from "./components/dashboard/Chat";
-import { useDispatch, useSelector } from "react-redux";
+import ConfirmOrder from "./pages/ConfirmOrder";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { get_category } from "./store/Reducers/homeReducer";
 
@@ -40,6 +41,8 @@ function App() {
         <Route path="/products?" element={<CategoryShop />} />
         <Route path="/products/search?" element={<SearchProducts />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/order/confirm?" element={<ConfirmOrder />} />
+
         <Route path="/dashboard" element={<ProtectUser />}>
           <Route path="" element={<Dashboard />}>
             <Route path="" element={<Index />} />
@@ -51,6 +54,7 @@ function App() {
             <Route path="chat/:sellerId" element={<Chat />} /> 
           </Route>
         </Route>
+        
       </Routes>
     </BrowserRouter>
   );
