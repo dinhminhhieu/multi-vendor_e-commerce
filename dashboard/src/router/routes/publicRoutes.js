@@ -28,5 +28,9 @@ const publicRoutes = [
     path: "/unauthorized",
     element: <Unauthorized />,
   },
+  {
+    path: "/success?",
+    element: <Success />,
+  },
 ];
 export default publicRoutes;
