@@ -1,12 +1,16 @@
 const stripeModel = require("../../models/stripeModel");
+const sellerWallet = require("../../models/sellerWallet");
+const sellerModel = require("../../models/sellerModel");
+const snapdealWallet = require("../../models/snapdealWallet");
+const withdrawRequest = require("../../models/withdrawRequest");
 const { v4: uuidv4 } = require("uuid");
 const stripe = require("stripe")(
-  "sk_test_51O2qq4DfL3StjNhv6m2WDvEl2YXFACBoufn2fVRbSgrNoxZ0sRREOlKjBxTT9gaNVMQPXAENAQVCWoY6Kr4XVawM00UjJ2WXe7"
+  "sk_test_51O62ICBURT4LOFQuwX1a0yWztoDlZ3uYd1um45cJmvgoQiBP7iTSF230OojzQkwawcOr0wd2ruFBpB4gd7d1vQRi00LVdjxZ5z"
 );
 const { responseReturn } = require("../../utils/response");
-const sellerModel = require("../../models/sellerModel");
 
 class paymentComtroller {
+  //1. Tạo tài khoản thanh toán trên stripe
   create_stripe_connect_account = async (req, res) => {
     const { id } = req;
     const uid = uuidv4();
@@ -51,6 +55,7 @@ class paymentComtroller {
     }
   };
 
+  //2. Kích hoạt tài khoản thanh toán
   active_stripe_connect_account = async (req, res) => {
     const { activeCode } = req.params;
     const { id } = req;
@@ -66,6 +71,75 @@ class paymentComtroller {
       }
     } catch (error) {
       responseReturn(res, 500, { message: "Internal server error" });
+    }
+  };
+
+  //3. Tính tổng số tiền
+  sumAmount = (data) => {
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) {
+      sum = sum + data[i].amount;
+    }
+    return sum;
+  };
+
+  //4. Gửi yêu cầu thanh toán
+  get_seller_payment_request = async (req, res) => {
+    const { sellerId } = req.params;
+
+    try {
+      const payments = await sellerWallet.find({ sellerId });
+
+      const pendingWithdraw = await withdrawRequest.find({
+        $and: [
+          {
+            sellerId: {
+              $eq: sellerId,
+            },
+          },
+          {
+            status: {
+              $eq: "pending",
+            },
+          },
+        ],
+      });
+
+      const successWithdraw = await withdrawRequest.find({
+        $and: [
+          {
+            sellerId: {
+              $eq: sellerId,
+            },
+          },
+          {
+            status: {
+              $eq: "success",
+            },
+          },
+        ],
+      });
+
+      const pendingAmount = this.sumAmount(pendingWithdraw);
+      const withdrawAmount = this.sumAmount(successWithdraw);
+      const totalAmount = this.sumAmount(payments);
+
+      let availableAmount = 0;
+
+      if (totalAmount > 0) {
+        availableAmount = totalAmount - (pendingAmount + withdrawAmount);
+      }
+
+      responseReturn(res, 200, {
+        totalAmount,
+        pendingAmount,
+        withdrawAmount,
+        availableAmount,
+        successWithdraw,
+        pendingWithdraw,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 }

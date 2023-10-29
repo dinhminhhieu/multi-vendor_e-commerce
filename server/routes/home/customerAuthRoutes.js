@@ -8,4 +8,6 @@ router.post(
 
 router.post("/customer/customer-login", customerAuthController.customer_login);
 
+router.get("/customer/logout", customerAuthController.logout);
+
 module.exports = router;

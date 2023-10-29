@@ -67,7 +67,7 @@ const SellersDetails = () => {
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#eeeeee] rounded-md">
                 <div className="flex gap-2">
                   <span>Mã seller:</span>
-                  <span>{seller?._id}</span>
+                  <span>#{seller?._id}</span>
                 </div>
                 <div className="flex gap-2">
                   <span>Họ tên:</span>

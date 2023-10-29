@@ -9,7 +9,7 @@ const {
   mongo: { ObjectId },
 } = require("mongoose");
 const stripe = require("stripe")(
-  "sk_test_51O2qq4DfL3StjNhv6m2WDvEl2YXFACBoufn2fVRbSgrNoxZ0sRREOlKjBxTT9gaNVMQPXAENAQVCWoY6Kr4XVawM00UjJ2WXe7"
+  "sk_test_51O62ICBURT4LOFQuwX1a0yWztoDlZ3uYd1um45cJmvgoQiBP7iTSF230OojzQkwawcOr0wd2ruFBpB4gd7d1vQRi00LVdjxZ5z"
 );
 
 class orderController {

@@ -5,6 +5,8 @@ import icons from "../assets/icons";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import api from "../api/api";
+import { reset_count } from "../store/Reducers/cartReducer";
+import { user_reset, logout } from "../store/Reducers/authReducer";
 
 const Dashboard = () => {
   const {
@@ -20,15 +22,10 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const logout = async () => {
-    try {
-      const { data } = await api.get("/customer/logout");
-      localStorage.removeItem("customerToken");
-
-      navigate("/login");
-    } catch (error) {
-      console.log(error.response.data);
-    }
+  const customer_logout = async () => {
+    dispatch(logout({navigate}))
+    dispatch(user_reset())
+    dispatch(reset_count())
   };
   return (
     <div>
@@ -94,7 +91,7 @@ const Dashboard = () => {
                   </Link>
                 </li>
                 <li
-                  onClick={logout}
+                  onClick={customer_logout}
                   className="flex justify-start items-center gap-2 py-4 cursor-pointer"
                 >
                   <span className="text-xl">

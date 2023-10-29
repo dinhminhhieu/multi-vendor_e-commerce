@@ -8,7 +8,7 @@ import success from "../assets/success.png";
 
 const load = async () => {
   return await loadStripe(
-    "pk_test_51O2qq4DfL3StjNhvwgcuO775RZZuUjwLgG6OZ1GsxY7fliaCsmtOOR3XdcqPZENexEEnVg8prHYggHMegWpElmIV007o27QsfI"
+    "pk_test_51O62ICBURT4LOFQukQ7OQd72DaptYz0vMsqEwUtYBzVUqHxWzVlKH3tdHHVnMqqliUEq4MYhbnfiJSDXZLSGsDsA00uUdgp035"
   );
 };
 

@@ -157,7 +157,7 @@ const EditProduct = () => {
                 <label htmlFor="brand">Thương hiệu</label>
                 <input
                   onChange={inputHandle}
-                  value={state.name}
+                  value={state.brand}
                   type="text"
                   name="brand"
                   id="brand"

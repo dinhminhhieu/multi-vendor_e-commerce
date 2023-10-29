@@ -1,6 +1,6 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import api from '../../api/api'
-import jwt from "jwt-decode"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../api/api";
+import jwt from "jwt-decode";
 
 //1. Khách hàng đăng ký tài khoản
 export const customer_register = createAsyncThunk(
@@ -30,6 +30,23 @@ export const customer_login = createAsyncThunk(
   }
 );
 
+//3. Đăng xuất
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async ({ navigate }, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/customer/logout", {
+        withCredentials: true,
+      });
+      localStorage.removeItem("customerToken");
+      navigate("/");
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const decodeToken = (token) => {
   if (token) {
     const userInfo = jwt(token);
@@ -51,6 +68,9 @@ export const authReducer = createSlice({
     messageClear: (state, _) => {
       state.errorMessage = "";
       state.successMessage = "";
+    },
+    user_reset: (state, _) => {
+      state.userInfo = "";
     },
   },
   extraReducers: {
@@ -83,5 +103,5 @@ export const authReducer = createSlice({
   },
 });
 
-export const { messageClear } = authReducer.actions;
+export const { messageClear, user_reset } = authReducer.actions;
 export default authReducer.reducer;

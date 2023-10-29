@@ -32,7 +32,7 @@ const Details = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const { product, moreProducts, relatedProducts } = useSelector(
+  const { product, moreProducts, relatedProducts, totalReview } = useSelector(
     (state) => state.home
   );
   const { userInfo } = useSelector((state) => state.auth);
@@ -235,7 +235,7 @@ const Details = () => {
                 <div className="flex text-xl">
                   <Ratings ratings={product.rating} />
                 </div>
-                <span className="text-green-500">(23 đánh giá)</span>
+                <span className="text-green-500">({totalReview} đánh giá)</span>
               </div>
               <span className="text-blue-500 font-medium">
                 Thương hiệu: {product.brand}
@@ -383,7 +383,7 @@ const Details = () => {
                 ) : (
                   ""
                 )}
-                <Link to={`/dashboard/chat/${product.sellerId}`} className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-green-500 text-white block">
+                <Link to={`/dashboard/chat/${product.sellerId}`} className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 border-2 border-green-500 hover:bg-green-500 hover:text-white block">
                   Chat với người bán
                 </Link>
               </div>

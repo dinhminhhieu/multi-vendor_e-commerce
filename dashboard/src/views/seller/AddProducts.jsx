@@ -280,9 +280,9 @@ const AddProducts = () => {
                 className="px-4 py-2 outline-none border bg-transparent border-slate-400 rounded-md  focus:border-indigo-500 overflow-hidden"
               ></textarea>
             </div>
-            <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full  mb-4">
+            <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 xs:gap-4 gap-3 w-full mb-4">
               {imageShow.map((img, i) => (
-                <div className="h-[180px] relative">
+                <div className="h-[250px] relative">
                   <label htmlFor={i}>
                     <img
                       src={img.url}
@@ -298,7 +298,7 @@ const AddProducts = () => {
                   />
                   <span
                     onClick={() => removeImage(i)}
-                    className="p-2 z-10 cursor-pointer text-white bg-black hover:shadow-lg hover:shadow-slate-400/50  absolute top-1 right-1 rounded-full"
+                    className="p-2 z-10 cursor-pointer text-white bg-black hover:shadow-lg hover:shadow-slate-400/50 absolute top-1 right-1 rounded-full"
                   >
                     <IoCloseSharp />
                   </span>

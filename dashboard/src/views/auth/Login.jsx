@@ -5,17 +5,17 @@ import { messageClear, seller_login } from "../../store/Reducers/authReducer";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import icons from "../../assets/icons";
 import toast from "react-hot-toast";
-import {overrideStyle} from '../../utils/utils'
+import { overrideStyle } from "../../utils/utils";
 
 const Login = () => {
   const { AiOutlineEye, AiOutlineEyeInvisible } = icons;
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const { loader, errorMessage, successMessage } = useSelector(
     (state) => state.auth
   );
-  
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -33,7 +33,7 @@ const Login = () => {
     dispatch(seller_login(state));
   };
 
-    useEffect(() => {
+  useEffect(() => {
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
@@ -41,7 +41,7 @@ const Login = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      navigate("/")
+      navigate("/");
     }
   }, [errorMessage, successMessage]);
 
@@ -159,6 +159,15 @@ const Login = () => {
                 className="text-red-600 pl-2 text-sm font-medium"
               >
                 ĐĂNG KÝ
+              </Link>
+            </div>
+            <div className="flex items-center w-full">
+              <h4>Bạn là quản trị viên (admin)? </h4>
+              <Link
+                to="/admin/login"
+                className="text-red-600 pl-2 text-sm font-medium"
+              >
+                ĐĂNG NHẬP ADMIN
               </Link>
             </div>
           </form>

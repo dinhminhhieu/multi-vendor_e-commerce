@@ -39,6 +39,7 @@ export const seller_login = createAsyncThunk(
       const { data } = await api.post("/seller-login", info, {
         withCredentials: true,
       });
+      console.log(data)
       localStorage.setItem("accessToken", data.token); // Lưu token vào local storage
       return fulfillWithValue(data);
     } catch (error) {
@@ -64,7 +65,6 @@ export const logout = createAsyncThunk(
       return rejectWithValue(error.response.data);
     }
   }
-
 );
 
 export const get_user_info = createAsyncThunk(
@@ -121,8 +121,6 @@ export const profile_info_add = createAsyncThunk(
     }
   }
 );
-
-
 
 export const authReducer = createSlice({
   name: "auth",

@@ -148,6 +148,7 @@ const Header = () => {
                 <ul className="flex justify-start items-start gap-8 text-sm font-bold uppercase md-lg:hidden">
                   <li>
                     <Link
+                    to="/"
                       className={`p-2 block ${
                         pathname === "/" ? "text-red-500" : "text-slate-600"
                       }`}
@@ -159,7 +160,7 @@ const Header = () => {
                     <Link
                       to="/shops"
                       className={`p-2 block ${
-                        pathname === "/shop" ? "text-red-500" : "text-slate-600"
+                        pathname === "/shops" ? "text-red-500" : "text-slate-600"
                       }`}
                     >
                       Sản phẩm

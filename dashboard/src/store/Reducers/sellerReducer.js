@@ -95,10 +95,7 @@ export const create_stripe_connect_account = createAsyncThunk(
         withCredentials: true,
       });
       window.location.href = url;
-      // return fulfillWithValue(data)
-    } catch (error) {
-      //return rejectWithValue(error.response.data)
-    }
+    } catch (error) {}
   }
 );
 
@@ -117,7 +114,6 @@ export const active_stripe_connect_account = createAsyncThunk(
     }
   }
 );
-
 
 export const sellerReducer = createSlice({
   name: "seller",

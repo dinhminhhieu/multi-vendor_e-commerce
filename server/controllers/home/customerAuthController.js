@@ -69,6 +69,19 @@ class customerAuthController {
       console.log(error.message);
     }
   };
+
+  //3. Khách hàng đăng xuất
+  logout = async (req, res) => {
+    try {
+      res.cookie("customerToken", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      });
+      responseReturn(res, 200, { message: "Đăng xuất thành công!" });
+    } catch (error) {
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
 }
 
 module.exports = new customerAuthController()

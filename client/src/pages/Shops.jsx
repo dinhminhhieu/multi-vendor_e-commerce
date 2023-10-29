@@ -175,8 +175,8 @@ const Shops = () => {
                 />
                 <div>
                   <span className="text-red-500 font-bold text-lg">
-                    {Math.floor(state.values[0])}đ đến{" "}
-                    {Math.floor(state.values[1])}đ
+                    {(Math.floor(state.values[0]) / 1000).toLocaleString("vi-VN", {minimumFractionDigits: 3, maximumFractionDigits: 3})}đ đến{" "}
+                    {(Math.floor(state.values[1]) / 1000).toLocaleString("vi-VN", {minimumFractionDigits: 3, maximumFractionDigits: 3})}đ
                   </span>
                 </div>
               </div>

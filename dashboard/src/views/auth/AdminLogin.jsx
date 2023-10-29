@@ -110,12 +110,14 @@ const AdminLogin = () => {
                   <AiOutlineEye
                     className="absolute right-2 top-2 cursor-pointer"
                     size={25}
+                    color="red"
                     onClick={() => setVisible(false)}
                   />
                 ) : (
                   <AiOutlineEyeInvisible
                     className="absolute right-2 top-2 cursor-pointer"
                     size={25}
+                    color="red"
                     onClick={() => setVisible(true)}
                   />
                 )}

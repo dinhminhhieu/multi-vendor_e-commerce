@@ -43,7 +43,7 @@ class homeController {
     try {
       const products = await productModel
         .find({})
-        .limit(20)
+        .limit(30)
         .sort({ createAt: -1 });
 
       const allProduct1 = await productModel.find({}).limit(9).sort({

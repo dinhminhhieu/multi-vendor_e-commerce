@@ -1,6 +1,8 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import icons from "../../assets/icons";
 import { FixedSizeList as List } from "react-window";
+import { useDispatch, useSelector } from "react-redux";
+import { get_seller_payment_request } from "../../store/Reducers/paymentReducer";
 
 function handleOnWheel({ deltaY }) {
   console.log("handleOnWheel", deltaY);
@@ -25,13 +27,38 @@ const Payments = () => {
       </div>
     );
   };
+
   const { MdOutlineAttachMoney } = icons;
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const {
+    successMessage,
+    errorMessage,
+    loader,
+    pendingWithdraw,
+    successWithdraw,
+    totalAmount,
+    withdrawAmount,
+    pendingAmount,
+    availableAmount,
+  } = useSelector((state) => state.payment);
+
+  useEffect(() => {
+    dispatch(get_seller_payment_request(userInfo._id));
+  }, []);
+
   return (
     <div className="px-2 lg:px-7 pt-5">
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7">
         <div className="flex justify-between items-center p-5 bg-green-500 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-lg font-bold">10.000.000</h2>
+            <span className="font-lg font-bold">
+              {(totalAmount / 1000).toLocaleString("vi-VN", {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3,
+              })}
+              đ
+            </span>
             <span className="text-sm font-normal">Tổng Doanh Thu</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#008000] flex justify-center items-center text-xl">
@@ -41,8 +68,14 @@ const Payments = () => {
 
         <div className="flex justify-between items-center p-5 bg-orange-700 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-lg font-bold">10.000.000</h2>
-            <span className="text-sm font-normal">Tài Sản</span>
+            <span className="font-lg font-bold">
+              {(availableAmount / 1000).toLocaleString("vi-VN", {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3,
+              })}
+              đ
+            </span>
+            <span className="text-sm font-normal">Số Tiền Khả Dụng</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#ff6600] flex justify-center items-center text-xl">
             <MdOutlineAttachMoney size={22} className="text-white shadow-lg" />
@@ -51,8 +84,14 @@ const Payments = () => {
 
         <div className="flex justify-between items-center p-5 bg-red-500 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-lg font-bold">10.000.000</h2>
-            <span className="text-sm font-normal">Rút Tiền</span>
+            <span className="font-lg font-bold">
+              {(withdrawAmount / 1000).toLocaleString("vi-VN", {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3,
+              })}
+              đ
+            </span>
+            <span className="text-sm font-normal">Số Tiền Rút</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#660000] flex justify-center items-center text-xl">
             <MdOutlineAttachMoney size={22} className="text-white shadow-lg" />
@@ -61,7 +100,13 @@ const Payments = () => {
 
         <div className="flex justify-between items-center p-5 bg-yellow-600 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-lg font-bold">4</h2>
+            <span className="font-lg font-bold">
+              {(pendingWithdraw / 1000).toLocaleString("vi-VN", {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3,
+              })}
+              đ
+            </span>
             <span className="text-sm font-normal">Số Tiền Chờ Xử Lý</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#999900] flex justify-center items-center text-xl">
