@@ -65,12 +65,12 @@ class paymentComtroller {
         await sellerModel.findByIdAndUpdate(id, {
           payment: "active",
         });
-        responseReturn(res, 200, { message: "payment active" });
+        responseReturn(res, 200, { message: "Kích hoạt tài khoản thanh toán thành công!" });
       } else {
-        responseReturn(res, 404, { message: "payment active failed" });
+        responseReturn(res, 404, { message: "Kích hoạt tài khoản thanh toán thất bại!" });
       }
     } catch (error) {
-      responseReturn(res, 500, { message: "Internal server error" });
+      responseReturn(res, 500, { message: "Internal server error!" });
     }
   };
 
@@ -83,7 +83,7 @@ class paymentComtroller {
     return sum;
   };
 
-  //4. Gửi yêu cầu thanh toán
+  //4. Lấy seller yêu cầu thanh toán
   get_seller_payment_request = async (req, res) => {
     const { sellerId } = req.params;
 
@@ -142,6 +142,22 @@ class paymentComtroller {
       console.log(error.message);
     }
   };
+
+  //5. Gửi yêu cầu rút tiền
+  send_withdraw_request = async(req, res) => {
+    const {amount, sellerId} = req.body
+    // console.log(req.body)
+
+    try {
+      const withdraw = await withdrawRequest.create({
+        sellerId,
+        amount: parseInt(amount)
+      })
+      responseReturn(res, 200, {withdraw, message: "Gửi yêu cầu thanh toán thành công!"})
+    } catch (error) {
+      responseReturn(res, 500, {message: "Internal server error!"})
+    }
+  }
 }
 
 module.exports = new paymentComtroller();

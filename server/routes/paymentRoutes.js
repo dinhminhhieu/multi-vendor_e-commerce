@@ -19,4 +19,6 @@ router.get(
   paymentController.get_seller_payment_request
 );
 
+router.post("/payment/send-withdraw-request", authMiddleware, paymentController.send_withdraw_request);
+
 module.exports = router;

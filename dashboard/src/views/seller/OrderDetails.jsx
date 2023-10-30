@@ -52,11 +52,11 @@ const OrderDetails = () => {
             value={status}
             name=""
             id=""
-            className="py-2 px-4 hover:border-indigo-500 outline-none bg-white border border-slate-400 rounded-md"
+            className="py-2 px-4 hover:border-indigo-500 outline-none border border-slate-400 rounded-md"
           >
             <option value="pending">Chờ xử lý</option>
             <option value="processing">Đang xử lý</option>
-            <option value="warehouse">Kho</option>
+            <option value="warehouse">Kho hàng</option>
             <option value="cancelled">Đã hủy</option>
           </select>
         </div>

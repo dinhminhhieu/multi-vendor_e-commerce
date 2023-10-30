@@ -1,8 +1,13 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import icons from "../../assets/icons";
 import { FixedSizeList as List } from "react-window";
 import { useDispatch, useSelector } from "react-redux";
-import { get_seller_payment_request } from "../../store/Reducers/paymentReducer";
+import {
+  get_seller_payment_request,
+  send_withdraw_request,
+  messageClear,
+} from "../../store/Reducers/paymentReducer";
+import toast from "react-hot-toast";
 
 function handleOnWheel({ deltaY }) {
   console.log("handleOnWheel", deltaY);
@@ -19,7 +24,7 @@ const Payments = () => {
         <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
         <div className="w-[25%] p-2 whitespace-nowrap">10.000</div>
         <div className="w-[25%] p-2 whitespace-nowrap">
-          <span className="py-[2px] px-[6px] bg-slate-700 text-blue-500 rounded-md text-xs">
+          <span className="py-[2px] px-[6px] bg-red-700 text-white rounded-md text-xs">
             Đang xử lý
           </span>
         </div>
@@ -29,6 +34,7 @@ const Payments = () => {
   };
 
   const { MdOutlineAttachMoney } = icons;
+  const [amount, setAmount] = useState(0);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
   const {
@@ -46,6 +52,22 @@ const Payments = () => {
   useEffect(() => {
     dispatch(get_seller_payment_request(userInfo._id));
   }, []);
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+  }, [errorMessage, successMessage]);
+
+  const sendWithdrawRequest = (e) => {
+    e.preventDefault();
+    dispatch(send_withdraw_request({ amount, sellerId: userInfo._id }));
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -101,7 +123,7 @@ const Payments = () => {
         <div className="flex justify-between items-center p-5 bg-yellow-600 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
             <span className="font-lg font-bold">
-              {(pendingWithdraw / 1000).toLocaleString("vi-VN", {
+              {(pendingAmount / 1000).toLocaleString("vi-VN", {
                 minimumFractionDigits: 3,
                 maximumFractionDigits: 3,
               })}
@@ -118,17 +140,19 @@ const Payments = () => {
         <div className="bg-white rounded-md p-5">
           <h2 className="text-lg font-bold">Gửi yêu cầu rút tiền</h2>
           <div className="py-5">
-            <form>
+            <form onSubmit={sendWithdrawRequest}>
               <div className="flex gap-3 flex-wrap">
                 <input
+                  onChange={(e) => setAmount(e.target.value)}
+                  value={amount}
                   required
                   min="0"
                   type="number"
                   className="py-2 px-3 w-[79%] h-[50%] hover:border-indigo-500 outline-none bg-[#eeeeee] border border-slate-400 rounded-md"
                   name="amount"
                 />
-                <button className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2">
-                  Gửi
+                <button disabled={loader} className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2">
+                  {loader ? "Đang gửi" : "Gửi" }
                 </button>
               </div>
             </form>
