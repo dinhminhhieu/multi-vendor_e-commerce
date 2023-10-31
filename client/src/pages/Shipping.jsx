@@ -86,7 +86,7 @@ const Shipping = () => {
                       </h2>
                       <form onSubmit={save}>
                         <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
-                            <div className="flex flex-col gap-1 mb-2 w-full">
+                          <div className="flex flex-col gap-1 mb-2 w-full">
                             <label htmlFor="province">Tỉnh/Thành phố</label>
                             <input
                               onChange={inputHandle}
@@ -115,7 +115,7 @@ const Shipping = () => {
                         </div>
                         <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
                           <div className="flex flex-col gap-1 mb-2 w-full">
-                            <label htmlFor="city">Quận/Huyện</label>
+                            <label htmlFor="district">Quận/Huyện</label>
                             <input
                               onChange={inputHandle}
                               required
@@ -124,7 +124,7 @@ const Shipping = () => {
                               className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md"
                               name="district"
                               placeholder="Nhập tên quận/huyện ví dụ: Gò Vấp"
-                              id="city"
+                              id="district"
                             />
                           </div>
                           <div className="flex flex-col gap-1 mb-2 w-full">
@@ -144,8 +144,8 @@ const Shipping = () => {
                           </div>
                         </div>
                         <div className="flex md:flex-col md:gap-2 w-full gap-5 text-slate-600">
-                                                    <div className="flex flex-col gap-1 mb-2 w-full">
-                            <label htmlFor="area">Xã/Phường</label>
+                          <div className="flex flex-col gap-1 mb-2 w-full">
+                            <label htmlFor="ward">Xã/Phường</label>
                             <input
                               onChange={inputHandle}
                               required
@@ -204,7 +204,7 @@ const Shipping = () => {
                           Nhà riêng
                         </span>
                         <span className="text-slate-600 text-sm">
-                          {state.address} {state.province} {state.city}{" "}
+                          {state.address}, {state.ward}, {state.district}, {state.province}{" "}
                           {state.area}
                         </span>
                         <span

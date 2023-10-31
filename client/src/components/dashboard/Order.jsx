@@ -22,17 +22,17 @@ const Order = () => {
           Ngày đặt hàng: <span>{myOrder.date}</span>
         </h2>
       </h2>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         <div className="flex flex-col gap-1">
           <h2 className="text-slate-600 font-semibold">
             Giao hàng đến: {myOrder.shippingInfo?.name}
           </h2>
           <p>
             <span className="bg-red-500 text-white text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-              Home
+              Nhà riêng
             </span>
             <span className="text-slate-600 text-sm">
-              {myOrder.shippingInfo?.address}
+              {myOrder.shippingInfo?.address}, {""}
               {myOrder.shippingInfo?.ward}, {""}
               {myOrder.shippingInfo?.district}, {""}
               {myOrder.shippingInfo?.province}

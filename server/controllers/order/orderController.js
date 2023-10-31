@@ -117,7 +117,6 @@ class orderController {
         .find({
           customerId: new ObjectId(userId),
         })
-        .limit(5);
       const pendingOrder = await customerOrder
         .find({
           customerId: new ObjectId(userId),

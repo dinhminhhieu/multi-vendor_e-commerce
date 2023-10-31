@@ -66,7 +66,12 @@ const Payments = () => {
 
   const sendWithdrawRequest = (e) => {
     e.preventDefault();
-    dispatch(send_withdraw_request({ amount, sellerId: userInfo._id }));
+    if((availableAmount - amount) > 10) {
+      dispatch(send_withdraw_request({ amount, sellerId: userInfo._id }));
+      setAmount(0)
+    } else {
+      toast.error("Số tiền khả dụng không đủ!")
+    }
   };
 
   return (

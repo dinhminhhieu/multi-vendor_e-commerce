@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import icons from "../../assets/icons";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { get_admin_dashboard_data } from "../../store/Reducers/dashboardReducer";
 
 const AdminDashboard = () => {
   const { FaMoneyCheck, GrProductHunt, AiOutlineShoppingCart, HiUserGroup } =
@@ -94,12 +96,27 @@ const AdminDashboard = () => {
     },
   };
 
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const { totalSale, totalOrder, totalSeller, totalProduct, recentOrders } =
+    useSelector((state) => state.dashboard);
+
+  useEffect(() => {
+    dispatch(get_admin_dashboard_data());
+  }, []);
+
   return (
     <div className="px-2 md:px-7 py-5">
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7">
         <div className="flex justify-between items-center p-5 bg-red-500 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-2xl font-bold">10.000.000</h2>
+            <span className="font-lg font-bold">
+              {(totalSale / 1000).toLocaleString("vi-VN", {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3,
+              })}
+              đ
+            </span>
             <span className="text-sm font-medium">Tổng Doanh Thu</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#FF0800] flex justify-center items-center text-xl">
@@ -109,7 +126,7 @@ const AdminDashboard = () => {
 
         <div className="flex justify-between items-center p-5 bg-[#0D98BA] rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-2xl font-bold">16</h2>
+            <h2 className="text-2xl font-bold">{totalProduct}</h2>
             <span className="text-sm font-medium">Sản Phẩm</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#02a8c2] flex justify-center items-center text-xl">
@@ -119,7 +136,7 @@ const AdminDashboard = () => {
 
         <div className="flex justify-between items-center p-5 bg-green-600 rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-2xl font-bold">10</h2>
+            <h2 className="text-2xl font-bold">{totalOrder}</h2>
             <span className="text-sm font-medium">Đơn Hàng</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#006600] flex justify-center items-center text-xl">
@@ -129,7 +146,7 @@ const AdminDashboard = () => {
 
         <div className="flex justify-between items-center p-5 bg-[#fdba35] rounded-md gap-3">
           <div className="flex flex-col justify-start items-start text-white">
-            <h2 className="text-2xl font-bold">4</h2>
+            <h2 className="text-2xl font-bold">{totalSeller}</h2>
             <span className="text-sm font-medium">Sellers</span>
           </div>
           <div className="w-[46px] h-[47px] rounded-full bg-[#EF9B0F] flex justify-center items-center text-xl">
@@ -151,12 +168,8 @@ const AdminDashboard = () => {
         <div className="w-full lg:w-5/12 lg:pl-4 mt-6 lg:mt-0">
           <div className="w-full bg-white p-4 rounded-md">
             <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-base">
-                Tin nhắn gần đây
-              </h2>
-              <Link className="font-semibold text-sm">
-                Xem tất cả
-              </Link>
+              <h2 className="font-semibold text-base">Tin nhắn gần đây</h2>
+              <Link className="font-semibold text-sm">Xem tất cả</Link>
             </div>
             <div className="flex flex-col gap-2 pt-6">
               <ol className="relative border-1 ml-4">
@@ -229,10 +242,11 @@ const AdminDashboard = () => {
       </div>
       <div className="w-full p-4 bg-white rounded-md mt-6">
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-base">
-            Đơn hàng gần đây
-          </h2>
-          <Link className="font-semibold text-sm">
+          <h2 className="font-semibold text-base">Đơn hàng gần đây</h2>
+          <Link
+            to="/admin/dashboard/orders"
+            className="font-bold text-base text-blue-500"
+          >
             Xem tất cả
           </Link>
         </div>
@@ -247,7 +261,7 @@ const AdminDashboard = () => {
                   Đơn giá
                 </th>
                 <th className="py-3 px-4" scope="col">
-                  Trạng thái
+                  Trạng thái thanh toán
                 </th>
                 <th className="py-3 px-4" scope="col">
                   Tình trạng đơn hàng
@@ -258,37 +272,62 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, , 4, 5].map((d, i) => (
+              {recentOrders.map((d, i) => (
                 <tr key={i}>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    1
+                    #{d?._id}
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    10.000
+                    {(d?.price / 1000).toLocaleString("vi-VN", {
+                      minimumFractionDigits: 3,
+                      maximumFractionDigits: 3,
+                    })}
+                    đ
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Đang xử lý</span>
+                    <span
+                      className={`py-[1px] text-xs px-3 ${
+                        d?.payment_status === "paid"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } rounded-md `}
+                    >
+                      {d?.payment_status}
+                    </span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <span>Đang xử lý</span>
+                    <span
+                      className={`py-[1px] text-xs px-3 ${
+                        d?.delivery_status === "placed"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } rounded-md `}
+                    >
+                      {d?.delivery_status}
+                    </span>
                   </td>
                   <td
                     className="py-3 px-4 font-medium whitespace-nowrap"
                     scope="row"
                   >
-                    <Link>Xem</Link>
+                    <Link
+                      to={`/seller/dashboard/order/order-details/${d?._id}`}
+                      className="font-bold"
+                    >
+                      Xem
+                    </Link>
                   </td>
                 </tr>
               ))}

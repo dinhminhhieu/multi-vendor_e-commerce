@@ -73,8 +73,29 @@ const Orders = () => {
                       đ
                     </span>
                   </div>
-                  <div className="py-4 w-[18%]">{o?.payment_status}</div>
-                  <div className="py-4 w-[18%]">{o?.delivery_status}</div>
+                  <div className="py-4 w-[18%]">
+                    {" "}
+                    <span
+                      className={`py-[1px] text-xs px-3 ${
+                        o?.payment_status === "paid"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } rounded-md `}
+                    >
+                      {o?.payment_status}
+                    </span>
+                  </div>
+                  <div className="py-4 w-[18%]">
+                    <span
+                      className={`py-[1px] text-xs px-3 ${
+                        o?.delivery_status === "placed"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } rounded-md `}
+                    >
+                      {o?.delivery_status}
+                    </span>
+                  </div>
                   <div className="py-4 w-[18%]">
                     <Link to={`/admin/dashboard/orders/details/${o?._id}`}>
                       <FaEye
@@ -137,6 +158,6 @@ const Orders = () => {
       </div>
     </div>
   );
-};  
+};
 
 export default Orders;
