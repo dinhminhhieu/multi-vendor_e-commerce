@@ -18,21 +18,6 @@ const outerElementType = forwardRef((props, ref) => (
 ));
 
 const Payments = () => {
-  const Row = ({ index, style }) => {
-    return (
-      <div style={style} className="flex text-sm">
-        <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
-        <div className="w-[25%] p-2 whitespace-nowrap">10.000</div>
-        <div className="w-[25%] p-2 whitespace-nowrap">
-          <span className="py-[2px] px-[6px] bg-red-700 text-white rounded-md text-xs">
-            Đang xử lý
-          </span>
-        </div>
-        <div className="w-[25%] p-2 whitespace-nowrap">21/09/2023</div>
-      </div>
-    );
-  };
-
   const { MdOutlineAttachMoney } = icons;
   const [amount, setAmount] = useState(0);
   const dispatch = useDispatch();
@@ -48,6 +33,52 @@ const Payments = () => {
     pendingAmount,
     availableAmount,
   } = useSelector((state) => state.payment);
+
+  const Row = ({ index, style }) => {
+    return (
+      <div style={style} className="flex text-sm">
+        <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
+        <div className="w-[25%] p-2 whitespace-nowrap">
+          {(pendingWithdraw[index]?.amount / 1000).toLocaleString("vi-VN", {
+            minimumFractionDigits: 3,
+            maximumFractionDigits: 3,
+          })}
+          đ
+        </div>
+        <div className="w-[25%] p-2 whitespace-nowrap">
+          <span className="py-[1px] px-[6px] bg-red-500 text-white rounded-md text-xs">
+            {pendingWithdraw[index]?.status}
+          </span>
+        </div>
+        <div className="w-[25%] p-2 whitespace-nowrap">
+          {pendingWithdraw[index]?.date}
+        </div>
+      </div>
+    );
+  };
+
+  const Rows = ({ index, style }) => {
+    return (
+      <div style={style} className="flex text-sm">
+        <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
+        <div className="w-[25%] p-2 whitespace-nowrap">
+          {(successWithdraw[index]?.amount / 1000).toLocaleString("vi-VN", {
+            minimumFractionDigits: 3,
+            maximumFractionDigits: 3,
+          })}
+          đ
+        </div>
+        <div className="w-[25%] p-2 whitespace-nowrap">
+          <span className="py-[1px] px-[6px] bg-red-500 text-white rounded-md text-xs">
+            {successWithdraw[index]?.status}
+          </span>
+        </div>
+        <div className="w-[25%] p-2 whitespace-nowrap">
+          {successWithdraw[index]?.date}
+        </div>
+      </div>
+    );
+  };
 
   useEffect(() => {
     dispatch(get_seller_payment_request(userInfo._id));
@@ -66,11 +97,11 @@ const Payments = () => {
 
   const sendWithdrawRequest = (e) => {
     e.preventDefault();
-    if((availableAmount - amount) > 10) {
+    if (availableAmount - amount > 10) {
       dispatch(send_withdraw_request({ amount, sellerId: userInfo._id }));
-      setAmount(0)
+      setAmount(0);
     } else {
-      toast.error("Số tiền khả dụng không đủ!")
+      toast.error("Số tiền khả dụng không đủ!");
     }
   };
 
@@ -156,8 +187,11 @@ const Payments = () => {
                   className="py-2 px-3 w-[79%] h-[50%] hover:border-indigo-500 outline-none bg-[#eeeeee] border border-slate-400 rounded-md"
                   name="amount"
                 />
-                <button disabled={loader} className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2">
-                  {loader ? "Đang gửi" : "Gửi" }
+                <button
+                  disabled={loader}
+                  className="bg-red-500 hover:shadow-red-500/50 hover:shadow-lg text-white rounded-md px-7 py-2"
+                >
+                  {loader ? "Đang gửi" : "Gửi"}
                 </button>
               </div>
             </form>
@@ -165,19 +199,19 @@ const Payments = () => {
           <div>
             <h2 className="text-lg pb-4">Yêu cầu rút tiền đang chờ xử lý</h2>
             <div className="w-full overflow-x-auto">
-              <div className="flex bg-[#eeeeee] uppercase text-xs min-w-[340px]">
+              <div className="flex bg-[#eeeeee] uppercase text-xs min-w-[340px] font-semibold">
                 <div className="w-[25%] p-2">STT</div>
-                <div className="w-[25%] p-2">Tổng tiền</div>
+                <div className="w-[25%] p-2">Số tiền rút</div>
                 <div className="w-[25%] p-2">Trạng thái</div>
-                <div className="w-[25%] p-2">Ngày đáo hạn</div>
+                <div className="w-[25%] p-2">Ngày gửi yêu cầu</div>
               </div>
               {
                 <List
                   style={{ minWidth: "340px", overflowX: "hidden" }}
                   className="List"
                   height={350}
-                  itemCount={10}
-                  itemSize={30}
+                  itemCount={pendingWithdraw.length}
+                  itemSize={35}
                   outerElementType={outerElementType}
                 >
                   {Row}
@@ -190,22 +224,22 @@ const Payments = () => {
           <div>
             <h2 className="text-lg pb-4 font-bold">Rút tiền thành công</h2>
             <div className="w-full overflow-x-auto">
-              <div className="flex bg-[#eeeeee] uppercase text-xs min-w-[320px]">
+              <div className="flex bg-[#eeeeee] uppercase text-xs min-w-[340px] font-semibold">
                 <div className="w-[25%] p-2">STT</div>
-                <div className="w-[25%] p-2">Tổng tiền</div>
+                <div className="w-[25%] p-2">Số tiền rút</div>
                 <div className="w-[25%] p-2">Trạng thái</div>
-                <div className="w-[25%] p-2">Ngày đáo hạn</div>
+                <div className="w-[25%] p-2">Ngày gửi yêu cầu</div>
               </div>
               {
                 <List
                   style={{ minWidth: "340px", overflowX: "hidden" }}
                   className="List"
                   height={350}
-                  itemCount={10}
-                  itemSize={30}
+                  itemCount={successWithdraw.length}
+                  itemSize={35}
                   outerElementType={outerElementType}
                 >
-                  {Row}
+                  {Rows}
                 </List>
               }
             </div>

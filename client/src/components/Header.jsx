@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../assets/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {get_cart_products, get_wishlist} from '../store/Reducers/cartReducer'
 
 const Header = () => {
   const {
@@ -25,6 +26,7 @@ const Header = () => {
   const [category, setCategory] = useState("");
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const wishlist = 4;
 
   const { categorys } = useSelector((state) => state.home);
@@ -50,6 +52,13 @@ const Header = () => {
       navigate("/login")
     }
   }
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(get_cart_products(userInfo.id))
+      dispatch(get_wishlist(userInfo.id))
+    }
+  }, [userInfo])
 
   return (
     <div className="w-full bg-white">

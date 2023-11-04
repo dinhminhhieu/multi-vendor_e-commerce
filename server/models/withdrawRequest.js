@@ -14,6 +14,10 @@ const withdrawRequestSchema = new Schema(
       type: String,
       default: "pending",
     },
+    date: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

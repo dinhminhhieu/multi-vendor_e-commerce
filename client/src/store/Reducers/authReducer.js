@@ -39,7 +39,7 @@ export const logout = createAsyncThunk(
         withCredentials: true,
       });
       localStorage.removeItem("customerToken");
-      navigate("/");
+      navigate("/login");
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);

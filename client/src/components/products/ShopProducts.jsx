@@ -81,11 +81,23 @@ const ShopProducts = ({ styles, products }) => {
                 : "md-lg:w-full relative group h-[210px] md:h-[270px] overflow-hidden"
             }
           >
-            <img
-              className="h-[240px] rounded-md md:h-[270px] xs:h-[170px] w-full p-5"
-              src={p.images[0]}
-              alt="image"
-            />
+            <div className="relative overflow-hidden">
+              {p.discount ? (
+                <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
+                  -{p.discount}%
+                </div>
+              ) : (
+                ""
+              )}
+              <Link to={`/product/details/${p.slug}`}>
+                <img
+                  className="sm:w-full w-full h-[240px] p-5"
+                  src={p.images[0]}
+                  alt="product image"
+                />
+              </Link>
+
+            </div>
             <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
               <li onClick={() => add_wishlist(p)} className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all">
                 <AiFillHeart  />
@@ -105,10 +117,16 @@ const ShopProducts = ({ styles, products }) => {
             <h2 className="text-blue-500 font-medium">{p.brand}</h2>
             <h2 className="text-md text-slate-700 font-medium">{p?.name?.slice(0, 20)}...</h2>
             <div className="flex justify-start items-center gap-2">
-                <span className="text-lg font-bold text-red-500">{(p.price / 1000).toLocaleString("vi-VN", {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3
-                })}đ</span>
+                <span className="text-lg font-bold text-red-500">
+                  {(
+                    (p.price - Math.floor(p.price * p.discount) / 100) /
+                    1000
+                  ).toLocaleString("vi-VN", {
+                    minimumFractionDigits: 3,
+                    maximumFractionDigits: 3,
+                  })}
+                  đ
+                </span>
               <div className="flex text-lg">
                 <Ratings ratings={p.rating} />
               </div>

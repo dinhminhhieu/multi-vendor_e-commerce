@@ -3,6 +3,10 @@ const sellerWallet = require("../../models/sellerWallet");
 const sellerModel = require("../../models/sellerModel");
 const snapdealWallet = require("../../models/snapdealWallet");
 const withdrawRequest = require("../../models/withdrawRequest");
+const moment = require("moment");
+const {
+  mongo: { ObjectId },
+} = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const stripe = require("stripe")(
   "sk_test_51O62ICBURT4LOFQuwX1a0yWztoDlZ3uYd1um45cJmvgoQiBP7iTSF230OojzQkwawcOr0wd2ruFBpB4gd7d1vQRi00LVdjxZ5z"
@@ -65,9 +69,13 @@ class paymentComtroller {
         await sellerModel.findByIdAndUpdate(id, {
           payment: "active",
         });
-        responseReturn(res, 200, { message: "Kích hoạt tài khoản thanh toán thành công!" });
+        responseReturn(res, 200, {
+          message: "Kích hoạt tài khoản thanh toán thành công!",
+        });
       } else {
-        responseReturn(res, 404, { message: "Kích hoạt tài khoản thanh toán thất bại!" });
+        responseReturn(res, 404, {
+          message: "Kích hoạt tài khoản thanh toán thất bại!",
+        });
       }
     } catch (error) {
       responseReturn(res, 500, { message: "Internal server error!" });
@@ -144,22 +152,63 @@ class paymentComtroller {
   };
 
   //5. Gửi yêu cầu rút tiền
-  send_withdraw_request = async(req, res) => {
-    const {amount, sellerId} = req.body
+  send_withdraw_request = async (req, res) => {
+    const { amount, sellerId } = req.body;
     // console.log(req.body)
-
+    const tempDate = moment(Date.now());
+    const formattedDate = moment(tempDate).format("DD/MM/YYYY HH:mm");
     try {
       const withdraw = await withdrawRequest.create({
         sellerId,
-        amount: parseInt(amount)
-      })
-      responseReturn(res, 200, {withdraw, message: "Gửi yêu cầu thanh toán thành công!"})
+        amount: parseInt(amount),
+        date: formattedDate,
+      });
+      responseReturn(res, 200, {
+        withdraw,
+        message: "Gửi yêu cầu rút tiền thành công!",
+      });
     } catch (error) {
-      responseReturn(res, 500, {message: "Internal server error!"})
+      responseReturn(res, 500, { message: "Internal server error!" });
     }
-  }
+  };
 
-  
+  //6. Lấy thông tin yêu cầu rút tiền
+  get_withdraw_request = async (req, res) => {
+    try {
+      const withdraw_Request = await withdrawRequest.find({
+        status: "pending",
+      });
+      responseReturn(res, 200, { withdraw_Request });
+    } catch (error) {
+      responseReturn(res, 500, { message: "Internal server error!" });
+    }
+  };
+
+  //7. Xác nhận yêu cầu rút tiền
+  confirm_withdraw_request = async (req, res) => {
+    const { paymentId } = req.body;
+
+    try {
+      const payment = await withdrawRequest.findById(paymentId);
+      const { stripeId } = await stripeModel.findOne({
+        sellerId: new ObjectId(payment.sellerId),
+      });
+
+      await stripe.transfers.create({
+        amount: payment.amount,
+        currency: "vnd",
+        destination: stripeId,
+      });
+      await withdrawRequest.findByIdAndUpdate(paymentId, { status: "success" });
+      responseReturn(res, 200, {
+        payment,
+        message: "Xác nhận rút tiền thành công!",
+      });
+    } catch (error) {
+      console.log(error);
+      responseReturn(res, 500, { message: "Internal server error" });
+    }
+  };
 }
 
 module.exports = new paymentComtroller();

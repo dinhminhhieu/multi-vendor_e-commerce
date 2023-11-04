@@ -81,11 +81,13 @@ const FeatureProducts = ({ products }) => {
               ) : (
                 ""
               )}
-              <img
-                className="sm:w-full w-full h-[240px] p-5"
-                src={p.images[0]}
-                alt="product image"
-              />
+              <Link to={`/product/details/${p.slug}`}>
+                <img
+                  className="sm:w-full w-full h-[240px] p-5"
+                  src={p.images[0]}
+                  alt="product image"
+                />
+              </Link>
               <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
                 <li
                   onClick={() => add_wishlist(p)}
@@ -109,7 +111,9 @@ const FeatureProducts = ({ products }) => {
             </div>
             <div className="py-3 text-slate-600 px-2">
               <h2 className="font-medium text-blue-500">{p.brand}.</h2>
-              <h2>{p?.name?.slice(0, 25)}...</h2>
+              <Link to={`/product/details/${p.slug}`}>
+                {p?.name.length > 25 ? p?.name?.slice(0, 25) + "..." : p?.name}
+              </Link>
               <div className="flex justify-start items-center gap-2 m-[2px]">
                 <span className="text-base font-bold line-through">
                   {(p.price / 1000).toLocaleString("vi-VN", {
