@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
+//1. Lấy và hiển thị seller và customer chat
 export const add_friend = createAsyncThunk(
   "chat/add_friend",
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.post(
-        "/chat/customer/add-friend",
-        info
-      );
+      const { data } = await api.post("/chat/customer/add-friend", info);
       console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
@@ -17,11 +15,12 @@ export const add_friend = createAsyncThunk(
   }
 );
 
-export const send_message = createAsyncThunk(
-  "chat/send_message",
+//2. Gửi tin nhắn
+export const send_message_seller = createAsyncThunk(
+  "chat/send_message_seller",
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.post("/chat/customer/send-message", info);
+      const { data } = await api.post("/chat/customer/send-message-seller", info);
       console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
@@ -54,7 +53,7 @@ export const chatReducer = createSlice({
       state.currentFd = payload.currentFd;
       state.my_friends = payload.myFriends;
     },
-    [send_message.fulfilled]: (state, { payload }) => {
+    [send_message_seller.fulfilled]: (state, { payload }) => {
       let tempFriends = state.my_friends;
       let index = tempFriends.findIndex(
         (f) => f.fdId === payload.message.receverId
@@ -67,7 +66,7 @@ export const chatReducer = createSlice({
       }
       state.my_friends = tempFriends;
       state.fd_messages = [...state.fd_messages, payload.message];
-      state.successMessage = " message send success";
+      state.successMessage = "Gửi tin nhắn thành công";
     },
   },
 });

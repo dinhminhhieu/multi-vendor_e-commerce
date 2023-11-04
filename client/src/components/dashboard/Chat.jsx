@@ -3,7 +3,10 @@ import icons from "../../assets/icons";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
-import { add_friend } from "../../store/Reducers/chatReducer";
+import {
+  add_friend,
+  send_message_seller,
+} from "../../store/Reducers/chatReducer";
 
 const socket = io("http://localhost:5000");
 
@@ -33,6 +36,20 @@ const Chat = () => {
       })
     );
   }, [sellerId]);
+
+  const send = () => {
+    if (text) {
+      dispatch(
+        send_message_seller({
+          customerId: userInfo.id,
+          text,
+          sellerId,
+          name: userInfo.name,
+        })
+      );
+      setText("");
+    }
+  };
 
   return (
     <div className="bg-white p-3 rounded-md">
@@ -74,37 +91,50 @@ const Chat = () => {
                     <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
                   }
                   <img
-                    src="http://localhost:3000/images/sellers/1.png"
+                    className="w-[30px] h-[30px] rounded-full overflow-hidden"
+                    src={currentFd?.image}
                     alt=""
                   />
                 </div>
-                <span className="font-medium text-red-500">{currentFd.shopName}</span>
+                <span className="font-medium text-red-500">
+                  {currentFd.shopName}
+                </span>
               </div>
               <div className="h-[400px] w-full bg-slate-100 p-3 rounded-md bg-[#dbdbdb]">
                 <div className="w-full h-full overflow-y-auto flex flex-col gap-3">
-                  <div className="w-full flex gap-2 justify-start items-center text-[14px]">
-                    <img
-                      className="w-[30px] h-[30px]"
-                      src="http://localhost:3000/images/sellers/1.png"
-                      alt=""
-                    />
-                    <div className="p-2 bg-orange-500 font-semibold rounded-md text-white">
-                      <span>Xin chào</span>
-                    </div>
-                  </div>
-                  <div
-                    ref={scrollRef}
-                    className="w-full flex gap-2 justify-end items-center text-[14px]"
-                  >
-                    <img
-                      className="w-[30px] h-[30px] "
-                      src="http://localhost:3000/images/sellers/1.png"
-                      alt=""
-                    />
-                    <div className="p-2 bg-blue-500 text-white font-semibold rounded-md">
-                      <span>Xin chào</span>
-                    </div>
-                  </div>
+                  {fd_messages.map((m, i) => {
+                    if (currentFd?.fdId !== m.receverId) {
+                      return (
+                        <div key={i} ref={scrollRef} className="w-full flex gap-2 justify-start items-center text-[14px]">
+                          <img
+                            className="w-[30px] h-[30px]"
+                            src="http://localhost:3000/images/sellers/1.png"
+                            alt=""
+                          />
+                          <div className="p-2 bg-orange-500 font-semibold rounded-md text-white">
+                            <span>{m?.message}</span>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                        key={i}
+                          ref={scrollRef}
+                          className="w-full flex gap-2 justify-end items-center text-[14px]"
+                        >
+                          <img
+                            className="w-[30px] h-[30px] "
+                            src="http://localhost:3000/images/sellers/1.png"
+                            alt=""
+                          />
+                          <div className="p-2 bg-blue-500 text-white font-semibold rounded-md">
+                            <span>{m?.message}</span>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
                 </div>
               </div>
               <div className="flex p-2 justify-between items-center w-full">
@@ -129,7 +159,7 @@ const Chat = () => {
                   </div>
                 </div>
                 <div className="w-[40px] p-2 justify-center items-center rounded-full">
-                  <div className="text-2xl cursor-pointer">
+                  <div onClick={send} className="text-2xl cursor-pointer">
                     <IoSend color="blue" />
                   </div>
                 </div>
