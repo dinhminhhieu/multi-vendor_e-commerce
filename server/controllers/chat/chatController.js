@@ -1,6 +1,7 @@
 const sellerModel = require("../../models/sellerModel");
 const customerModel = require("../../models/customerModel");
 const sellerToCustomerModel = require("../../models/chat/sellerToCustomerModel");
+const sellerToCustomerMessage = require("../../models/chat/sellerToCustomerMessage");
 const { responseReturn } = require("../../utils/response");
 
 class chatController {
@@ -60,6 +61,7 @@ class chatController {
             },
           ],
         });
+
         if (!checkCustomer) {
           await sellerToCustomerModel.updateOne(
             {
@@ -76,14 +78,50 @@ class chatController {
             }
           );
         }
+
+        const messages = await sellerToCustomerMessage.find({
+          $or: [
+            {
+              $and: [
+                {
+                  receverId: { $eq: sellerId },
+                },
+                {
+                  senderId: { $eq: customerId },
+                },
+              ],
+            },
+            {
+              $and: [
+                {
+                  receverId: { $eq: customerId },
+                },
+                {
+                  senderId: {
+                    $eq: sellerId,
+                  },
+                },
+              ],
+            },
+          ],
+        });
+
+        const MyFriends = await sellerToCustomerModel.findOne({
+          myId: customerId,
+        });
+
+        const currentFd = MyFriends.myFriends.find((s) => s.fdId === sellerId);
         responseReturn(res, 200, {
-            message: "ok"
-        })
-        // const messages   
+          myFriends: MyFriends.myFriends,
+          currentFd,
+          messages,
+        });
+        
       } else {
         const MyFriends = await sellerToCustomerModel.findOne({
           myId: customerId,
         });
+
         responseReturn(res, 200, {
           myFriends: MyFriends.myFriends,
         });
