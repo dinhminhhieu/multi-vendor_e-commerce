@@ -64,20 +64,23 @@ const Chat = () => {
           <div className="w-full flex flex-col text-slate-600 py-4 h-[400px] pr-3">
             {my_friends.map((f, i) => (
               <Link
-                to={`/dashboard/chat/${f.fdId}`}
                 key={i}
-                className={`flex gap-2 justify-start items-center pl-2 py-[5px]`}
+                to={`/dashboard/chat/${f.fdId}`}
+                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer`}
               >
-                <div className="w-[30px] h-[30px] rounded-full relative">
-                  {
-                    <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
-                  }
+                <div className="relative">
                   <img
-                    src="http://localhost:3000/images/sellers/1.png"
+                    className="w-[38px] h-[38px] border-slate-700 border-2 max-w-[38px] p-[2px] rounded-full"
+                    src={f?.image}
                     alt=""
                   />
+                  <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
                 </div>
-                <span>{f.shopName}</span>
+                <div className="flex justify-center items-start flex-col w-full">
+                  <div className="flex justify-between items-center w-full">
+                    <h2 className="text-base font-semibold">{f?.shopName}</h2>
+                  </div>               
+                </div>
               </Link>
             ))}
           </div>
@@ -86,26 +89,31 @@ const Chat = () => {
           {currentFd ? (
             <div className="w-full h-full">
               <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
-                <div className="w-[30px] h-[30px] rounded-full relative">
-                  {
-                    <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
-                  }
-                  <img
-                    className="w-[30px] h-[30px] rounded-full overflow-hidden"
-                    src={currentFd?.image}
-                    alt=""
-                  />
+                <div className="flex justify-start items-center gap-3">
+                  <div className="relative">
+                    <img
+                      className="w-[38px] h-[38px] border-green-500 border-2 max-w-[38px] p-[2px] rounded-full"
+                      src={currentFd?.image}
+                      alt=""
+                    />
+                    <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                  </div>
+                  <h2 className="text-base font-semibold">{currentFd?.name}</h2>
                 </div>
-                <span className="font-medium text-red-500">
+                <span className="font-medium">
                   {currentFd.shopName}
                 </span>
               </div>
-              <div className="h-[400px] w-full bg-slate-100 p-3 rounded-md bg-[#dbdbdb]">
+              <div className="h-[400px] w-full p-3 rounded-md bg-[#dbdbdb]">
                 <div className="w-full h-full overflow-y-auto flex flex-col gap-3">
                   {fd_messages.map((m, i) => {
                     if (currentFd?.fdId !== m.receverId) {
                       return (
-                        <div key={i} ref={scrollRef} className="w-full flex gap-2 justify-start items-center text-[14px]">
+                        <div
+                          key={i}
+                          ref={scrollRef}
+                          className="w-full flex gap-2 justify-start items-center text-[14px]"
+                        >
                           <img
                             className="w-[30px] h-[30px]"
                             src="http://localhost:3000/images/sellers/1.png"
@@ -119,18 +127,18 @@ const Chat = () => {
                     } else {
                       return (
                         <div
-                        key={i}
+                          key={i}
                           ref={scrollRef}
                           className="w-full flex gap-2 justify-end items-center text-[14px]"
                         >
-                          <img
-                            className="w-[30px] h-[30px] "
-                            src="http://localhost:3000/images/sellers/1.png"
-                            alt=""
-                          />
                           <div className="p-2 bg-blue-500 text-white font-semibold rounded-md">
                             <span>{m?.message}</span>
                           </div>
+                          <img
+                            className="w-[38px] h-[38px] border-2 border-black rounded-full max-w-[38px] p-[2px]"
+                            src="http://localhost:3000/images/sellers/1.png"
+                            alt=""
+                          />
                         </div>
                       );
                     }
@@ -144,7 +152,7 @@ const Chat = () => {
                   </label>
                   <input className="hidden" type="file" />
                 </div>
-                <div className="border h-[40px] p-0 ml-2 w-[calc(100%-90px)] rounded-full relative">
+                <div className="border-2 h-[40px] p-0 ml-2 w-[calc(100%-90px)] rounded-full relative">
                   <input
                     value={text}
                     onChange={(e) => setText(e.target.value)}

@@ -28,10 +28,11 @@ import {
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
   BsImages,
+  BsEmojiSmile,
 } from "react-icons/bs";
-import { GrClose } from "react-icons/gr";
+import { GrClose, GrEmoji } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
-import {IoCloseSharp} from "react-icons/io5"
+import {IoCloseSharp, IoSend} from "react-icons/io5"
 import { TbDiscount2 } from "react-icons/tb";
 import {RiShoppingBasketLine} from "react-icons/ri"
 
@@ -59,14 +60,17 @@ const icons = {
   FaTrash,
   FaEye,
   GrProductHunt,
+  GrEmoji,
   HiUserGroup,
   HiOutlineChatAlt,
   BsArrowBarDown,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
   BsImages,
+  BsEmojiSmile,
   GrClose,
   IoMdClose,
+  IoSend,
   TbDiscount2,
   RiShoppingBasketLine,
   IoCloseSharp,

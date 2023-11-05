@@ -33,6 +33,23 @@ export const get_customer_messages = createAsyncThunk(
   }
 );
 
+//3. Gửi tin nhắn từ seller đến khách hàng
+export const send_message_customers = createAsyncThunk(
+  "chat/send_message_customers",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(
+        `/chat/seller/send-message-customers`,
+        info,
+        { withCredentials: true }
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const chatReducer = createSlice({
   name: "chat",
   initialState: {
@@ -63,6 +80,21 @@ export const chatReducer = createSlice({
     [get_customer_messages.fulfilled]: (state, { payload }) => {
       state.messages = payload.messages;
       state.currentCustomer = payload.currentCustomer;
+    },
+    [send_message_customers.fulfilled]: (state, { payload }) => {
+      let tempFriends = state.customers;
+      let index = tempFriends.findIndex(
+        (f) => f.fdId === payload.message.receverId
+      );
+      while (index > 0) {
+        let temp = tempFriends[index];
+        tempFriends[index] = tempFriends[index - 1];
+        tempFriends[index - 1] = temp;
+        index--;
+      }
+      state.customers = tempFriends;
+      state.messages = [...state.messages, payload.message];
+      state.successMessage = "Gửi tin nhắn thành công!";
     },
   },
 });
