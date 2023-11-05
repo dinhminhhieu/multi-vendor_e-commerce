@@ -132,60 +132,115 @@ class chatController {
   };
 
   //2. Gửi tin nhắn
-  send_message_seller = async(req, res) => {
+  send_message_seller = async (req, res) => {
     // console.log(req.body)
     const { customerId, text, sellerId, name } = req.body;
     try {
-        const message = await sellerToCustomerMessage.create({
-          senderId: customerId,
-          senderName: name,
-          receverId: sellerId,
-          message: text,
-        });
+      const message = await sellerToCustomerMessage.create({
+        senderId: customerId,
+        senderName: name,
+        receverId: sellerId,
+        message: text,
+      });
 
-        const data = await sellerToCustomerModel.findOne({myId: customerId})
-        let myFriends = data.myFriends;
-        let index = myFriends.findIndex(f => f.fdId === sellerId)
-        while (index > 0) {
-            let temp = myFriends[index]
-            myFriends[index] = myFriends[index - 1];
-            myFriends[index - 1] = temp;
-            index--;
+      const data = await sellerToCustomerModel.findOne({ myId: customerId });
+      let myFriends = data.myFriends;
+      let index = myFriends.findIndex((f) => f.fdId === sellerId);
+      while (index > 0) {
+        let temp = myFriends[index];
+        myFriends[index] = myFriends[index - 1];
+        myFriends[index - 1] = temp;
+        index--;
+      }
+
+      await sellerToCustomerModel.updateOne(
+        {
+          myId: customerId,
+        },
+        {
+          myFriends,
         }
+      );
 
-        await sellerToCustomerModel.updateOne(
-            {
-                myId: customerId
-            }, {
-                myFriends
-            }
-        )
+      const data1 = await sellerToCustomerModel.findOne({ myId: sellerId });
+      let myFriends1 = data1.myFriends;
+      let index1 = myFriends1.findIndex((f) => f.fdId === customerId);
 
-        const data1 = await sellerToCustomerModel.findOne({ myId: sellerId });
-        let myFriends1 = data1.myFriends;
-        let index1 = myFriends1.findIndex((f) => f.fdId === customerId);
+      while (index1 > 0) {
+        let temp1 = myFriends1[index1];
+        myFriends1[index1] = myFriends[index1 - 1];
+        myFriends1[index1 - 1] = temp1;
+        index1--;
+      }
 
-        while (index1 > 0) {
-          let temp1 = myFriends1[index1];
-          myFriends1[index1] = myFriends[index1 - 1];
-          myFriends1[index1 - 1] = temp1;
-          index1--;
+      await sellerToCustomerModel.updateOne(
+        {
+          myId: sellerId,
+        },
+        {
+          myFriends1,
         }
+      );
 
-        await sellerToCustomerModel.updateOne(
+      responseReturn(res, 201, { message });
+    } catch (error) {
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
+
+  //3. Lấy khách hàng đang trò chuyện trả về seller
+  get_customers = async (req, res) => {
+    const { sellerId } = req.params;
+    // console.log(sellerId)
+
+    try {
+      const data = await sellerToCustomerModel.findOne({ myId: sellerId });
+      responseReturn(res, 200, { customers: data.myFriends });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //4. Lấy tin nhắn cửa khách hàng hiển thị qua seller
+  get_customer_messages = async (req, res) => {
+    const { customerId } = req.params;
+    const { sellerId } = req;
+    try {
+      const messages = await sellerToCustomerMessage.find({
+        $or: [
           {
-            myId: sellerId,
+            $and: [
+              {
+                receverId: { $eq: customerId },
+              },
+              {
+                senderId: {
+                  $eq: sellerId,
+                },
+              },
+            ],
           },
           {
-            myFriends1,
-          }
-        );
+            $and: [
+              {
+                receverId: { $eq: sellerId },
+              },
+              {
+                senderId: {
+                  $eq: customerId,
+                },
+              },
+            ],
+          },
+        ],
+      });
+      const currentCustomer = await customerModel.findById(customerId);
 
-        responseReturn(res, 201, { message });
+      responseReturn(res, 200, { messages, currentCustomer });
     } catch (error) {
-        responseReturn(res, 500, { error: error.message });
+      console.log(error);
     }
-  }
+  };
 }
 
 module.exports = new chatController();

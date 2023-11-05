@@ -59,7 +59,7 @@ io.on("connection", (soc) => {
 
   soc.on("add_seller", (sellerId, userInfo) => {
     addSeller(sellerId, soc.id, userInfo);
-    console.log(userInfo) 
+    //console.log(userInfo) 
   });
 })
 

@@ -9,4 +9,15 @@ router.post(
   chatController.send_message_seller
 );
 
+router.get(
+  "/chat/seller/get-customers/:sellerId",
+  chatController.get_customers
+);
+
+router.get(
+  "/chat/seller/get-customer-messages/:customerId",
+  authMiddleware,
+  chatController.get_customer_messages
+);
+
 module.exports = router;
