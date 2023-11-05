@@ -25,6 +25,7 @@ const io = socket(server, {
 })
 
 var allCustomer = []
+var allSeller = []
 
 const addUser = (customerId, socketId, userInfo) => {
   const checkUser = allCustomer.some(u => u.customerId === customerId)
@@ -37,12 +38,28 @@ const addUser = (customerId, socketId, userInfo) => {
   }
 }
 
+const addSeller = (sellerId, socketId, userInfo) => {
+  const checkSeller = allSeller.some((u) => u.sellerId === sellerId);
+  if (!checkSeller) {
+    allSeller.push({
+      sellerId,
+      socketId,
+      userInfo,
+    });
+  }
+}
+
 io.on("connection", (soc) => {
   console.log("socket.io server is connected...")
 
   soc.on("add_user", (customerId, userInfo) => {
     addUser(customerId, soc.id, userInfo)
     //console.log(allCustomer)
+  });
+
+  soc.on("add_seller", (sellerId, userInfo) => {
+    addSeller(sellerId, soc.id, userInfo);
+    console.log(userInfo) 
   });
 })
 
