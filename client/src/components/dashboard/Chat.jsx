@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import icons from "../../assets/icons";
+import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 import {
   add_friend,
+  messageClear,
   send_message_seller,
+  updateMessage,
 } from "../../store/Reducers/chatReducer";
 
 const socket = io("http://localhost:5000");
@@ -51,6 +54,31 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    socket.on("seller_message", (msg) => {
+      console.log(msg)
+      setReceverMessage(msg);
+    });
+    socket.on("activeSeller", (sellers) => {
+      setActiveSeller(sellers);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(receverMessage);
+    if (receverMessage) {
+      if (
+        sellerId === receverMessage.senderId &&
+        userInfo.id === receverMessage.receverId
+      ) {
+        dispatch(updateMessage(receverMessage));
+      } else {
+        toast.success(receverMessage.senderName + " " + "send a message");
+        dispatch(messageClear());
+      }
+    }
+  }, [receverMessage]);
+
   return (
     <div className="bg-white p-3 rounded-md">
       <div className="w-full flex">
@@ -79,7 +107,7 @@ const Chat = () => {
                 <div className="flex justify-center items-start flex-col w-full">
                   <div className="flex justify-between items-center w-full">
                     <h2 className="text-base font-semibold">{f?.shopName}</h2>
-                  </div>               
+                  </div>
                 </div>
               </Link>
             ))}
@@ -100,9 +128,7 @@ const Chat = () => {
                   </div>
                   <h2 className="text-base font-semibold">{currentFd?.name}</h2>
                 </div>
-                <span className="font-medium">
-                  {currentFd.shopName}
-                </span>
+                <span className="font-medium">{currentFd.shopName}</span>
               </div>
               <div className="h-[400px] w-full p-3 rounded-md bg-[#dbdbdb]">
                 <div className="w-full h-full overflow-y-auto flex flex-col gap-3">
@@ -115,8 +141,8 @@ const Chat = () => {
                           className="w-full flex gap-2 justify-start items-center text-[14px]"
                         >
                           <img
-                            className="w-[30px] h-[30px]"
-                            src="http://localhost:3000/images/sellers/1.png"
+                            className="w-[38px] h-[38px] border-green-500 border-2 max-w-[38px] p-[2px] rounded-full"
+                            src={currentFd?.image}
                             alt=""
                           />
                           <div className="p-2 bg-orange-500 font-semibold rounded-md text-white">
@@ -131,11 +157,11 @@ const Chat = () => {
                           ref={scrollRef}
                           className="w-full flex gap-2 justify-end items-center text-[14px]"
                         >
-                          <div className="p-2 bg-blue-500 text-white font-semibold rounded-md">
+                          <div className="p-2 bg-blue-500  text-white font-semibold rounded-md">
                             <span>{m?.message}</span>
                           </div>
                           <img
-                            className="w-[38px] h-[38px] border-2 border-black rounded-full max-w-[38px] p-[2px]"
+                            className="w-[38px] h-[38px] border-2 border-green-500 rounded-full max-w-[38px] p-[2px]"
                             src="http://localhost:3000/images/sellers/1.png"
                             alt=""
                           />

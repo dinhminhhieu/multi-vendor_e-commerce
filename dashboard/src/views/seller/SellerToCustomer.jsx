@@ -7,6 +7,7 @@ import {
   get_customers,
   get_customer_messages,
   send_message_customers,
+  messageClear,
 } from "../../store/Reducers/chatReducer";
 
 const ChatSellers = () => {
@@ -16,7 +17,7 @@ const ChatSellers = () => {
   const [text, setText] = useState("");
   const { customerId } = useParams();
   const { userInfo } = useSelector((state) => state.auth);
-  const { customers, currentCustomer, messages } = useSelector(
+  const { customers, currentCustomer, messages, successMessage } = useSelector(
     (state) => state.chat
   );
   const dispatch = useDispatch();
@@ -44,6 +45,13 @@ const ChatSellers = () => {
       setText("");
     }
   };
+
+  useEffect(() => {
+    if (successMessage) {
+      socket.emit("send_seller_message", messages[messages.length - 1]);
+      dispatch(messageClear());
+    }
+  }, [successMessage]);
 
   return (
     <div className="px-2 lg:px-7 py-5">
