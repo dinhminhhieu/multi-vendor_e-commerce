@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import icons from "../../assets/icons";
+import toast from "react-hot-toast";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../utils/utils";
@@ -8,16 +9,17 @@ import {
   get_customer_messages,
   send_message_customers,
   messageClear,
+  updateMessage
 } from "../../store/Reducers/chatReducer";
 
 const ChatSellers = () => {
   const { IoMdClose, FaListAlt, GrEmoji, IoSend, AiOutlinePlus } = icons;
   const [show, setShow] = useState(false);
-  const sellerId = 32;
   const [text, setText] = useState("");
+  const [receverMessage, setReceverMessage] = useState("");
   const { customerId } = useParams();
   const { userInfo } = useSelector((state) => state.auth);
-  const { customers, currentCustomer, messages, successMessage } = useSelector(
+  const { customers, currentCustomer, messages, successMessage, activeCustomers } = useSelector(
     (state) => state.chat
   );
   const dispatch = useDispatch();
@@ -46,12 +48,36 @@ const ChatSellers = () => {
     }
   };
 
+  // Gửi tin nhắn từ seller sang customer
   useEffect(() => {
     if (successMessage) {
-      socket.emit("send_seller_message", messages[messages.length - 1]);
+      socket.emit("send_message_seller", messages[messages.length - 1]);
       dispatch(messageClear());
     }
   }, [successMessage]);
+
+  // Nhận tin nhắn từ customer
+  useEffect(() => {
+    socket.on("customer_message", (message) => {
+      setReceverMessage(message);
+    });
+  }, []);
+
+  // Cập nhật tin nhắn và gửi thông báo khi có tin nhắn mới
+  useEffect(() => {
+    // console.log(receverMessage);
+    if (receverMessage) {
+      if (
+        customerId === receverMessage.senderId &&
+        userInfo._id === receverMessage.receverId
+      ) {
+        dispatch(updateMessage(receverMessage));
+      } else {
+        toast.success(receverMessage.senderName + " " + "gửi 1 tin nhắn");
+        dispatch(messageClear());
+      }
+    }
+  }, [receverMessage]);
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -76,7 +102,7 @@ const ChatSellers = () => {
                 <Link
                   key={i}
                   to={`/seller/dashboard/chat-customers/${c?.fdId}`}
-                  className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer bg-[#b3b3b3]`}
+                  className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer`}
                 >
                   <div className="relative">
                     <img
@@ -84,7 +110,9 @@ const ChatSellers = () => {
                       src="http://localhost:3001/images/sellers/1.png"
                       alt=""
                     />
+                    {activeCustomers.some((c) => c.customerId === c.fdId) && (
                     <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                  )}
                   </div>
                   <div className="flex justify-center items-start flex-col w-full">
                     <div className="flex justify-between items-center w-full">
@@ -98,7 +126,7 @@ const ChatSellers = () => {
           </div>
           <div className="w-full md:w-[calc(100%-200px)] md:pl-4">
             <div className="flex justify-between items-center">
-              {sellerId && (
+              {customerId && (
                 <div className="flex justify-start items-center gap-3">
                   <div className="relative">
                     <img

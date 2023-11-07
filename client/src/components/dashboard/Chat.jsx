@@ -54,18 +54,21 @@ const Chat = () => {
     }
   };
 
+  // Nhận tin nhắn từ seller
   useEffect(() => {
-    socket.on("seller_message", (msg) => {
-      console.log(msg)
-      setReceverMessage(msg);
+    socket.on("seller_message", (message) => {
+      console.log(message);
+      setReceverMessage(message);
     });
     socket.on("activeSeller", (sellers) => {
       setActiveSeller(sellers);
     });
   }, []);
+  // console.log(activeSeller)
 
+  // Cập nhật tin nhắn và gửi thông báo khi có tin nhắn mới
   useEffect(() => {
-    console.log(receverMessage);
+    // console.log(receverMessage);
     if (receverMessage) {
       if (
         sellerId === receverMessage.senderId &&
@@ -73,11 +76,19 @@ const Chat = () => {
       ) {
         dispatch(updateMessage(receverMessage));
       } else {
-        toast.success(receverMessage.senderName + " " + "send a message");
+        toast.success(receverMessage.senderName + " " + "đã gửi 1 tin nhắn");
         dispatch(messageClear());
       }
     }
   }, [receverMessage]);
+
+    // Gửi tin nhắn từ customer sang seller
+  useEffect(() => {
+    if (successMessage) {
+      socket.emit("send_message_customer", fd_messages[fd_messages.length - 1]);
+      dispatch(messageClear());
+    }
+  }, [successMessage]);
 
   return (
     <div className="bg-white p-3 rounded-md">
@@ -102,7 +113,9 @@ const Chat = () => {
                     src={f?.image}
                     alt=""
                   />
-                  <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                  {activeSeller.some((c) => c.sellerId === f.fdId) && (
+                    <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                  )}
                 </div>
                 <div className="flex justify-center items-start flex-col w-full">
                   <div className="flex justify-between items-center w-full">
@@ -124,7 +137,9 @@ const Chat = () => {
                       src={currentFd?.image}
                       alt=""
                     />
+                    {activeSeller.some((c) => c.sellerId === currentFd.fdId) && (
                     <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                  )}
                   </div>
                   <h2 className="text-base font-semibold">{currentFd?.name}</h2>
                 </div>

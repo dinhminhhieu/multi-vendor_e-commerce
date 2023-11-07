@@ -72,6 +72,24 @@ export const chatReducer = createSlice({
       state.errorMessage = "";
       state.successMessage = "";
     },
+    updateMessage: (state, { payload }) => {
+      state.messages = [...state.messages, payload];
+    },
+    updateCustomer: (state, { payload }) => {
+      state.activeCustomer = payload;
+    },
+    updateSeller: (state, { payload }) => {
+      state.activeSellers = payload;
+    },
+    updateAdminMessage: (state, { payload }) => {
+      state.seller_admin_message = [...state.seller_admin_message, payload];
+    },
+    updateSellerMessage: (state, { payload }) => {
+      state.seller_admin_message = [...state.seller_admin_message, payload];
+    },
+    activeStatus_update: (state, { payload }) => {
+      state.activeAdmin = payload.status;
+    },
   },
   extraReducers: {
     [get_customers.fulfilled]: (state, { payload }) => {
@@ -99,5 +117,5 @@ export const chatReducer = createSlice({
   },
 });
 
-export const { messageClear } = chatReducer.actions;
+export const { messageClear, updateMessage, updateCustomer, updateSeller, updateAdminMessage, updateSellerMessage, activeStatus_update } = chatReducer.actions;
 export default chatReducer.reducer;
