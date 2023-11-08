@@ -14,7 +14,8 @@ import {
 const socket = io("http://localhost:5000");
 
 const Chat = () => {
-  const { AiOutlineMessage, GrEmoji, IoSend, AiOutlinePlus } = icons;
+  const { AiOutlineMessage, GrEmoji, IoSend, AiOutlinePlus, BsEmojiSmile } =
+    icons;
   const scrollRef = useRef();
 
   const dispatch = useDispatch();
@@ -82,13 +83,17 @@ const Chat = () => {
     }
   }, [receverMessage]);
 
-    // Gửi tin nhắn từ customer sang seller
+  // Gửi tin nhắn từ customer sang seller
   useEffect(() => {
     if (successMessage) {
       socket.emit("send_message_customer", fd_messages[fd_messages.length - 1]);
       dispatch(messageClear());
     }
   }, [successMessage]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [fd_messages]);
 
   return (
     <div className="bg-white p-3 rounded-md">
@@ -137,15 +142,17 @@ const Chat = () => {
                       src={currentFd?.image}
                       alt=""
                     />
-                    {activeSeller.some((c) => c.sellerId === currentFd.fdId) && (
-                    <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                  )}
+                    {activeSeller.some(
+                      (c) => c.sellerId === currentFd.fdId
+                    ) && (
+                      <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                    )}
                   </div>
                   <h2 className="text-base font-semibold">{currentFd?.name}</h2>
                 </div>
                 <span className="font-medium">{currentFd.shopName}</span>
               </div>
-              <div className="h-[400px] w-full p-3 rounded-md bg-[#dbdbdb]">
+              <div className="h-[400px] w-full p-3 rounded-md bg-[#b3b3b3]">
                 <div className="w-full h-full overflow-y-auto flex flex-col gap-3">
                   {fd_messages.map((m, i) => {
                     if (currentFd?.fdId !== m.receverId) {
@@ -215,7 +222,10 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <div className="w-full h-full flex justify-center items-center text-lg font-bold text-red-600">
+            <div className="w-full h-full flex justify-center items-center flex-col text-lg ont-bold text-white font-bold bg-[#b3b3b3]">
+              <span>
+                <BsEmojiSmile size={30} />
+              </span>
               <span>Chọn nhà cung cấp để trò chuyện</span>
             </div>
           )}

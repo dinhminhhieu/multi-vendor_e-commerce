@@ -75,6 +75,8 @@ io.on("connection", (soc) => {
 
   soc.on("add_user", (customerId, userInfo) => {
     addUser(customerId, soc.id, userInfo);
+    io.emit("activeSeller", allSeller);
+    io.emit("activeCustomer", allCustomer);
     //console.log(allCustomer)
   });
 

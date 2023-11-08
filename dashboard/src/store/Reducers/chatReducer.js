@@ -76,7 +76,7 @@ export const chatReducer = createSlice({
       state.messages = [...state.messages, payload];
     },
     updateCustomer: (state, { payload }) => {
-      state.activeCustomer = payload;
+      state.activeCustomers = payload;
     },
     updateSeller: (state, { payload }) => {
       state.activeSellers = payload;

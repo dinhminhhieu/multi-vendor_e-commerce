@@ -28,7 +28,7 @@ import {
   BsChevronDoubleLeft,
   BsHeart,
   BsChat,
-
+  BsEmojiSmile,
 } from "react-icons/bs";
 import {
   MdOutlineKeyboardArrowDown,
@@ -67,6 +67,7 @@ const icons = {
   GrEmoji,
   BsTwitter,
   BsGithub,
+  BsEmojiSmile,
   BsFillGridFill,
   BsChevronDoubleRight,
   BsChevronDoubleLeft,
