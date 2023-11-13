@@ -78,6 +78,9 @@ export const orderReducer = createSlice({
     },
   },
   extraReducers: {
+    [place_order.fulfilled]: (state, {payload}) => {
+
+    },
     [get_orders.fulfilled]: (state, { payload }) => {
       state.myOrders = payload.orders;
     },

@@ -8,9 +8,11 @@ const Order = () => {
   const dispatch = useDispatch();
   const { myOrder, products } = useSelector((state) => state.order);
   const { userInfo } = useSelector((state) => state.auth);
+  
   useEffect(() => {
     dispatch(get_order(orderId));
   }, [orderId]);
+
   return (
     <div className="bg-white p-5">
       <h1 className="text-2xl font-semibold text-center mb-2">

@@ -24,7 +24,7 @@ const Orders = () => {
         sellerId: userInfo._id
       })
     );
-  });
+  }, []);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
