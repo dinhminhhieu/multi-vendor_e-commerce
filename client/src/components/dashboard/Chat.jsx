@@ -110,7 +110,9 @@ const Chat = () => {
               <Link
                 key={i}
                 to={`/dashboard/chat/${f.fdId}`}
-                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer`}
+                className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer ${
+                    sellerId === f.fdId ? "bg-gray-500 text-white" : ""
+                  }`}
               >
                 <div className="relative">
                   <img

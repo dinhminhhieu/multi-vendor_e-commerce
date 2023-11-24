@@ -75,7 +75,10 @@ const ConfirmOrder = () => {
     <div className="w-screeen h-screen flex justify-center items-center flex-col gap-4">
       {message === "failed" || message === "processing" ? (
         <>
-          <img src={error} alt="error logo" />
+          <img className="w-[200px] h-[200px]" src={error} alt="" />
+          <h2 className="text-xl font-semibold text-red-500">
+            Thanh toán thất bại
+          </h2>
           <Link
             className="px-5 py-2 bg-green-500 rounded-sm text-white"
             to="/dashboard/my-orders"
@@ -88,7 +91,10 @@ const ConfirmOrder = () => {
           <FadeLoader />
         ) : (
           <>
-            <img src={success} alt="error logo" />
+            <img className="w-[200px] h-[200px]" src={success} alt="" />
+            <h2 className="text-xl font-semibold text-green-500">
+              Thanh toán thành công
+            </h2>
             <Link
               className="px-5 py-2 bg-green-500 rounded-sm text-white"
               to="/dashboard/my-orders"

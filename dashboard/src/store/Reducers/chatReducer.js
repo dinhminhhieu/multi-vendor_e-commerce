@@ -50,6 +50,69 @@ export const send_message_customers = createAsyncThunk(
   }
 );
 
+//4. Lấy tin nhắn của seller trả về admin
+export const get_sellers = createAsyncThunk(
+  "chat/get_sellers",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/chat/admin/get-sellers`, {
+        withCredentials: true,
+      });
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//5. Gửi tin nhắn từ admin đến seller
+export const send_message_sellers_admin = createAsyncThunk(
+  "chat/send_message_sellers_admin",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(
+        `/chat/admin/send-message-sellers-admin`,
+        info,
+        { withCredentials: true }
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//6. Lấy tin nhắn của admin trả về seller
+export const get_admin_messages = createAsyncThunk(
+  "chat/get_admin_message",
+  async (receverId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/chat/get-admin-messages/${receverId}`, {
+        withCredentials: true,
+      });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//7. Lấy tin nhắn của seller trả về admin
+export const get_seller_messages = createAsyncThunk(
+  "chat/get_seller_messages",
+  async (receverId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/chat/get-seller-messages`, {
+        withCredentials: true,
+      });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const chatReducer = createSlice({
   name: "chat",
   initialState: {
@@ -114,8 +177,33 @@ export const chatReducer = createSlice({
       state.messages = [...state.messages, payload.message];
       state.successMessage = "Gửi tin nhắn thành công!";
     },
+    [get_sellers.fulfilled]: (state, { payload }) => {
+      state.sellers = payload.sellers;
+    },
+    [send_message_sellers_admin.fulfilled]: (state, { payload }) => {
+      state.seller_admin_message = [
+        ...state.seller_admin_message,
+        payload.message,
+      ];
+      state.successMessage = "Gửi tin nhắn thành công!";
+    },
+    [get_admin_messages.fulfilled]: (state, { payload }) => {
+      state.seller_admin_message = payload.messages;
+      state.currentSeller = payload.currentSeller;
+    },
+    [get_seller_messages.fulfilled]: (state, { payload }) => {
+      state.seller_admin_message = payload.messages;
+    },
   },
 });
 
-export const { messageClear, updateMessage, updateCustomer, updateSeller, updateAdminMessage, updateSellerMessage, activeStatus_update } = chatReducer.actions;
+export const {
+  messageClear,
+  updateMessage,
+  updateCustomer,
+  updateSeller,
+  updateAdminMessage,
+  updateSellerMessage,
+  activeStatus_update,
+} = chatReducer.actions;
 export default chatReducer.reducer;

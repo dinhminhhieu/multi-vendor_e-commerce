@@ -28,7 +28,7 @@ const ChatSellers = () => {
     activeCustomers,
   } = useSelector((state) => state.chat);
   const dispatch = useDispatch();
-  const scrollRef = useRef()
+  const scrollRef = useRef();
 
   useEffect(() => {
     dispatch(get_customers(userInfo._id));
@@ -86,8 +86,8 @@ const ChatSellers = () => {
   }, [receverMessage]);
 
   useEffect(() => {
-        scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -112,7 +112,9 @@ const ChatSellers = () => {
                 <Link
                   key={i}
                   to={`/seller/dashboard/chat-customers/${c?.fdId}`}
-                  className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer`}
+                  className={`h-[60px] flex justify-start gap-2 items-center px-2 py-2 rounded-md cursor-pointer ${
+                    customerId === c.fdId ? "bg-gray-500 text-white" : ""
+                  }`}
                 >
                   <div className="relative">
                     <img
@@ -170,7 +172,11 @@ const ChatSellers = () => {
                   messages.map((m, i) => {
                     if (m.senderId === customerId) {
                       return (
-                        <div ref={scrollRef} key={i} className="w-full flex justify-start items-center">
+                        <div
+                          ref={scrollRef}
+                          key={i}
+                          className="w-full flex justify-start items-center"
+                        >
                           <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                             <div>
                               <img
@@ -187,7 +193,11 @@ const ChatSellers = () => {
                       );
                     } else {
                       return (
-                        <div ref={scrollRef} key={i} className="w-full flex justify-end items-center">
+                        <div
+                          ref={scrollRef}
+                          key={i}
+                          className="w-full flex justify-end items-center"
+                        >
                           <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                             <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-lg shadow-blue-500/50 text-white py-2 px-2 rounded-md">
                               <span>{m.message}</span>

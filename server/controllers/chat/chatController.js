@@ -2,6 +2,7 @@ const sellerModel = require("../../models/sellerModel");
 const customerModel = require("../../models/customerModel");
 const sellerToCustomerModel = require("../../models/chat/sellerToCustomerModel");
 const sellerToCustomerMessage = require("../../models/chat/sellerToCustomerMessage");
+const sellerToAdminMessage = require("../../models/chat/sellerToAdminMessage");
 const { responseReturn } = require("../../utils/response");
 
 class chatController {
@@ -201,7 +202,7 @@ class chatController {
     }
   };
 
-  //4. Lấy tin nhắn cửa khách hàng hiển thị qua seller
+  //4. Lấy tin nhắn của khách hàng hiển thị qua seller
   get_customer_messages = async (req, res) => {
     const { customerId } = req.params;
     const { id } = req;
@@ -243,7 +244,7 @@ class chatController {
   };
 
   //5. Gửi tin nhắn từ seller sang khách hàng
-  send_message_customers = async(req, res) => {
+  send_message_customers = async (req, res) => {
     const { senderId, text, receverId, name } = req.body;
     try {
       const message = await sellerToCustomerMessage.create({
@@ -294,7 +295,118 @@ class chatController {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  //6. Lấy tất cả  seller đang trò chuyện trả về admin
+  get_sellers = async (req, res) => {
+    try {
+      const sellers = await sellerModel.find({});
+      responseReturn(res, 200, { sellers });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //7. Gửi tin nhắn từ admin sang seller
+  send_message_sellers_admin = async (req, res) => {
+    // console.log(req.body);
+    const { senderId, receverId, message, senderName } = req.body;
+    try {
+      const messageData = await sellerToAdminMessage.create({
+        senderId,
+        receverId,
+        message,
+        senderName,
+      });
+      responseReturn(res, 200, { message: messageData });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //8. Lấy tin nhắn của admin
+  get_admin_messages = async (req, res) => {
+    // console.log(req.params);
+    const { receverId } = req.params;
+    const id = "";
+    try {
+      const messages = await sellerToAdminMessage.find({
+        $or: [
+          {
+            $and: [
+              {
+                receverId: { $eq: receverId },
+              },
+              {
+                senderId: {
+                  $eq: id,
+                },
+              },
+            ],
+          },
+          {
+            $and: [
+              {
+                receverId: { $eq: id },
+              },
+              {
+                senderId: {
+                  $eq: receverId,
+                },
+              },
+            ],
+          },
+        ],
+      });
+      // console.log(messages)
+      let currentSeller = {};
+      if (receverId) {
+        currentSeller = await sellerModel.findById(receverId);
+      }
+      responseReturn(res, 200, { messages, currentSeller });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //9. Lấy tin nhắn của seller
+  get_seller_messages = async (req, res) => {
+    const receverId = "";
+    const { id } = req;
+    try {
+      const messages = await sellerToAdminMessage.find({
+        $or: [
+          {
+            $and: [
+              {
+                receverId: { $eq: receverId },
+              },
+              {
+                senderId: {
+                  $eq: id,
+                },
+              },
+            ],
+          },
+          {
+            $and: [
+              {
+                receverId: { $eq: id },
+              },
+              {
+                senderId: {
+                  $eq: receverId,
+                },
+              },
+            ],
+          },
+        ],
+      });
+      responseReturn(res, 200, { messages });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 module.exports = new chatController();

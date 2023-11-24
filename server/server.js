@@ -88,6 +88,15 @@ io.on("connection", (soc) => {
     io.emit("activeAdmin", { status: true });
   });
 
+    soc.on("add_admin", (adminInfo) => {
+      // console.log(adminInfo);
+      delete adminInfo.email;
+      admin = adminInfo;
+      admin.socketId = soc.id;
+      io.emit("activeSeller", allSeller);
+      io.emit("activeAdmin", { status: true });
+    });
+
   soc.on("send_message_seller", (message) => {
     const customer = findCustomer(message.receverId);
     // console.log(customer)
@@ -101,6 +110,19 @@ io.on("connection", (soc) => {
     //console.log(seller)
     if (seller !== undefined) {
       soc.to(seller.socketId).emit("customer_message", message);
+    }
+  });
+
+  soc.on("send_message_admin_to_seller", (message) => {
+    const seller = findSeller(message.receverId);
+    if (seller !== undefined) {
+      soc.to(seller.socketId).emit("receved_admin_message", message);
+    }
+  });
+
+  soc.on("send_message_seller_to_admin", (message) => {
+    if (admin.socketId) {
+      soc.to(admin.socketId).emit("receved_seller_message", message);
     }
   });
 
